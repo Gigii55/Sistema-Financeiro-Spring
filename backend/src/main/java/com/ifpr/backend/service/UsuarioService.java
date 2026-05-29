@@ -24,6 +24,7 @@ public class UsuarioService {
         Usuario usuario = repository.findById(id).orElseThrow(()->new RuntimeException("Usuario não existe"));
         return usuario;
     }
+    
     public void remover (Long id){
         Usuario usuario = bucarPorId(id);
         repository.delete(usuario);

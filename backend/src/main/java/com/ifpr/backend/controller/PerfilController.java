@@ -1,6 +1,7 @@
 package com.ifpr.backend.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,42 +15,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifpr.backend.model.Usuario;
-import com.ifpr.backend.service.UsuarioService;
+import com.ifpr.backend.model.Perfil;
+import com.ifpr.backend.service.PerfilService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping ("/usuario")
-public class UsuarioController {
-    
+@RequestMapping ("/perfil")
+public class PerfilController {
+
     @Autowired
-    private UsuarioService service;
+    private PerfilService service;
 
     @GetMapping
-    public ResponseEntity <List<Usuario>> buscarTodos (){
+    public ResponseEntity <List<Perfil>> buscarTodos (){
         return ResponseEntity.ok (service.listarTodos());
     }
     
     @PostMapping
-    public ResponseEntity<Usuario> inserir(@RequestBody @Valid Usuario usuario){
-        Usuario usuarioBD = service.inserir(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioBD);
+    public ResponseEntity<Perfil> inserir(@RequestBody @Valid Perfil perfil){
+        Perfil perfilBD = service.inserir(perfil);
+        return ResponseEntity.status(HttpStatus.CREATED).body(perfilBD);
     }
 
     @PutMapping
-    public ResponseEntity<Usuario> alterar (@RequestBody @Valid Usuario usuario){
-        Usuario usuarioBD = service.alterar(usuario);
-        return ResponseEntity.ok(usuarioBD);
+    public ResponseEntity<Perfil> alterar (@RequestBody @Valid Perfil perfil){
+        Perfil perfilBD = service.alterar(perfil);
+        return ResponseEntity.ok(perfilBD);
     }
 
     @GetMapping ("/{id}")
-    public ResponseEntity<Usuario> buscarPorId (@PathVariable("id") Long id){
+    public ResponseEntity<Perfil> buscarPorId (@PathVariable("id") UUID id){
         return ResponseEntity.ok(service.bucarPorId(id));
     }
 
     @DeleteMapping ("/{id}")
-    public ResponseEntity<Void> remover (@PathVariable("id") Long id){
+    public ResponseEntity<Void> remover (@PathVariable("id") UUID id){
         service.remover(id);
         return ResponseEntity.noContent().build();
     }
