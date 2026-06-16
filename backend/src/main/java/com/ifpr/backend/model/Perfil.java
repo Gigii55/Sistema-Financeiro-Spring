@@ -18,7 +18,7 @@ public class Perfil {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "descrição obrigatória!")
+    @NotBlank(message = "{descricao.obrigatorio}")
     @Size (min = 10, message = "insira a descrição!")
     private String descricao;
     

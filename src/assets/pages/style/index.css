@@ -50,9 +50,12 @@
 }
 
 body {
+    background-color: var(--background-page); 
+    background: linear-gradient(to top, var(--background-page), var(--background-page-darker));
+  color: white; 
+  min-height: 100vh;
   margin: 0;
 }
-
 #root {
  
   max-width: 100%;
