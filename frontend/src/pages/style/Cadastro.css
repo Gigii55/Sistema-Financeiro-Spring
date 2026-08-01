@@ -1,0 +1,100 @@
+.welcome {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  word-spacing: 0.5rem;
+  letter-spacing: 0.1rem;
+  margin-top: 10vh;
+  text-align: center;
+}
+
+.sistem-identification {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem; 
+  word-spacing: 0.5rem;
+  letter-spacing: 5px;
+  margin-top: 2vh; 
+  text-align: center;
+}
+
+.form-div {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;   
+  background-color: rgba(240, 248, 255, 0.452);
+  width: 90%; 
+  max-width: 500px; 
+  margin: 5vh auto; 
+  border-radius: 20px;
+  padding: 4rem; 
+}
+
+.register-title {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;  
+  color: #333;       
+  margin-top: 0;      
+  margin-bottom: 1.5rem;  
+  text-align: center;  
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(255, 255, 255);                                   
+  width: 100%;
+  padding: 4rem 1rem;
+  border-radius: 20px;
+}
+
+.input {
+  width: 80%;
+  outline: none;
+  padding: 1rem; 
+  border-radius: 10px;
+  margin-top: 1.5rem;
+  border: none; 
+  background-color: #c6ced1;
+  color: #1a1a1a; 
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+/* Substitui o .name-login e .password-login para servir em todos os campos */
+.label-input {
+  color: #595a61;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  margin-top: 1vw; 
+  width: 80%; 
+  text-align: left;
+}
+
+.btn-register {
+  width: 80%; 
+  padding: 1rem;
+  margin-top: 2rem; 
+  background-color: var(--background-page-darker); 
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer; 
+  transition: background-color 0.3s;
+}
+
+.btn-register:hover {
+  background-color:  rgb(15, 82, 62); 
+}
+
+.login-link-container {
+  margin-top: 1vw;
+  color: #333;
+}
+
+.login-link {
+  color:  rgb(68, 170, 139); 
+  text-decoration: none;
+  font-weight: bold;
+}
