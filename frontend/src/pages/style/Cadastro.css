@@ -1,100 +1,237 @@
-.welcome {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  word-spacing: 0.5rem;
+* {
+  box-sizing: border-box;
+}
+
+.cadastro-cabecalho {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.cadastro-boas-vindas {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold',
+    sans-serif;
+
+  font-size: 1.8rem;
+  word-spacing: 0.4rem;
   letter-spacing: 0.1rem;
-  margin-top: 10vh;
+
+  margin: 2.5vh 0 0;
   text-align: center;
 }
 
-.sistem-identification {
+.cadastro-identificacao {
   font-family: "Playfair Display", serif;
-  font-size: 2.5rem; 
-  word-spacing: 0.5rem;
-  letter-spacing: 5px;
-  margin-top: 2vh; 
+
+  font-size: 1.5rem;
+  font-weight: normal;
+
+  word-spacing: 0.4rem;
+  letter-spacing: 3px;
+
+  margin: 1vh 0 2.5rem;
   text-align: center;
 }
 
-.form-div {
-  display: flex;
-  flex-direction: column; 
-  align-items: center;   
-  background-color: rgba(240, 248, 255, 0.452);
-  width: 90%; 
-  max-width: 500px; 
-  margin: 5vh auto; 
-  border-radius: 20px;
-  padding: 4rem; 
-}
-
-.register-title {
-  font-family: "Playfair Display", serif;
-  font-size: 2.5rem;  
-  color: #333;       
-  margin-top: 0;      
-  margin-bottom: 1.5rem;  
-  text-align: center;  
-}
-
-.form {
+.cadastro-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(255, 255, 255);                                   
+
+  width: 92%;
+  max-width: 900px;
+
+  margin: 0 auto 3vh;
+  padding: 1.5rem;
+
+  background-color: rgba(240, 248, 255, 0.452);
+  border-radius: 18px;
+}
+
+.cadastro-titulo {
+  font-family: "Playfair Display", serif;
+
+  font-size: 1.8rem;
+  color: #333;
+
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.cadastro-formulario {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  column-gap: 2rem;
+  row-gap: 1.4rem;
+
   width: 100%;
-  padding: 4rem 1rem;
-  border-radius: 20px;
+  padding: 2rem;
+
+  background-color: white;
+  border-radius: 16px;
 }
 
-.input {
-  width: 80%;
-  outline: none;
-  padding: 1rem; 
-  border-radius: 10px;
-  margin-top: 1.5rem;
-  border: none; 
-  background-color: #c6ced1;
-  color: #1a1a1a; 
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 0;
+.cadastro-coluna {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+
+  width: 100%;
+  min-width: 0;
 }
 
-/* Substitui o .name-login e .password-login para servir em todos os campos */
-.label-input {
+.cadastro-campo {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.cadastro-label {
+  width: 100%;
+
+  margin: 0 0 0.4rem;
+
   color: #595a61;
+  font-size: 0.95rem;
   font-weight: bold;
-  margin-bottom: 0.5rem;
-  margin-top: 1vw; 
-  width: 80%; 
+
   text-align: left;
 }
 
-.btn-register {
-  width: 80%; 
-  padding: 1rem;
-  margin-top: 2rem; 
-  background-color: var(--background-page-darker); 
-  color: white;
-  font-size: 1.1rem;
-  font-weight: bold;
+.cadastro-input {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+
+  margin: 0;
+  padding: 0 1rem;
+
   border: none;
-  border-radius: 10px;
-  cursor: pointer; 
-  transition: background-color 0.3s;
+  border-radius: 9px;
+  outline: none;
+
+  background-color: #c6ced1;
+  color: #1a1a1a;
+
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-.btn-register:hover {
-  background-color:  rgb(15, 82, 62); 
+.cadastro-input::placeholder {
+  color: #666;
 }
 
-.login-link-container {
-  margin-top: 1vw;
+.cadastro-input:focus {
+  outline: 2px solid rgb(68, 170, 139);
+  background-color: #d4dadd;
+}
+
+.cadastro-feedback {
+  display: block;
+
+  min-height: 16px;
+  margin-top: 0.35rem;
+
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.cadastro-feedback-sucesso {
+  color: green;
+}
+
+.cadastro-feedback-medio {
+  color: #d17c00;
+}
+
+.cadastro-feedback-erro {
+  color: red;
+}
+
+.cadastro-botao {
+  grid-column: 1 / -1;
+
+  width: 48%;
+  min-width: 250px;
+
+  padding: 0.9rem;
+  margin: 0 auto;
+
+  background-color: var(--background-page-darker);
+  color: white;
+
+  font-size: 0.95rem;
+  font-weight: bold;
+
+  border: none;
+  border-radius: 9px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.3s,
+    opacity 0.3s;
+}
+
+.cadastro-botao:hover:not(:disabled) {
+  background-color: rgb(15, 82, 62);
+}
+
+.cadastro-botao:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cadastro-login-container {
+  grid-column: 1 / -1;
+
+  margin: -0.5rem 0 0;
+
   color: #333;
+  font-size: 0.85rem;
+  text-align: center;
 }
 
-.login-link {
-  color:  rgb(68, 170, 139); 
+.cadastro-login-link {
+  margin-left: 0.2rem;
+
+  color: rgb(68, 170, 139);
   text-decoration: none;
   font-weight: bold;
+}
+
+.cadastro-login-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 650px) {
+  .cadastro-identificacao {
+    font-size: 1.15rem;
+    letter-spacing: 2px;
+  }
+
+  .cadastro-card {
+    width: 94%;
+    padding: 1rem;
+  }
+
+  .cadastro-formulario {
+    grid-template-columns: 1fr;
+    padding: 1.4rem;
+  }
+
+  .cadastro-botao,
+  .cadastro-login-container {
+    grid-column: 1;
+  }
+
+  .cadastro-botao {
+    width: 100%;
+    min-width: 0;
+  }
 }
