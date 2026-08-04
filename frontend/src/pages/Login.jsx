@@ -42,9 +42,9 @@ function Login() {
             placeholder="Digite sua senha..."
           />
 
-          <a href="#" className="login-esqueceu-senha">
-            Esqueceu a senha?
-          </a>
+          <Link to="/esqueceuSenha" className="login-esqueceu-senha">
+              Esqueceu a senha
+            </Link>
 
           <button type="submit" className="login-botao">
             ENTRAR

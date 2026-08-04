@@ -1,0 +1,198 @@
+* {
+  box-sizing: border-box;
+}
+
+.recuperacao-cabecalho {
+    margin-top: 2rem;
+  text-align: center;
+}
+
+.recuperacao-boas-vindas {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold',
+    sans-serif;
+
+  font-size: 1.8rem;
+  word-spacing: 0.4rem;
+  letter-spacing: 0.1rem;
+
+  margin: 3vh 0 0;
+  text-align: center;
+}
+
+.recuperacao-identificacao {
+  font-family: "Playfair Display", serif;
+
+  font-size: 1.5rem;
+  font-weight: normal;
+
+  word-spacing: 0.4rem;
+  letter-spacing: 3px;
+
+  margin: 1vh 0 2rem;
+  text-align: center;
+}
+
+.recuperacao-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 90%;
+  max-width: 520px;
+
+  margin: 0 auto 3vh;
+  padding: 1.25rem;
+
+  background-color: rgba(240, 248, 255, 0.452);
+  border-radius: 18px;
+}
+
+.recuperacao-titulo {
+  font-family: "Playfair Display", serif;
+
+  font-size: 1.6rem;
+  color: #333;
+
+  margin: 0 0 0.9rem;
+  text-align: center;
+}
+
+.recuperacao-formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  padding: 1.8rem 1rem;
+
+  background-color: white;
+  border-radius: 16px;
+}
+
+.recuperacao-descricao {
+  width: 84%;
+  max-width: 400px;
+
+  margin: 0 0 1.3rem;
+
+  color: #595a61;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.recuperacao-label {
+  width: 84%;
+  max-width: 400px;
+
+  margin: 0 0 0.4rem;
+
+  color: #595a61;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.recuperacao-input {
+  display: block;
+
+  width: 84%;
+  max-width: 400px;
+  height: 50px;
+
+  margin: 0;
+  padding: 0 1rem;
+
+  border: none;
+  border-radius: 9px;
+  outline: none;
+
+  background-color: #c6ced1;
+  color: #1a1a1a;
+
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.recuperacao-input::placeholder {
+  color: #666;
+}
+
+.recuperacao-input:focus {
+  outline: 2px solid rgb(68, 170, 139);
+  background-color: #d4dadd;
+}
+
+.recuperacao-botao {
+  width: 84%;
+  max-width: 400px;
+
+  padding: 0.9rem;
+  margin-top: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--background-page-darker);
+  color: white;
+
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.recuperacao-botao:hover {
+  background-color: rgb(15, 82, 62);
+  transform: translateY(-1px);
+}
+
+.recuperacao-voltar-container {
+  margin: 1rem 0 0;
+
+  color: #333;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.recuperacao-voltar-link {
+  color: rgb(68, 170, 139);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.recuperacao-voltar-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 550px) {
+  .recuperacao-boas-vindas {
+    font-size: 1.5rem;
+  }
+
+  .recuperacao-identificacao {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+
+  .recuperacao-card {
+    width: 94%;
+    padding: 1rem;
+  }
+
+  .recuperacao-formulario {
+    padding: 1.4rem 0.8rem;
+  }
+
+  .recuperacao-descricao,
+  .recuperacao-label,
+  .recuperacao-input,
+  .recuperacao-botao {
+    width: 90%;
+  }
+}

@@ -1,0 +1,158 @@
+* {
+  box-sizing: border-box;
+ 
+}
+.codigo-campo {
+  width: 88%;
+  max-width: 380px;
+  margin-bottom: 0.8rem;
+}
+
+.codigo-cabecalho {
+  text-align: center;
+   margin-top: 2rem;
+}
+
+.codigo-boas-vindas {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold',
+    sans-serif;
+
+  font-size: 1.8rem;
+  word-spacing: 0.4rem;
+  letter-spacing: 0.1rem;
+
+  margin: 3vh 0 0;
+  text-align: center;
+}
+
+.codigo-identificacao {
+  font-family: "Playfair Display", serif;
+
+  font-size: 1.5rem;
+  font-weight: normal;
+
+  word-spacing: 0.4rem;
+  letter-spacing: 3px;
+
+  margin: 1vh 0 2rem;
+  text-align: center;
+}
+
+.codigo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 90%;
+  max-width: 470px;
+
+  margin: 0 auto 3vh;
+  padding: 1rem;
+
+  background-color: rgba(240, 248, 255, 0.452);
+  border-radius: 18px;
+}
+
+
+.codigo-titulo {
+  font-family: "Playfair Display", serif;
+  font-size: 1.4rem;
+  color: #333;
+
+  margin: 0 0 0.7rem;
+  text-align: center;
+}
+
+.codigo-formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  padding: 1.4rem 1rem;
+
+  background-color: white;
+  border-radius: 16px;
+}
+
+.codigo-descricao {
+  width: 88%;
+  margin: 0 0 1rem;
+
+  color: #595a61;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.codigo-label {
+  display: block;
+  width: 100%;
+
+
+  padding: 0;
+
+  color: #595a61;
+  font-size: 0.9rem;
+  font-weight: bold;
+
+  text-align: left;
+  align-self: flex-start;
+}
+.codigo-input {
+  width: 100%;
+  height: 45px;
+
+  padding: 0 1rem;
+
+  border: none;
+  border-radius: 9px;
+  outline: none;
+
+  background-color: #c6ced1;
+  color: #1a1a1a;
+
+  font-size: 0.9rem;
+}
+
+
+.codigo-input:focus {
+  outline: 2px solid rgb(68, 170, 139);
+  background-color: #d4dadd;
+}
+
+.codigo-botao {
+  width: 88%;
+  max-width: 380px;
+
+  padding: 0.8rem;
+  margin-top: 0.3rem;
+
+  background-color: var(--background-page-darker);
+  color: white;
+
+  font-size: 0.95rem;
+  font-weight: bold;
+
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.codigo-botao:hover {
+  background-color: rgb(15, 82, 62);
+}
+
+.codigo-voltar-container {
+  margin: 1rem 0 0;
+
+  color: #333;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.codigo-voltar-link {
+  color: rgb(68, 170, 139);
+  text-decoration: none;
+  font-weight: bold;
+}
