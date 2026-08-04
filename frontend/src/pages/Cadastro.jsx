@@ -114,6 +114,7 @@ function Cadastro() {
                 className="cadastro-input"
                 type="password"
                 placeholder="Crie uma senha..."
+                minLength={6}
                 value={senha}
                 onChange={handleSenhaChange}
               />

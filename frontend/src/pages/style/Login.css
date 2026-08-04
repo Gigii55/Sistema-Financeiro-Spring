@@ -173,6 +173,43 @@
   text-decoration: underline;
 }
 
+.login-senha-container {
+  position: relative;
+
+  width: 84%;
+  max-width: 390px;
+}
+
+.login-senha-container .login-input {
+  width: 100%;
+  max-width: none;
+
+  padding-right: 5.5rem;
+}
+
+.login-mostrar-senha {
+  position: absolute;
+  top: 50%;
+  right: 0.8rem;
+
+  transform: translateY(-50%);
+
+  padding: 0;
+
+  color: rgb(15, 82, 62);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.login-mostrar-senha:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 550px) {
   .login-boas-vindas {
     font-size: 1.5rem;

@@ -8,8 +8,6 @@ function EsqueceuSenha() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Aqui você chamará a função responsável por enviar
-    // o link de recuperação para o e-mail informado.
     console.log('Recuperar senha para:', email);
   };
 
@@ -46,30 +44,24 @@ function EsqueceuSenha() {
             E-mail
           </label>
 
-          <input
-            id="recuperacao-email"
-            className="recuperacao-input"
-            type="email"
-            placeholder="Digite seu e-mail..."
+          <input id="recuperacao-email"
+           className="recuperacao-input" 
+           type="email" 
+           placeholder="Digite seu e-mail..."
+           
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
 
-         <Link
-            to="/codigo"
-            className="recuperacao-botao"
-            >
+        <Link to="/codigo" className="recuperacao-botao">
             ENVIAR CÓDIGO
             </Link>
 
           <p className="recuperacao-voltar-container">
             Lembrou sua senha?{' '}
 
-            <Link
-              to="/"
-              className="recuperacao-voltar-link"
-            >
+            <Link to="/"  className="recuperacao-voltar-link">
               VOLTAR AO LOGIN
             </Link>
           </p>

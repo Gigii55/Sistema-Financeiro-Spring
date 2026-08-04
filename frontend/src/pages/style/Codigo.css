@@ -156,3 +156,31 @@
   text-decoration: none;
   font-weight: bold;
 }
+
+.codigo-feedback {
+  display: block;
+  width: 100%;
+
+  min-height: 15px;
+  margin-top: 0.35rem;
+
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.codigo-feedback-sucesso {
+  color: green;
+}
+
+.codigo-feedback-medio {
+  color: #d17c00;
+}
+
+.codigo-feedback-erro {
+  color: red;
+}
+
+.codigo-botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
