@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  alternarVisibilidadeSenha,
-  definirTextoBotao,
-  definirTipoSenha
-} from './js/MostrarSenha';
+import { Link, useNavigate  } from 'react-router-dom';
+import { alternarVisibilidadeSenha, definirTextoBotao, definirTipoSenha} from './js/MostrarSenha';
 import { realizarLogin } from './js/RealizarLogin';
 import './style/Login.css';
 
 function Login() {
+
+  const navigate = useNavigate();
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,14 +21,16 @@ function Login() {
 
     setCarregando(true);
 
-    try {
+     try {
       await realizarLogin(nome, senha);
-
-      console.log('Login realizado com sucesso');
-    } catch (erro) {
-      console.error(erro.message);
-    } finally {
-      setCarregando(false);
+        navigate('/dashboard');
+    }  
+      catch (erro) {
+        console.error(erro);
+      } 
+      
+    finally {
+    setCarregando(false);
     }
   };
 
