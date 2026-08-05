@@ -23,28 +23,22 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = "nome obrigatória!")
-    @Size (min = 10, message = "insira o nome completo!")
+    @NotBlank
+    @Size 
     private String nome;
 
-    @Email (message = "insira um email válido!")
+    @Email
     private String email;
 
-    @NotBlank(message = "senha obrigatória!")
+    @NotBlank
     private String senha;
 
-    @OneToMany(mappedBy ="usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Setter(value = AccessLevel.NONE)
-    private List<UsuarioPerfil> usuarioPerfil;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime criadoEm;
 
-
-    public void setUsuarioPerfil(List<UsuarioPerfil> usuariosPerfil){
-        if(usuariosPerfil!=null){
-            for(UsuarioPerfil u:usuariosPerfil){
-                u.setUsuario(this);
-            }
-        }
-        this.usuarioPerfil = usuariosPerfil;
-    }
+    @UpdateTimestamp
+    private LocalDateTime atualizadoEm; 
+    
 
 }
