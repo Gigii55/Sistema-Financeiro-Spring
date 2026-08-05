@@ -1,19 +1,21 @@
 package com.ifpr.backend.model;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
-import jakarta.persistence.CascadeType;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AccessLevel;
+
 import lombok.Data;
-import lombok.Setter;
 
 @Entity
 @Data
@@ -24,21 +26,26 @@ public class Usuario {
     private long id;
 
     @NotBlank
-    @Size 
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
     private String nome;
 
+    @NotBlank
     @Email
+    @Size(max = 150)
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
     @NotBlank
+    @Size(min = 6, max = 20)
+    @Column(nullable = false, length = 20)
     private String senha;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    private LocalDateTime atualizadoEm; 
-    
-
+    @Column(nullable = false)
+    private LocalDateTime atualizadoEm;
 }
