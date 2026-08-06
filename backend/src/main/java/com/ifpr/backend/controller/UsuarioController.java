@@ -18,6 +18,8 @@ import com.ifpr.backend.service.UsuarioService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
+
 @RestController
 @RequestMapping("/usuarios")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -26,10 +28,13 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
-    @PostMapping
-    public Usuario inserir(@Valid @RequestBody Usuario usuario) {
-        return service.inserir(usuario);
+        @PostMapping
+        public ResponseEntity<?> inserir(@Valid @RequestBody Usuario usuario) {
+            if (service.emailJaCadastrado(usuario.getEmail())) {
+                 return ResponseEntity.badRequest().body("Este e-mail já está cadastrado.");
     }
+     return ResponseEntity.ok(service.inserir(usuario));
+}
 
     @PutMapping
     public Usuario alterar(@Valid @RequestBody Usuario usuario) {

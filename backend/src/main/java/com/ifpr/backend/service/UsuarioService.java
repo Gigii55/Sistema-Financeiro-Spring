@@ -40,4 +40,8 @@ public class UsuarioService {
 
         return repository.save(usuarioBD);
     }
+    
+    public boolean emailJaCadastrado(String email) {
+    return repository.existsByEmail(email);
+}
 }

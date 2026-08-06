@@ -98,23 +98,17 @@ function Cadastro() {
       setSenhasIguais(null);
 
     } catch (erro) {
-      console.error(
-        'Erro ao cadastrar:',
-        erro
-      );
+      console.error('Erro ao cadastrar:', erro);
 
       setCadastroRealizado(false);
 
-      if (erro.response) {
-        setMensagem('Não foi possível realizar o cadastro.');
+      if (erro.response?.status === 400) {
+        setMensagem(erro.response.data);
       } else {
         setMensagem('Não foi possível conectar ao backend.');
       }
-    } finally {
-      setCarregando(false);
     }
-  };
-
+  }
   return (
     <>
       <div className="cadastro-cabecalho">
