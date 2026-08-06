@@ -1,9 +1,10 @@
-export async function realizarLogin(nome, senha) {
-    
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+import api from '../../configs/axiosConfig';
 
-  console.log('Nome:', nome);
-  console.log('Senha:', senha);
 
-  return true;
-}
+export const realizarLogin = async (email, senha) => {
+
+  return await api.post('/usuarios/login', {
+    email: email,
+    senha: senha
+  });
+};

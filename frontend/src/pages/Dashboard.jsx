@@ -4,9 +4,22 @@ import './style/Dashboard.css';
 function Dashboard() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {navigate('/');};
+ const handleLogout = () => {
+  localStorage.removeItem('usuario');
+  navigate('/');
+};
+
+    const usuarioSalvo = localStorage.getItem(
+    'usuario'
+  );
+
+  const usuario = usuarioSalvo
+    ? JSON.parse(usuarioSalvo)
+    : null;
+
 
   return (
+    
     <div className="dashboard-pagina">
       <aside className="dashboard-sidebar">
         <div className="dashboard-logo">
@@ -49,29 +62,39 @@ function Dashboard() {
 
       <main className="dashboard-conteudo">
         <header className="dashboard-cabecalho">
-          <div>
-            <p className="dashboard-saudacao">
-              VISÃO GERAL
-            </p>
+  <div>
+    <p className="dashboard-saudacao">
+      VISÃO GERAL
+    </p>
 
-            <h1>Olá, Giovanna!</h1>
+    <h1>
+      Olá, {usuario?.nome || 'Usuário'}!
+    </h1>
 
-            <span>
-              Confira como estão suas finanças neste mês.
-            </span>
-          </div>
+    <span>
+      Confira como estão suas finanças neste mês.
+    </span>
+  </div>
 
-          <div className="dashboard-usuario">
-            <div className="dashboard-avatar">
-              G
-            </div>
+  <div className="dashboard-usuario">
+    <div className="dashboard-avatar">
+      {usuario?.nome
+        ? usuario.nome.charAt(0).toUpperCase()
+        : 'U'
+      }
+    </div>
 
-            <div className="dashboard-usuario-informacoes">
-              <strong>Giovanna Bernadelli</strong>
-              <span>giovanna@email.com</span>
-            </div>
-          </div>
-        </header>
+    <div className="dashboard-usuario-informacoes">
+      <strong>
+        {usuario?.nome || 'Usuário'}
+      </strong>
+
+      <span>
+        {usuario?.email || ''}
+      </span>
+    </div>
+  </div>
+</header>
 
         <section className="dashboard-resumo" aria-label="Resumo financeiro">
           <article className="dashboard-resumo-card dashboard-card-saldo">

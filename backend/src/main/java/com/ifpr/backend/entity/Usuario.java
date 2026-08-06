@@ -17,6 +17,8 @@ import jakarta.validation.constraints.Size;
 
 import lombok.Data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Data
 public class Usuario {
@@ -39,6 +41,7 @@ public class Usuario {
     @NotBlank
     @Size(min = 6, max = 20)
     @Column(nullable = false, length = 20)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
     @CreationTimestamp

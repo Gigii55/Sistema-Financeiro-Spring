@@ -210,6 +210,13 @@
   text-decoration: underline;
 }
 
+.login-erro {
+  color: #b91c1c;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 @media (max-width: 550px) {
   .login-boas-vindas {
     font-size: 1.5rem;

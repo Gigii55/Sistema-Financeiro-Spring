@@ -1,38 +1,70 @@
 import { useState } from 'react';
-import { Link, useNavigate  } from 'react-router-dom';
-import { alternarVisibilidadeSenha, definirTextoBotao, definirTipoSenha} from './js/MostrarSenha';
+import { Link, useNavigate } from 'react-router-dom';
+import UsuarioService from '../services/UsuarioService';
+import {
+  alternarVisibilidadeSenha,
+  definirTextoBotao,
+  definirTipoSenha
+} from './js/MostrarSenha';
+
 import { realizarLogin } from './js/RealizarLogin';
+
 import './style/Login.css';
 
-function Login() {
 
+function Login() {
+  
   const navigate = useNavigate();
+
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false);
+  const [mensagemErro, setMensagemErro] = useState('');
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setMensagemErro('');
+
     const formulario = new FormData(e.currentTarget);
 
-    const nome = formulario.get('nome');
+    const email = formulario.get('email');
     const senha = formulario.get('senha');
 
     setCarregando(true);
 
-     try {
-      await realizarLogin(nome, senha);
-        navigate('/dashboard');
-    }  
-      catch (erro) {
-        console.error(erro);
-      } 
-      
+    try {
+  const resposta = await realizarLogin(
+    email,
+    senha
+  );
+
+  localStorage.setItem(
+    'usuario',
+    JSON.stringify(resposta.data)
+  );
+
+  navigate('/dashboard');
+}
+    catch (erro) {
+      console.error(erro);
+
+      if (erro.response?.status === 401) {
+        setMensagemErro(
+          'E-mail ou senha inválidos.'
+        );
+      }
+      else {
+        setMensagemErro(
+          'Não foi possível conectar ao backend.'
+        );
+      }
+    } 
     finally {
-    setCarregando(false);
+      setCarregando(false);
     }
   };
+
 
   return (
     <>
@@ -57,18 +89,17 @@ function Login() {
         >
           <label
             className="login-label"
-            htmlFor="login-nome"
+            htmlFor="login-email"
           >
             Email
           </label>
 
           <input
-            id="login-nome"
-            name="nome"
+            id="login-email"
+            name="email"
             className="login-input"
-            type="text"
-            placeholder="Digite seu email..."
             type="email"
+            placeholder="Digite seu email..."
             required
             disabled={carregando}
           />
@@ -103,6 +134,12 @@ function Login() {
               {definirTextoBotao(mostrarSenha)}
             </button>
           </div>
+
+          {mensagemErro && (
+            <span className="login-erro">
+              {mensagemErro}
+            </span>
+          )}
 
           <Link
             to="/esqueceuSenha"

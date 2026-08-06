@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.ifpr.backend.model.Usuario;
 import com.ifpr.backend.service.UsuarioService;
@@ -55,4 +57,22 @@ public class UsuarioController {
     public void remover(@PathVariable("id") Long id) {
         service.remover(id);
     }
+       @PostMapping("/login")
+public ResponseEntity<?> login(
+        @RequestBody Usuario dados
+) {
+
+    Usuario usuario = service.login(
+            dados.getEmail(),
+            dados.getSenha()
+    );
+
+    if (usuario == null) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body("E-mail ou senha inválidos.");
+    }
+
+    return ResponseEntity.ok(usuario);
+}
 }

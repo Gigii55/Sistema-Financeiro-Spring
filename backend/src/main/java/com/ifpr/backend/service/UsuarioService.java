@@ -40,8 +40,25 @@ public class UsuarioService {
 
         return repository.save(usuarioBD);
     }
-    
+
     public boolean emailJaCadastrado(String email) {
     return repository.existsByEmail(email);
+    }
+
+    public Usuario login(String email, String senha) {
+
+    Usuario usuario = repository
+            .findByEmail(email)
+            .orElse(null);
+
+    if (usuario == null) {
+        return null;
+    }
+
+    if (!usuario.getSenha().equals(senha)) {
+        return null;
+    }
+
+    return usuario;
 }
 }

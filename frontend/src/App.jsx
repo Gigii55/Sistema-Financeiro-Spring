@@ -14,6 +14,7 @@ function App() {
     <Route path="/esqueceuSenha" element={<EsqueceuSenha />} />
     <Route path="/codigo" element={<Codigo />} />
     <Route path="/dashboard" element={<Dashboard />} />
+
     </Routes>
     </BrowserRouter>
   )
