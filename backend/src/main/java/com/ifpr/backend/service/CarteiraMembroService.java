@@ -14,9 +14,7 @@ public class CarteiraMembroService {
     @Autowired
     private CarteiraMembroRepository repository;
 
-    public CarteiraMembro inserir(
-            CarteiraMembro carteiraMembro
-    ) {
+    public CarteiraMembro inserir( CarteiraMembro carteiraMembro) {
         return repository.save(carteiraMembro);
     }
 

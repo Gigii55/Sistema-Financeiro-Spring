@@ -9,10 +9,7 @@ class UsuarioService extends BaseService {
 
 
   async login(dados) {
-    return await this.api.post(
-      `${this.endPoint}/login`,
-      dados
-    );
+    return await this.api.post(`${this.endPoint}/login`,dados);
   }
 }
 

@@ -22,35 +22,23 @@ public class RecuperacaoSenhaService {
 
     public void solicitarRecuperacao(String email) {
 
-        Usuario usuario = usuarioRepository
-                .findByEmail(email)
-                .orElse(null);
+        Usuario usuario = usuarioRepository.findByEmail(email).orElse(null);
 
         if (usuario == null) {
             return;
         }
 
-        TokenRedefinicaoSenha token =
-                tokenService.gerarToken(usuario);
+        TokenRedefinicaoSenha token = tokenService.gerarToken(usuario);
 
-        String link =
-                "http://localhost:5173/codigo?token="
-                + token.getToken();
+        String link = "http://localhost:5173/codigo?token="+ token.getToken();
 
-        emailService.enviarRecuperacaoSenha(
-                usuario.getEmail(),
-                link
-        );
+        emailService.enviarRecuperacaoSenha(usuario.getEmail(),link);
     }
 
     @Transactional
-    public void redefinirSenha(
-            String codigo,
-            String novaSenha
-    ) {
+    public void redefinirSenha( String codigo,String novaSenha) {
 
-        TokenRedefinicaoSenha token =
-                tokenService.buscarTokenValido(codigo);
+        TokenRedefinicaoSenha token = tokenService.buscarTokenValido(codigo);
 
         Usuario usuario = token.getUsuario();
 

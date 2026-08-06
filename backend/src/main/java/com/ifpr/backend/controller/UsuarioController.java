@@ -58,20 +58,13 @@ public class UsuarioController {
         service.remover(id);
     }
        @PostMapping("/login")
-public ResponseEntity<?> login(
-        @RequestBody Usuario dados
-) {
+    public ResponseEntity<?> login(@RequestBody Usuario dados) {
 
-    Usuario usuario = service.login(
-            dados.getEmail(),
-            dados.getSenha()
-    );
+    Usuario usuario = service.login(dados.getEmail(),dados.getSenha());
 
     if (usuario == null) {
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body("E-mail ou senha inválidos.");
-    }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha inválidos.");
+        }
 
     return ResponseEntity.ok(usuario);
 }

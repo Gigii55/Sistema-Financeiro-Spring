@@ -27,16 +27,12 @@ public class CategoriaController {
     private CategoriaService service;
 
     @PostMapping
-    public Categoria inserir(
-            @Valid @RequestBody Categoria categoria) {
-
+    public Categoria inserir(@Valid @RequestBody Categoria categoria) {
         return service.inserir(categoria);
     }
 
     @PutMapping
-    public Categoria alterar(
-            @Valid @RequestBody Categoria categoria) {
-
+    public Categoria alterar(@Valid @RequestBody Categoria categoria) {
         return service.alterar(categoria);
     }
 
@@ -46,16 +42,12 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public Categoria buscarPorId(
-            @PathVariable("id") Long id) {
-
+    public Categoria buscarPorId(@PathVariable("id") Long id) {
         return service.buscarPorId(id);
     }
 
     @DeleteMapping("/{id}")
-    public void remover(
-            @PathVariable("id") Long id) {
-
+    public void remover(@PathVariable("id") Long id) {
         service.remover(id);
     }
 }

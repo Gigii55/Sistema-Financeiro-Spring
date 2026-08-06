@@ -1,10 +1,5 @@
 import { useState } from 'react';
-import {
-  Link,
-  useNavigate,
-  useSearchParams
-} from 'react-router-dom';
-
+import {Link,useNavigate,useSearchParams} from 'react-router-dom';
 import { validarSenhasIguais } from './js/ValidarSenhasIguais';
 import { verificarForcaDaSenha } from './js/VerificarForcaDaSenha';
 import { redefinirSenha } from '../configs/RecuperacaoSenhaService';
@@ -12,6 +7,7 @@ import { redefinirSenha } from '../configs/RecuperacaoSenhaService';
 import './style/Codigo.css';
 
 function Codigo() {
+
   const [parametros] = useSearchParams();
   const navigate = useNavigate();
 
@@ -22,6 +18,7 @@ function Codigo() {
   const [forcaSenha, setForcaSenha] = useState('');
   const [senhasIguais, setSenhasIguais] = useState(null);
   const [mensagem, setMensagem] = useState('');
+  const [carregando, setCarregando] = useState(false);
 
   const handleNovaSenhaChange = (e) => {
     const senhaDigitada = e.target.value;
@@ -30,12 +27,7 @@ function Codigo() {
     setForcaSenha(verificarForcaDaSenha(senhaDigitada));
 
     if (confirmarNovaSenha.length > 0) {
-      setSenhasIguais(
-        validarSenhasIguais(
-          senhaDigitada,
-          confirmarNovaSenha
-        )
-      );
+      setSenhasIguais(validarSenhasIguais(senhaDigitada,confirmarNovaSenha));
     }
   };
 
@@ -44,12 +36,7 @@ function Codigo() {
 
     setConfirmarNovaSenha(confirmacaoDigitada);
 
-    setSenhasIguais(
-      validarSenhasIguais(
-        novaSenha,
-        confirmacaoDigitada
-      )
-    );
+    setSenhasIguais(validarSenhasIguais(novaSenha,confirmacaoDigitada));
   };
 
   const handleSubmit = async (e) => {
@@ -67,61 +54,41 @@ function Codigo() {
     }
 
     try {
-      await redefinirSenha(token, novaSenha);
+      setCarregando(true);
+
+      await redefinirSenha(token,novaSenha);
 
       alert('Senha alterada com sucesso!');
       navigate('/');
-    } catch (erro) {
-      setMensagem(
-        erro.response?.data ||
-        'Não foi possível alterar a senha.'
-      );
+    }
+    
+    catch (erro) {
+      console.error(erro);
+    console.error(erro.response?.data);
+
+      setMensagem(erro.response?.data ||'Não foi possível alterar a senha.');
+    } finally {
+      setCarregando(false);
     }
   };
 
   return (
     <>
       <div className="codigo-cabecalho">
-        <h1 className="codigo-boas-vindas">
-          CRIE UMA NOVA SENHA
-        </h1>
-
-        <h2 className="codigo-identificacao">
-          Sistemas de Finanças Astrotech
-        </h2>
+        <h1 className="codigo-boas-vindas">CRIE UMA NOVA SENHA</h1>
+        <h2 className="codigo-identificacao">Sistemas de Finanças Astrotech</h2>
       </div>
 
       <div className="codigo-card">
-        <p className="codigo-titulo">
-          RECUPERAÇÃO DE SENHA
-        </p>
+        <p className="codigo-titulo">RECUPERAÇÃO DE SENHA</p>
 
-        <form
-          className="codigo-formulario"
-          onSubmit={handleSubmit}
-        >
-          <p className="codigo-descricao">
-            Digite e confirme sua nova senha.
-          </p>
-
+        <form className="codigo-formulario" onSubmit={handleSubmit}>
+          <p className="codigo-descricao"> Digite e confirme sua nova senha.</p>
           <div className="codigo-campo">
-            <label
-              className="codigo-label"
-              htmlFor="nova-senha"
-            >
-              Nova senha
-            </label>
-
-            <input
-              id="nova-senha"
-              className="codigo-input"
-              type="password"
-              placeholder="Digite sua nova senha..."
-              value={novaSenha}
-              onChange={handleNovaSenhaChange}
-              minLength={6}
-              required
-            />
+            <label className="codigo-label" htmlFor="nova-senha">Nova senha</label>
+            
+            <input id="nova-senha" className="codigo-input" type="password" placeholder="Digite sua nova senha..."
+              value={novaSenha} onChange={handleNovaSenhaChange} minLength={6} required/>
 
             {forcaSenha && (
               <span
@@ -139,23 +106,10 @@ function Codigo() {
           </div>
 
           <div className="codigo-campo">
-            <label
-              className="codigo-label"
-              htmlFor="confirmar-nova-senha"
-            >
-              Confirmar nova senha
-            </label>
+            <label className="codigo-label" htmlFor="confirmar-nova-senha"> Confirmar nova senha</label>
 
-            <input
-              id="confirmar-nova-senha"
-              className="codigo-input"
-              type="password"
-              placeholder="Confirme sua nova senha..."
-              value={confirmarNovaSenha}
-              onChange={handleConfirmacaoChange}
-              minLength={6}
-              required
-            />
+            <input id="confirmar-nova-senha" className="codigo-input" type="password" placeholder="Confirme sua nova senha..."
+              value={confirmarNovaSenha} onChange={handleConfirmacaoChange} minLength={6} required/>
 
             {senhasIguais !== null && (
               <span
@@ -172,31 +126,17 @@ function Codigo() {
             )}
           </div>
 
-          {mensagem && (
-            <span className="codigo-feedback codigo-feedback-erro">
-              {mensagem}
-            </span>
-          )}
+          {mensagem && (<span className="codigo-feedback codigo-feedback-erro">{mensagem}</span>)}
 
-          <button
-            type="submit"
-            className="codigo-botao"
-            disabled={
-              !senhasIguais ||
-              novaSenha.length < 6
-            }
-          >
-            ALTERAR SENHA
+          <button type="submit" className="codigo-botao"
+            disabled={carregando || !senhasIguais ||novaSenha.length < 6}>
+
+            {carregando? 'ALTERANDO...': 'ALTERAR SENHA'}
+
           </button>
 
-          <p className="codigo-voltar-container">
-            Link expirado?{' '}
-            <Link
-              to="/esqueceuSenha"
-              className="codigo-voltar-link"
-            >
-              SOLICITAR NOVAMENTE
-            </Link>
+          <p className="codigo-voltar-container"> Link expirado?{' '}
+            <Link to="/esqueceuSenha" className="codigo-voltar-link"> SOLICITAR NOVAMENTE</Link>
           </p>
         </form>
       </div>

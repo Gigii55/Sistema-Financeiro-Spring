@@ -23,40 +23,22 @@ public class RecuperacaoSenhaController {
 
 
     @PostMapping("/solicitar")
-    public ResponseEntity<String> solicitar(
-            @RequestBody Map<String, String> dados
-    ) {
-
-        service.solicitarRecuperacao(
-                dados.get("email")
-        );
-
-        return ResponseEntity.ok(
-                "Caso o e-mail esteja cadastrado, você receberá as instruções."
-        );
+    public ResponseEntity<String> solicitar(@RequestBody Map<String, String> dados) {
+        service.solicitarRecuperacao(dados.get("email"));
+        return ResponseEntity.ok("Caso o e-mail esteja cadastrado, você receberá as instruções.");
     }
 
 
     @PostMapping("/redefinir")
-    public ResponseEntity<String> redefinir(
-            @RequestBody Map<String, String> dados
-    ) {
-
+    public ResponseEntity<String> redefinir(@RequestBody Map<String, String> dados) {
         try {
-            service.redefinirSenha(
-                    dados.get("token"),
-                    dados.get("novaSenha")
-            );
+            service.redefinirSenha(dados.get("token"), dados.get("novaSenha"));
 
-            return ResponseEntity.ok(
-                    "Senha redefinida com sucesso."
-            );
+            return ResponseEntity.ok("Senha redefinida com sucesso.");
         }
         catch (RuntimeException erro) {
 
-            return ResponseEntity
-                    .badRequest()
-                    .body(erro.getMessage());
+            return ResponseEntity.badRequest().body(erro.getMessage());
         }
     }
 }

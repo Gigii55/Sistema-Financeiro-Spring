@@ -171,19 +171,23 @@ function Cadastro() {
                 required/>
 
               {senhasIguais !== null && (
-                <span className={senhasIguais?'cadastro-feedback cadastro-feedback-sucesso':'cadastro-feedback cadastro-feedback-erro'}>
+                <span className={senhasIguais?'cadastro-feedback cadastro-feedback-sucesso':
+                'cadastro-feedback cadastro-feedback-erro'}>
+                  
                   {senhasIguais?'As senhas coincidem':'As senhas não coincidem'}
                 </span>
               )}
             </div>
           </div>
 
-          <button type="submit" className="cadastro-botao" disabled={!senhasIguais || nome.trim() === '' || email.trim() === '' || carregando}>
+          <button type="submit" className="cadastro-botao" 
+          disabled={!senhasIguais || nome.trim() === '' || email.trim() === '' || carregando}>
             {carregando? 'CADASTRANDO...': 'CADASTRAR'}
           </button>
 
           {mensagem && (
-            <span className={cadastroRealizado? 'cadastro-feedback cadastro-feedback-sucesso': 'cadastro-feedback cadastro-feedback-erro'}>
+            <span className={cadastroRealizado? 'cadastro-feedback cadastro-feedback-sucesso':
+             'cadastro-feedback cadastro-feedback-erro'}>
               {mensagem}
             </span>
           )}

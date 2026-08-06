@@ -10,7 +10,5 @@ import com.ifpr.backend.model.TokenRedefinicaoSenha;
 public interface TokenRedefinicaoSenhaRepository
         extends JpaRepository<TokenRedefinicaoSenha, Long> {
 
-    Optional<TokenRedefinicaoSenha> findByToken(
-        String token
-    );
+    Optional<TokenRedefinicaoSenha> findByToken(String token);
 }

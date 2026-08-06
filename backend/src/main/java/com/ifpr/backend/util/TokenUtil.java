@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenUtil {
 
-    private final SecureRandom secureRandom =
-            new SecureRandom();
-
+    private final SecureRandom secureRandom = new SecureRandom();
 
     public String gerarToken() {
 
@@ -22,30 +20,21 @@ public class TokenUtil {
 
         secureRandom.nextBytes(bytes);
 
-        return Base64
-                .getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(bytes);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
 
     public String gerarHash(String token) {
 
         try {
-            MessageDigest digest =
-                    MessageDigest.getInstance("SHA-256");
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-            byte[] hash = digest.digest(
-                    token.getBytes(StandardCharsets.UTF_8)
-            );
+            byte[] hash = digest.digest(token.getBytes(StandardCharsets.UTF_8));
 
             return HexFormat.of().formatHex(hash);
         }
         catch (Exception erro) {
-            throw new RuntimeException(
-                    "Erro ao proteger o token.",
-                    erro
-            );
+            throw new RuntimeException("Erro ao proteger o token.",erro);
         }
     }
 }

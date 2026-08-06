@@ -33,20 +33,13 @@ public class TokenRedefinicaoSenhaService {
 
 
     public TokenRedefinicaoSenha buscarPorId(Long id) {
-
-        return repository.findById(id)
-                .orElseThrow(() ->
-                    new RuntimeException(
-                        "Token de redefinição não encontrado"
-                    )
-                );
+        return repository.findById(id).orElseThrow(() ->new RuntimeException("Token de redefinição não encontrado"));
     }
 
 
     public void remover(Long id) {
 
-        TokenRedefinicaoSenha token =
-                buscarPorId(id);
+        TokenRedefinicaoSenha token = buscarPorId(id);
 
         repository.delete(token);
     }
@@ -56,8 +49,7 @@ public class TokenRedefinicaoSenhaService {
             TokenRedefinicaoSenha token
     ) {
 
-        TokenRedefinicaoSenha tokenBD =
-                buscarPorId(token.getId());
+        TokenRedefinicaoSenha tokenBD = buscarPorId(token.getId());
 
         tokenBD.setUsuario(token.getUsuario());
         tokenBD.setToken(token.getToken());
@@ -72,8 +64,7 @@ public class TokenRedefinicaoSenhaService {
             Usuario usuario
     ) {
 
-        TokenRedefinicaoSenha token =
-                new TokenRedefinicaoSenha();
+        TokenRedefinicaoSenha token = new TokenRedefinicaoSenha();
 
         token.setUsuario(usuario);
 
@@ -81,43 +72,24 @@ public class TokenRedefinicaoSenhaService {
     }
 
 
-    public TokenRedefinicaoSenha buscarTokenValido(
-            String codigo
-    ) {
+    public TokenRedefinicaoSenha buscarTokenValido(String codigo) {
 
-        TokenRedefinicaoSenha token = repository
-                .findByToken(codigo)
-                .orElseThrow(() ->
-                    new RuntimeException(
-                        "Token inválido."
-                    )
-                );
+        TokenRedefinicaoSenha token = repository.findByToken(codigo).orElseThrow(() -> new RuntimeException("Token inválido."));
 
         if (token.isUtilizado()) {
-            throw new RuntimeException(
-                "Este token já foi utilizado."
-            );
+            throw new RuntimeException("Este token já foi utilizado.");
         }
 
-        if (token.getExpiraEm().isBefore(
-                LocalDateTime.now()
-        )) {
-
-            throw new RuntimeException(
-                "Este token expirou."
-            );
+        if (token.getExpiraEm().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Este token expirou.");
         }
 
         return token;
     }
 
 
-    public void marcarComoUtilizado(
-            TokenRedefinicaoSenha token
-    ) {
-
+    public void marcarComoUtilizado(TokenRedefinicaoSenha token) {
         token.setUtilizado(true);
-
         repository.save(token);
     }
 }

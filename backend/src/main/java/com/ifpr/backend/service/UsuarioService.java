@@ -47,9 +47,7 @@ public class UsuarioService {
 
     public Usuario login(String email, String senha) {
 
-    Usuario usuario = repository
-            .findByEmail(email)
-            .orElse(null);
+    Usuario usuario = repository.findByEmail(email).orElse(null);
 
     if (usuario == null) {
         return null;

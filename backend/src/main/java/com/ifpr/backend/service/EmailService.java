@@ -18,12 +18,7 @@ public class EmailService {
         mensagem.setFrom("gigibernadelli001@gmail.com");
         mensagem.setTo(destinatario);
         mensagem.setSubject("Redefinição de senha - Astrotech");
-        mensagem.setText(
-            "Clique no link para redefinir sua senha:\n\n"
-            + link
-            + "\n\nO link expira em 1 hora."
-        );
-
+        mensagem.setText("Clique no link para redefinir sua senha:\n\n"+ link+ "\n\nO link expira em 1 hora.");
         mailSender.send(mensagem);
     }
 }
