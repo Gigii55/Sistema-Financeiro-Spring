@@ -1,5 +1,5 @@
 package com.ifpr.backend.model;
-
+import com.ifpr.backend.entity.enums.TipoTransacao;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Entity
@@ -29,10 +29,6 @@ public class Categoria {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
-
-    @Email
-    @Size(max = 100)
-    private String email;
 
     @NotBlank
     @Size(max = 100)

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ifpr.backend.exception.ResourceNotFoundException;
 import com.ifpr.backend.model.CarteiraMembro;
 import com.ifpr.backend.repository.CarteiraMembroRepository;
 
@@ -26,7 +25,7 @@ public class CarteiraMembroService {
     }
 
     public CarteiraMembro buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Membro da carteira não encontrado"));
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Membro da carteira não encontrado"));
     }
 
     public void remover(Long id) {

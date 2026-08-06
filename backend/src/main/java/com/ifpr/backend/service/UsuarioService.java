@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ifpr.backend.exception.ResourceNotFoundException;
 import com.ifpr.backend.model.Usuario;
 import com.ifpr.backend.repository.UsuarioRepository;
 
@@ -24,7 +22,7 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public void remover(Long id) {

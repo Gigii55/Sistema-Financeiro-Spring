@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.ifpr.backend.exception.ResourceNotFoundException;
 import com.ifpr.backend.model.TokenRedefinicaoSenha;
 import com.ifpr.backend.repository.TokenRedefinicaoSenhaRepository;
 
@@ -24,7 +22,7 @@ public class TokenRedefinicaoSenhaService {
     }
 
     public TokenRedefinicaoSenha buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Token de redefinição não encontrado"));
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Token de redefinição não encontrado"));
     }
 
     public void remover(Long id) {

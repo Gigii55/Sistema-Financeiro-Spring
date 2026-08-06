@@ -14,53 +14,28 @@ function EsqueceuSenha() {
   return (
     <>
       <div className="recuperacao-cabecalho">
-        <h1 className="recuperacao-boas-vindas">
-          RECUPERE SUA SENHA
-        </h1>
-
-        <h2 className="recuperacao-identificacao">
-          Sistemas de Finanças Astrotech
-        </h2>
+        <h1 className="recuperacao-boas-vindas"> RECUPERE SUA SENHA</h1>
+        <h2 className="recuperacao-identificacao"> Sistemas de Finanças Astrotech</h2>
       </div>
 
       <div className="recuperacao-card">
-        <p className="recuperacao-titulo">
-          ESQUECEU A SENHA?
-        </p>
+        <p className="recuperacao-titulo">ESQUECEU A SENHA?</p>
 
-        <form
-          className="recuperacao-formulario"
-          onSubmit={handleSubmit}
-        >
+        <form className="recuperacao-formulario" onSubmit={handleSubmit}>
           <p className="recuperacao-descricao">
             Digite o e-mail cadastrado para receber as instruções
             de recuperação da sua senha.
           </p>
 
-          <label
-            className="recuperacao-label"
-            htmlFor="recuperacao-email"
-          >
-            E-mail
-          </label>
+          <label className="recuperacao-label" htmlFor="recuperacao-email"> E-mail</label>
 
-          <input id="recuperacao-email"
-           className="recuperacao-input" 
-           type="email" 
-           placeholder="Digite seu e-mail..."
-           
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input id="recuperacao-email" className="recuperacao-input" type="email" placeholder="Digite seu e-mail..."
+           value={email} onChange={(e) => setEmail(e.target.value)}required/>
 
-        <Link to="/codigo" className="recuperacao-botao">
-            ENVIAR CÓDIGO
-            </Link>
+        <Link to="/codigo" className="recuperacao-botao">ENVIAR CÓDIGO</Link>
 
           <p className="recuperacao-voltar-container">
             Lembrou sua senha?{' '}
-
             <Link to="/"  className="recuperacao-voltar-link">
               VOLTAR AO LOGIN
             </Link>

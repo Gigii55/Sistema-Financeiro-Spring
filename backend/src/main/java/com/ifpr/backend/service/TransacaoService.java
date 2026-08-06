@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ifpr.backend.exception.ResourceNotFoundException;
 import com.ifpr.backend.model.Transacao;
 import com.ifpr.backend.repository.TransacaoRepository;
 
@@ -24,7 +23,7 @@ public class TransacaoService {
     }
 
     public Transacao buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Transação não encontrada"));
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Transação não encontrada"));
     }
 
     public void remover(Long id) {

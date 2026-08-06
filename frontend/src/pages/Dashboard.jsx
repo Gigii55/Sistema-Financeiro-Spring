@@ -4,18 +4,13 @@ import './style/Dashboard.css';
 function Dashboard() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    navigate('/');
-  };
+  const handleLogout = () => {navigate('/');};
 
   return (
     <div className="dashboard-pagina">
       <aside className="dashboard-sidebar">
         <div className="dashboard-logo">
-          <div className="dashboard-logo-simbolo">
-            A
-          </div>
-
+          <div className="dashboard-logo-simbolo">A</div>
           <div>
             <strong>ASTROTECH</strong>
             <span>Finanças</span>
@@ -23,74 +18,33 @@ function Dashboard() {
         </div>
 
         <nav className="dashboard-menu">
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive
-                ? 'dashboard-menu-link dashboard-menu-ativo'
-                : 'dashboard-menu-link'
-            }
-          >
-            <span className="dashboard-menu-icone">
-              ◫
-            </span>
-
+          <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'dashboard-menu-link dashboard-menu-ativo' : 'dashboard-menu-link'}>
+            <span className="dashboard-menu-icone">◫</span>
             Visão geral
           </NavLink>
 
-          <NavLink
-            to="/transacoes"
-            className="dashboard-menu-link"
-          >
-            <span className="dashboard-menu-icone">
-              ↕
-            </span>
-
+          <NavLink to="/transacoes" className="dashboard-menu-link">
+            <span className="dashboard-menu-icone"> ↕</span>
             Transações
           </NavLink>
 
-          <NavLink
-            to="/categorias"
-            className="dashboard-menu-link"
-          >
-            <span className="dashboard-menu-icone">
-              ▦
-            </span>
-
+          <NavLink to="/categorias" className="dashboard-menu-link">
+            <span className="dashboard-menu-icone">▦</span>
             Categorias
           </NavLink>
 
-          <NavLink
-            to="/relatorios"
-            className="dashboard-menu-link"
-          >
-            <span className="dashboard-menu-icone">
-              ▥
-            </span>
-
+          <NavLink to="/relatorios" className="dashboard-menu-link">
+            <span className="dashboard-menu-icone">▥</span>
             Relatórios
           </NavLink>
 
-          <NavLink
-            to="/perfil"
-            className="dashboard-menu-link"
-          >
-            <span className="dashboard-menu-icone">
-              ○
-            </span>
-
+          <NavLink to="/perfil" className="dashboard-menu-link">
+            <span className="dashboard-menu-icone">○</span>
             Perfil
           </NavLink>
         </nav>
 
-        <button
-          type="button"
-          className="dashboard-logout"
-          onClick={handleLogout}
-        >
-          <span>↪</span>
-          Sair
-        </button>
+        <button type="button" className="dashboard-logout" onClick={handleLogout}><span>↪</span>Sair</button>
       </aside>
 
       <main className="dashboard-conteudo">
@@ -119,10 +73,7 @@ function Dashboard() {
           </div>
         </header>
 
-        <section
-          className="dashboard-resumo"
-          aria-label="Resumo financeiro"
-        >
+        <section className="dashboard-resumo" aria-label="Resumo financeiro">
           <article className="dashboard-resumo-card dashboard-card-saldo">
             <div className="dashboard-card-topo">
               <span>Saldo atual</span>
@@ -177,37 +128,20 @@ function Dashboard() {
             <div className="dashboard-painel-cabecalho">
               <div>
                 <h2>Receitas e despesas</h2>
-
-                <p>
-                  Comparação financeira dos últimos seis meses.
-                </p>
+                <p> Comparação financeira dos últimos seis meses. </p>
               </div>
 
               <div className="dashboard-grafico-legenda">
-                <span>
-                  <i className="dashboard-legenda-receita" />
-                  Receitas
-                </span>
-
-                <span>
-                  <i className="dashboard-legenda-despesa" />
-                  Despesas
-                </span>
+                <span> <i className="dashboard-legenda-receita" /> Receitas</span>
+                <span> <i className="dashboard-legenda-despesa" /> Despesas</span>
               </div>
             </div>
 
             <div className="dashboard-grafico">
               <div className="dashboard-grafico-grupo">
                 <div className="dashboard-grafico-barras">
-                  <div
-                    className="dashboard-barra dashboard-barra-receita"
-                    style={{ height: '64%' }}
-                  />
-
-                  <div
-                    className="dashboard-barra dashboard-barra-despesa"
-                    style={{ height: '42%' }}
-                  />
+                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '64%' }}/>
+                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '42%' }}/>
                 </div>
 
                 <span>Mar</span>
@@ -215,15 +149,8 @@ function Dashboard() {
 
               <div className="dashboard-grafico-grupo">
                 <div className="dashboard-grafico-barras">
-                  <div
-                    className="dashboard-barra dashboard-barra-receita"
-                    style={{ height: '72%' }}
-                  />
-
-                  <div
-                    className="dashboard-barra dashboard-barra-despesa"
-                    style={{ height: '38%' }}
-                  />
+                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '72%' }}/>
+                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '38%' }}/>
                 </div>
 
                 <span>Abr</span>
@@ -231,15 +158,8 @@ function Dashboard() {
 
               <div className="dashboard-grafico-grupo">
                 <div className="dashboard-grafico-barras">
-                  <div
-                    className="dashboard-barra dashboard-barra-receita"
-                    style={{ height: '76%' }}
-                  />
-
-                  <div
-                    className="dashboard-barra dashboard-barra-despesa"
-                    style={{ height: '51%' }}
-                  />
+                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '76%' }}/>
+                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '51%' }}/>
                 </div>
 
                 <span>Mai</span>
@@ -247,15 +167,8 @@ function Dashboard() {
 
               <div className="dashboard-grafico-grupo">
                 <div className="dashboard-grafico-barras">
-                  <div
-                    className="dashboard-barra dashboard-barra-receita"
-                    style={{ height: '82%' }}
-                  />
-
-                  <div
-                    className="dashboard-barra dashboard-barra-despesa"
-                    style={{ height: '47%' }}
-                  />
+                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '82%' }}/>
+                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '47%' }}/>
                 </div>
 
                 <span>Jun</span>
@@ -263,15 +176,8 @@ function Dashboard() {
 
               <div className="dashboard-grafico-grupo">
                 <div className="dashboard-grafico-barras">
-                  <div
-                    className="dashboard-barra dashboard-barra-receita"
-                    style={{ height: '88%' }}
-                  />
-
-                  <div
-                    className="dashboard-barra dashboard-barra-despesa"
-                    style={{ height: '55%' }}
-                  />
+                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '88%' }}/>
+                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '55%' }}/>
                 </div>
 
                 <span>Jul</span>
@@ -279,17 +185,9 @@ function Dashboard() {
 
               <div className="dashboard-grafico-grupo">
                 <div className="dashboard-grafico-barras">
-                  <div
-                    className="dashboard-barra dashboard-barra-receita"
-                    style={{ height: '96%' }}
-                  />
-
-                  <div
-                    className="dashboard-barra dashboard-barra-despesa"
-                    style={{ height: '32%' }}
-                  />
+                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '96%' }}/>
+                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '32%' }}/>
                 </div>
-
                 <span>Ago</span>
               </div>
             </div>
@@ -342,12 +240,7 @@ function Dashboard() {
               </p>
             </div>
 
-            <NavLink
-              to="/transacoes"
-              className="dashboard-ver-todos"
-            >
-              Ver todos
-            </NavLink>
+            <NavLink to="/transacoes" className="dashboard-ver-todos">Ver todos</NavLink>
           </div>
 
           <div className="dashboard-tabela-container">

@@ -2,7 +2,7 @@ import BaseServices from "./BaseServices";
 
 class UsuarioServices extends BaseServices{
     constructor(){
-        super('/usuario');
+        super('/usuarios');
     }
 }
 

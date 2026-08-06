@@ -6,7 +6,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ifpr.backend.exception.ResourceNotFoundException;
 import com.ifpr.backend.model.Carteira;
 import com.ifpr.backend.repository.CarteiraRepository;
 
@@ -25,7 +24,7 @@ public class CarteiraService {
     }
 
     public Carteira buscarPorId(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carteira não encontrada"));
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Carteira não encontrada"));
     }
 
     public void remover(UUID id) {
