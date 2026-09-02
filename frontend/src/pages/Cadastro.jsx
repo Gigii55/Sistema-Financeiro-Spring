@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { validarSenhasIguais } from './js/ValidarSenhasIguais';
 import { verificarForcaDaSenha } from './js/VerificarForcaDaSenha';
@@ -11,6 +11,9 @@ import './style/Cadastro.css';
 const usuarioService = new UsuarioService();
 
 function Cadastro() {
+
+  const navigate = useNavigate();
+
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
 
@@ -57,58 +60,59 @@ function Cadastro() {
     return 'cadastro-feedback cadastro-feedback-erro';
   };
 
-  const cadastrarUsuario = async (e) => {
-    e.preventDefault();
+ const cadastrarUsuario = async (e) => {
+  e.preventDefault();
 
-    setMensagem('');
+  setMensagem('');
+  setCadastroRealizado(false);
+
+  if (!senhasIguais) {
+    setMensagem('As senhas precisam ser iguais.');
+    return;
+  }
+
+  const usuario = {
+    nome: nome,
+    email: email,
+    senha: senha
+  };
+
+  try {
+    setCarregando(true);
+
+    const resposta = await usuarioService.inserir(usuario);
+
+    console.log('Usuário cadastrado:', resposta.data);
+
+    setCadastroRealizado(true);
+    setMensagem('Cadastro realizado com sucesso!');
+
+    setNome('');
+    setEmail('');
+    setSenha('');
+    setConfirmarSenha('');
+    setForcaSenha('');
+    setSenhasIguais(null);
+
+    setTimeout(() => {
+      navigate('/');
+    }, 1500);
+
+  } catch (erro) {
+    console.error('Erro ao cadastrar:', erro);
+
     setCadastroRealizado(false);
 
-    if (!senhasIguais) {
-      setMensagem('As senhas precisam ser iguais.');
-      return;
+    if (erro.response?.status === 400) {
+      setMensagem(erro.response.data);
+    } else {
+      setMensagem('Não foi possível conectar ao backend.');
     }
 
-    const usuario = {
-      nome: nome,
-      email: email,
-      senha: senha
-    };
-
-    try {
-      setCarregando(true);
-
-      const resposta = await usuarioService.inserir(usuario);
-
-      console.log('Usuário cadastrado:', resposta.data);
-
-      setMensagem('Cadastro realizado com sucesso!');
-
-      setCadastroRealizado(true);
-
-      setNome('');
-
-      setEmail('');
-
-      setSenha('');
-
-      setConfirmarSenha('');
-
-      setForcaSenha('');
-
-      setSenhasIguais(null);
-
-    } catch (erro) {
-      console.error('Erro ao cadastrar:', erro);
-
-      setCadastroRealizado(false);
-
-      if (erro.response?.status === 400) {
-        setMensagem(erro.response.data);
-      } else {
-        setMensagem('Não foi possível conectar ao backend.');
-      }
-    }
+  } finally {
+    setCarregando(false);
   }
+};
   return (
     <>
       <div className="cadastro-cabecalho">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UsuarioService from '../services/UsuarioService';
 import {alternarVisibilidadeSenha, definirTextoBotao,definirTipoSenha} from './js/MostrarSenha';
@@ -12,10 +12,18 @@ function Login() {
   
   const navigate = useNavigate();
 
+  
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false);
   const [mensagemErro, setMensagemErro] = useState('');
 
+  useEffect(() => {
+  const usuario = localStorage.getItem('usuario');
+
+  if (usuario) {
+    navigate('/dashboard');
+  }
+}, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,11 +82,12 @@ function Login() {
 
           <input id="login-email" name="email" className="login-input" type="email"
             placeholder="Digite seu email..." required disabled={carregando}/>
+
           <label className="login-label" htmlFor="login-senha">Senha</label>
 
           <div className="login-senha-container">
             <input id="login-senha" name="senha" className="login-input" type={definirTipoSenha(mostrarSenha)}
-              placeholder="Digite sua senha..." required disabled={carregando}/>
+              placeholder="Digite sua senha..." required minLength={6} disabled={carregando}/>
             <button type="button" className="login-mostrar-senha" onClick={() => setMostrarSenha((valorAtual) => alternarVisibilidadeSenha(valorAtual))}>
               {definirTextoBotao(mostrarSenha)}
             </button>

@@ -5,6 +5,7 @@ import EsqueceuSenha from './pages/EsqueceuSenha.jsx';
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import AlterarSenha from './pages/AlterarSenha';
+import RotaProtegida from './components/RotaProtegida';
 
 function App() {
   return (
@@ -14,9 +15,8 @@ function App() {
     <Route path="/cadastro" element={<Cadastro />} />
     <Route path="/esqueceuSenha" element={<EsqueceuSenha />} />
     <Route path="/codigo" element={<Codigo />} />
-    <Route path="/dashboard" element={<Dashboard />} />
-     <Route path="/app/perfil/senha" element={<AlterarSenha />} />
-
+    <Route path="/dashboard" element={<RotaProtegida><Dashboard /></RotaProtegida>} />
+     <Route path="/app/perfil/senha" element={<RotaProtegida><AlterarSenha /></RotaProtegida>} />
     </Routes>
     </BrowserRouter>
   )
