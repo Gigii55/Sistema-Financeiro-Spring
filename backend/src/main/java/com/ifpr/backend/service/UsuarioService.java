@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ifpr.backend.model.Usuario;
+import com.ifpr.backend.entity.Usuario;
 import com.ifpr.backend.repository.UsuarioRepository;
 
 @Service
@@ -58,5 +58,22 @@ public class UsuarioService {
     }
 
     return usuario;
+}
+public boolean alterarSenha(String email, String senhaAtual, String novaSenha) {
+
+    Usuario usuario = repository.findByEmail(email).orElse(null);
+
+    if (usuario == null) {
+        return false;
+    }
+
+    if (!usuario.getSenha().equals(senhaAtual)) {
+        return false;
+    }
+
+    usuario.setSenha(novaSenha);
+    repository.save(usuario);
+
+    return true;
 }
 }

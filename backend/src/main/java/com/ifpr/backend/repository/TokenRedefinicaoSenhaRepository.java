@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ifpr.backend.model.TokenRedefinicaoSenha;
+import com.ifpr.backend.entity.TokenRedefinicaoSenha;
 
 
 public interface TokenRedefinicaoSenhaRepository

@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ifpr.backend.model.TokenRedefinicaoSenha;
-import com.ifpr.backend.model.Usuario;
+import com.ifpr.backend.entity.TokenRedefinicaoSenha;
+import com.ifpr.backend.entity.Usuario;
 import com.ifpr.backend.repository.UsuarioRepository;
 
 @Service

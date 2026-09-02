@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifpr.backend.model.Transacao;
+import com.ifpr.backend.entity.Transacao;
 import com.ifpr.backend.service.TransacaoService;
 
 import jakarta.validation.Valid;

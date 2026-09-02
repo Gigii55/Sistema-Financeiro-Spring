@@ -91,15 +91,7 @@ function Codigo() {
               value={novaSenha} onChange={handleNovaSenhaChange} minLength={6} required/>
 
             {forcaSenha && (
-              <span
-                className={`codigo-feedback ${
-                  forcaSenha === 'Forte'
-                    ? 'codigo-feedback-sucesso'
-                    : forcaSenha === 'Média'
-                      ? 'codigo-feedback-medio'
-                      : 'codigo-feedback-erro'
-                }`}
-              >
+              <span className={`codigo-feedback ${ forcaSenha === 'Forte'? 'codigo-feedback-sucesso' : forcaSenha === 'Média'? 'codigo-feedback-medio': 'codigo-feedback-erro'}`}>
                 Força da senha: {forcaSenha}
               </span>
             )}
@@ -111,18 +103,9 @@ function Codigo() {
             <input id="confirmar-nova-senha" className="codigo-input" type="password" placeholder="Confirme sua nova senha..."
               value={confirmarNovaSenha} onChange={handleConfirmacaoChange} minLength={6} required/>
 
-            {senhasIguais !== null && (
-              <span
-                className={`codigo-feedback ${
-                  senhasIguais
-                    ? 'codigo-feedback-sucesso'
-                    : 'codigo-feedback-erro'
-                }`}
-              >
-                {senhasIguais
-                  ? 'As senhas coincidem'
-                  : 'As senhas não coincidem'}
-              </span>
+            {senhasIguais !== null && (<span
+                className={`codigo-feedback ${senhasIguais? 'codigo-feedback-sucesso': 'codigo-feedback-erro'}`}>
+                {senhasIguais? 'As senhas coincidem': 'As senhas não coincidem'}</span>
             )}
           </div>
 

@@ -1,4 +1,4 @@
-package com.ifpr.backend.model;
+package com.ifpr.backend.entity;
 import com.ifpr.backend.entity.enums.TipoTransacao;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,12 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
@@ -34,8 +31,9 @@ public class Categoria {
     @Size(max = 100)
     private String nome;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @NotBlank
+    @Column(nullable = false)
     private TipoTransacao tipo;
 
     @NotBlank

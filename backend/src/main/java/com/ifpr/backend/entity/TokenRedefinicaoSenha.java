@@ -1,4 +1,4 @@
-package com.ifpr.backend.model;
+package com.ifpr.backend.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

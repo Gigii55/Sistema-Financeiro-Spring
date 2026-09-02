@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifpr.backend.model.Carteira;
+import com.ifpr.backend.entity.Carteira;
 import com.ifpr.backend.service.CarteiraService;
 
 import jakarta.validation.Valid;

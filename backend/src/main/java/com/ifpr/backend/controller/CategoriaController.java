@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ifpr.backend.model.Categoria;
+import com.ifpr.backend.entity.Categoria;
 import com.ifpr.backend.service.CategoriaService;
 
 import jakarta.validation.Valid;

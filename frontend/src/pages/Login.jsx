@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import UsuarioService from '../services/UsuarioService';
-import {
-  alternarVisibilidadeSenha,
-  definirTextoBotao,
-  definirTipoSenha
-} from './js/MostrarSenha';
+import {alternarVisibilidadeSenha, definirTextoBotao,definirTipoSenha} from './js/MostrarSenha';
 
 import { realizarLogin } from './js/RealizarLogin';
 
@@ -34,15 +30,9 @@ function Login() {
     setCarregando(true);
 
     try {
-  const resposta = await realizarLogin(
-    email,
-    senha
-  );
+      const resposta = await realizarLogin(email, senha);
 
-  localStorage.setItem(
-    'usuario',
-    JSON.stringify(resposta.data)
-  );
+  localStorage.setItem('usuario',JSON.stringify(resposta.data));
 
   navigate('/dashboard');
 }
@@ -50,14 +40,10 @@ function Login() {
       console.error(erro);
 
       if (erro.response?.status === 401) {
-        setMensagemErro(
-          'E-mail ou senha inválidos.'
-        );
+        setMensagemErro('E-mail ou senha inválidos.');
       }
       else {
-        setMensagemErro(
-          'Não foi possível conectar ao backend.'
-        );
+        setMensagemErro('Não foi possível conectar ao backend.');
       }
     } 
     finally {
@@ -83,89 +69,28 @@ function Login() {
           LOGIN
         </p>
 
-        <form
-          className="login-formulario"
-          onSubmit={handleSubmit}
-        >
-          <label
-            className="login-label"
-            htmlFor="login-email"
-          >
-            Email
-          </label>
+        <form className="login-formulario" onSubmit={handleSubmit}>
+          <label className="login-label" htmlFor="login-email">Email</label>
 
-          <input
-            id="login-email"
-            name="email"
-            className="login-input"
-            type="email"
-            placeholder="Digite seu email..."
-            required
-            disabled={carregando}
-          />
-
-          <label
-            className="login-label"
-            htmlFor="login-senha"
-          >
-            Senha
-          </label>
+          <input id="login-email" name="email" className="login-input" type="email"
+            placeholder="Digite seu email..." required disabled={carregando}/>
+          <label className="login-label" htmlFor="login-senha">Senha</label>
 
           <div className="login-senha-container">
-            <input
-              id="login-senha"
-              name="senha"
-              className="login-input"
-              type={definirTipoSenha(mostrarSenha)}
-              placeholder="Digite sua senha..."
-              required
-              disabled={carregando}
-            />
-
-            <button
-              type="button"
-              className="login-mostrar-senha"
-              onClick={() =>
-                setMostrarSenha((valorAtual) =>
-                  alternarVisibilidadeSenha(valorAtual)
-                )
-              }
-            >
+            <input id="login-senha" name="senha" className="login-input" type={definirTipoSenha(mostrarSenha)}
+              placeholder="Digite sua senha..." required disabled={carregando}/>
+            <button type="button" className="login-mostrar-senha" onClick={() => setMostrarSenha((valorAtual) => alternarVisibilidadeSenha(valorAtual))}>
               {definirTextoBotao(mostrarSenha)}
             </button>
           </div>
 
-          {mensagemErro && (
-            <span className="login-erro">
-              {mensagemErro}
-            </span>
-          )}
+          {mensagemErro && (<span className="login-erro"> {mensagemErro}</span>)}
 
-          <Link
-            to="/esqueceuSenha"
-            className="login-esqueceu-senha"
-          >
-            Esqueceu a senha
-          </Link>
+          <Link to="/esqueceuSenha" className="login-esqueceu-senha">Esqueceu a senha</Link>
 
-          <button
-            type="submit"
-            className="login-botao"
-            disabled={carregando}
-          >
-            {carregando ? 'ENTRANDO...' : 'ENTRAR'}
-          </button>
+          <button type="submit" className="login-botao" disabled={carregando}>{carregando ? 'ENTRANDO...' : 'ENTRAR'}</button>
 
-          <p className="login-cadastro">
-            Não tem uma conta?{' '}
-
-            <Link
-              to="/cadastro"
-              className="login-cadastro-link"
-            >
-              CADASTRE-SE
-            </Link>
-          </p>
+          <p className="login-cadastro"> Não tem uma conta?{' '}<Link to="/cadastro" className="login-cadastro-link"> CADASTRE-SE</Link></p>
         </form>
       </div>
     </>

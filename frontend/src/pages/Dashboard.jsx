@@ -1,387 +1,392 @@
+import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+
+import { Avatar } from 'primereact/avatar';
+import { Button } from 'primereact/button';
+import { Card } from 'primereact/card';
+import { Chart } from 'primereact/chart';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+
+import TransacaoService from '../services/TransacaoService';
+
 import './style/Dashboard.css';
+
+const transacaoService = new TransacaoService();
 
 function Dashboard() {
   const navigate = useNavigate();
 
- const handleLogout = () => {
-  localStorage.removeItem('usuario');
-  navigate('/');
-};
+  const [transacoes, setTransacoes] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState('');
 
-    const usuarioSalvo = localStorage.getItem(
-    'usuario'
+  const usuarioSalvo = localStorage.getItem('usuario');
+  const usuario = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        setCarregando(true);
+        setErro('');
+
+        const resposta = await transacaoService.buscarTodos();
+        setTransacoes(resposta.data);
+      } catch (erro) {
+        console.error(erro);
+        setErro('Não foi possível carregar os dados da dashboard.');
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarDados();
+  }, []);
+
+  function sair() {
+    localStorage.removeItem('usuario');
+    navigate('/');
+  }
+
+  function converterData(data) {
+    return new Date(`${data}T00:00:00`);
+  }
+
+  function formatarData(data) {
+    return converterData(data).toLocaleDateString('pt-BR');
+  }
+
+  function formatarMoeda(valor) {
+    return Number(valor).toLocaleString('pt-BR', {style: 'currency',currency: 'BRL'});
+  }
+  const hoje = new Date();
+
+  const transacoesDoMes = transacoes.filter((transacao) => {
+    const data = converterData(transacao.data);
+
+    return (data.getMonth() === hoje.getMonth() && data.getFullYear() === hoje.getFullYear());
+  });
+
+  const totalReceitas = transacoesDoMes
+    .filter((transacao) => transacao.tipo === 'RECEITA')
+    .reduce((total, transacao) => total + Number(transacao.valor), 0);
+
+  const totalDespesas = transacoesDoMes
+    .filter((transacao) => transacao.tipo === 'DESPESA')
+    .reduce((total, transacao) => total + Number(transacao.valor), 0);
+
+  const saldo = transacoes.reduce((total, transacao) => {
+    if (transacao.tipo === 'RECEITA') {
+      return total + Number(transacao.valor);
+    }
+
+    return total - Number(transacao.valor);
+  }, 0);
+
+  const resultado = totalReceitas - totalDespesas;
+
+  const percentual = totalReceitas > 0? Math.round((totalDespesas / totalReceitas) * 100): 0;
+
+  const percentualGrafico = Math.min(percentual, 100);
+
+  const ultimasTransacoes = [...transacoes].sort((a, b) => {
+    const dataA = converterData(a.data);
+      const dataB = converterData(b.data);
+      return dataB - dataA;
+    }).slice(0, 5);
+
+  const meses = Array.from({ length: 6 }, (_, indice) => {
+    const data = new Date(hoje.getFullYear(),hoje.getMonth() - (5 - indice),1);
+
+    return {
+      mes: data.getMonth(),
+      ano: data.getFullYear(),
+      nome: data
+        .toLocaleDateString('pt-BR', { month: 'short' })
+        .replace('.', '')
+        .replace(/^./, (letra) => letra.toUpperCase())
+    };
+  });
+
+  function somarPorMes(tipo, mes, ano) {
+    return transacoes
+      .filter((transacao) => {
+        const data = converterData(transacao.data);
+
+        return (
+          transacao.tipo === tipo &&
+          data.getMonth() === mes &&
+          data.getFullYear() === ano
+        );
+      })
+      .reduce((total, transacao) => total + Number(transacao.valor), 0);
+  }
+
+  const dadosGrafico = {
+    labels: meses.map((item) => item.nome),
+    datasets: [
+      {
+        label: 'Receitas',
+        data: meses.map((item) =>
+          somarPorMes('RECEITA', item.mes, item.ano)
+        ),
+        backgroundColor: '#44aa8b',
+        borderColor: '#237f63',
+        borderWidth: 1,
+        borderRadius: 6
+      },
+      {
+        label: 'Despesas',
+        data: meses.map((item) =>
+          somarPorMes('DESPESA', item.mes, item.ano)
+        ),
+        backgroundColor: '#c44c4c',
+        borderColor: '#af3838',
+        borderWidth: 1,
+        borderRadius: 6
+      }
+    ]
+  };
+
+  const opcoesGrafico = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        align: 'end'
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) =>
+            `${context.dataset.label}: ${formatarMoeda(context.raw)}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        }
+      },
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: (valor) =>
+            Number(valor).toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+              maximumFractionDigits: 0
+            })
+        }
+      }
+    }
+  };
+
+  const descricaoTabela = (transacao) => (
+    <div className="lancamento">
+      <span className={transacao.tipo === 'RECEITA'? 'tipo entrada': 'tipo saida'}>
+        <i className={transacao.tipo === 'RECEITA'? 'pi pi-arrow-up': 'pi pi-arrow-down'}/>
+      </span>
+
+      <strong>{transacao.descricao || 'Sem descrição'}</strong>
+    </div>
   );
 
-  const usuario = usuarioSalvo
-    ? JSON.parse(usuarioSalvo)
-    : null;
+  const categoriaTabela = (transacao) => {
+    return transacao.categoria?.nome || 'Sem categoria';
+  };
 
+  const dataTabela = (transacao) => {
+    return formatarData(transacao.data);
+  };
+
+  const valorTabela = (transacao) => (
+    <span className={transacao.tipo === 'RECEITA' ? 'valor-receita': 'valor-despesa'}>
+      {transacao.tipo === 'RECEITA' ? '+ ' : '- '}
+      {formatarMoeda(transacao.valor)}
+    </span>
+  );
 
   return (
-    
-    <div className="dashboard-pagina">
-      <aside className="dashboard-sidebar">
-        <div className="dashboard-logo">
-          <div className="dashboard-logo-simbolo">A</div>
+    <div className="pagina">
+      <aside className="sidebar">
+        <div className="logo">
+          <div className="logo-marca">A</div>
+
           <div>
             <strong>ASTROTECH</strong>
             <span>Finanças</span>
           </div>
         </div>
 
-        <nav className="dashboard-menu">
-          <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'dashboard-menu-link dashboard-menu-ativo' : 'dashboard-menu-link'}>
-            <span className="dashboard-menu-icone">◫</span>
+        <nav className="menu">
+          <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'menu-link ativo' : 'menu-link'}>
+            <i className="pi pi-home menu-icone" />
             Visão geral
           </NavLink>
 
-          <NavLink to="/transacoes" className="dashboard-menu-link">
-            <span className="dashboard-menu-icone"> ↕</span>
+          <NavLink to="/transacoes" className={({ isActive }) => isActive ? 'menu-link ativo' : 'menu-link'}>
+            <i className="pi pi-arrow-right-arrow-left menu-icone" />
             Transações
           </NavLink>
 
-          <NavLink to="/categorias" className="dashboard-menu-link">
-            <span className="dashboard-menu-icone">▦</span>
+          <NavLink to="/categorias" className={({ isActive }) => isActive ? 'menu-link ativo' : 'menu-link'}>
+            <i className="pi pi-tags menu-icone" />
             Categorias
           </NavLink>
 
-          <NavLink to="/relatorios" className="dashboard-menu-link">
-            <span className="dashboard-menu-icone">▥</span>
+          <NavLink to="/relatorios" className={({ isActive }) => isActive ? 'menu-link ativo' : 'menu-link'}>
+            <i className="pi pi-chart-bar menu-icone" />
             Relatórios
           </NavLink>
 
-          <NavLink to="/perfil" className="dashboard-menu-link">
-            <span className="dashboard-menu-icone">○</span>
+          <NavLink to="/perfil" className={({ isActive }) => isActive ? 'menu-link ativo' : 'menu-link'}>
+            <i className="pi pi-user menu-icone" />
             Perfil
           </NavLink>
+          
         </nav>
-
-        <button type="button" className="dashboard-logout" onClick={handleLogout}><span>↪</span>Sair</button>
+        <Button label="Sair" icon="pi pi-sign-out" className="botao-sair" onClick={sair}/>
       </aside>
 
-      <main className="dashboard-conteudo">
-        <header className="dashboard-cabecalho">
-  <div>
-    <p className="dashboard-saudacao">
-      VISÃO GERAL
-    </p>
+      <main className="conteudo">
+        <header className="cabecalho">
+          <div>
+            <p className="saudacao">VISÃO GERAL</p>
+            <h1>Olá, {usuario?.nome || 'Usuário'}!</h1>
+            <span>Confira como estão suas finanças neste mês.</span>
+          </div>
 
-    <h1>
-      Olá, {usuario?.nome || 'Usuário'}!
-    </h1>
+          <div className="usuario">
+            <Avatar label={usuario?.nome?.charAt(0).toUpperCase() || 'U'} shape="circle" className="avatar" />
+            <div className="usuario-info">
+              <strong>{usuario?.nome || 'Usuário'}</strong>
+              <span>{usuario?.email || ''}</span>
+            </div>
+            <Button label="Alterar senha" icon="pi pi-key" text className="botao-alterar-senha" 
+            onClick={() => navigate('/app/perfil/senha')}/>
+          </div>
+        </header>
 
-    <span>
-      Confira como estão suas finanças neste mês.
-    </span>
-  </div>
+        {erro && <div className="mensagem-erro">{erro}</div>}
 
-  <div className="dashboard-usuario">
-    <div className="dashboard-avatar">
-      {usuario?.nome
-        ? usuario.nome.charAt(0).toUpperCase()
-        : 'U'
-      }
-    </div>
-
-    <div className="dashboard-usuario-informacoes">
-      <strong>
-        {usuario?.nome || 'Usuário'}
-      </strong>
-
-      <span>
-        {usuario?.email || ''}
-      </span>
-    </div>
-  </div>
-</header>
-
-        <section className="dashboard-resumo" aria-label="Resumo financeiro">
-          <article className="dashboard-resumo-card dashboard-card-saldo">
-            <div className="dashboard-card-topo">
+        <section className="resumo">
+          <Card className="resumo-card saldo">
+            <div className="card-topo">
               <span>Saldo atual</span>
 
-              <div className="dashboard-card-icone">
-                R$
+              <div className="card-icone">
+                <i className="pi pi-wallet" />
               </div>
             </div>
 
-            <strong>R$ 5.240,80</strong>
+            <strong>
+              {carregando ? 'Carregando...' : formatarMoeda(saldo)}
+            </strong>
 
-            <small>
-              Valor disponível atualmente
-            </small>
-          </article>
+            <small>Valor disponível atualmente</small>
+          </Card>
 
-          <article className="dashboard-resumo-card dashboard-card-receitas">
-            <div className="dashboard-card-topo">
+          <Card className="resumo-card receita">
+            <div className="card-topo">
               <span>Receitas</span>
 
-              <div className="dashboard-card-icone">
-                ↑
+              <div className="card-icone">
+                <i className="pi pi-arrow-up" />
               </div>
             </div>
 
-            <strong>R$ 7.850,00</strong>
+            <strong>
+              {carregando ? 'Carregando...' : formatarMoeda(totalReceitas)}
+            </strong>
 
-            <small>
-              Total recebido no período
-            </small>
-          </article>
+            <small>Total recebido no mês</small>
+          </Card>
 
-          <article className="dashboard-resumo-card dashboard-card-despesas">
-            <div className="dashboard-card-topo">
+          <Card className="resumo-card despesa">
+            <div className="card-topo">
               <span>Despesas</span>
 
-              <div className="dashboard-card-icone">
-                ↓
+              <div className="card-icone">
+                <i className="pi pi-arrow-down" />
               </div>
             </div>
 
-            <strong>R$ 2.609,20</strong>
+            <strong>
+              {carregando ? 'Carregando...' : formatarMoeda(totalDespesas)}
+            </strong>
 
-            <small>
-              Total gasto no período
-            </small>
-          </article>
+            <small>Total gasto no mês</small>
+          </Card>
         </section>
 
-        <section className="dashboard-secao-principal">
-          <article className="dashboard-painel dashboard-painel-grafico">
-            <div className="dashboard-painel-cabecalho">
+        <section className="paineis">
+          <Card className="painel painel-grafico">
+            <div className="painel-topo">
               <div>
                 <h2>Receitas e despesas</h2>
-                <p> Comparação financeira dos últimos seis meses. </p>
-              </div>
-
-              <div className="dashboard-grafico-legenda">
-                <span> <i className="dashboard-legenda-receita" /> Receitas</span>
-                <span> <i className="dashboard-legenda-despesa" /> Despesas</span>
+                <p>Comparação financeira dos últimos seis meses.</p>
               </div>
             </div>
 
-            <div className="dashboard-grafico">
-              <div className="dashboard-grafico-grupo">
-                <div className="dashboard-grafico-barras">
-                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '64%' }}/>
-                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '42%' }}/>
-                </div>
-
-                <span>Mar</span>
-              </div>
-
-              <div className="dashboard-grafico-grupo">
-                <div className="dashboard-grafico-barras">
-                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '72%' }}/>
-                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '38%' }}/>
-                </div>
-
-                <span>Abr</span>
-              </div>
-
-              <div className="dashboard-grafico-grupo">
-                <div className="dashboard-grafico-barras">
-                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '76%' }}/>
-                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '51%' }}/>
-                </div>
-
-                <span>Mai</span>
-              </div>
-
-              <div className="dashboard-grafico-grupo">
-                <div className="dashboard-grafico-barras">
-                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '82%' }}/>
-                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '47%' }}/>
-                </div>
-
-                <span>Jun</span>
-              </div>
-
-              <div className="dashboard-grafico-grupo">
-                <div className="dashboard-grafico-barras">
-                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '88%' }}/>
-                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '55%' }}/>
-                </div>
-
-                <span>Jul</span>
-              </div>
-
-              <div className="dashboard-grafico-grupo">
-                <div className="dashboard-grafico-barras">
-                  <div className="dashboard-barra dashboard-barra-receita" style={{ height: '96%' }}/>
-                  <div className="dashboard-barra dashboard-barra-despesa" style={{ height: '32%' }}/>
-                </div>
-                <span>Ago</span>
-              </div>
+            <div className="grafico">
+              {!carregando && (<Chart type="bar"  data={dadosGrafico} options={opcoesGrafico} style={{ width: '100%', height: '100%' }}/>)}
             </div>
-          </article>
+          </Card>
 
-          <article className="dashboard-painel dashboard-painel-distribuicao">
-            <div className="dashboard-painel-cabecalho">
+          <Card className="painel painel-resultado">
+            <div className="painel-topo">
               <div>
                 <h2>Resultado do período</h2>
-
-                <p>
-                  Distribuição dos valores do mês.
-                </p>
+                <p>Distribuição dos valores do mês.</p>
               </div>
             </div>
 
-            <div className="dashboard-resultado">
-              <div className="dashboard-resultado-circulo">
-                <strong>33%</strong>
+            <div className="resultado">
+              <div  className="resultado-circulo" style={{ '--percentual': `${percentualGrafico}%` }}>
+                <strong>{percentual}%</strong>
                 <span>comprometido</span>
               </div>
 
-              <div className="dashboard-resultado-detalhes">
+              <div className="resultado-valores">
                 <div>
                   <span>Receitas</span>
-                  <strong>R$ 7.850,00</strong>
+                  <strong>{formatarMoeda(totalReceitas)}</strong>
                 </div>
 
                 <div>
                   <span>Despesas</span>
-                  <strong>R$ 2.609,20</strong>
+                  <strong>{formatarMoeda(totalDespesas)}</strong>
                 </div>
 
                 <div>
                   <span>Resultado</span>
-                  <strong>R$ 5.240,80</strong>
+                  <strong>{formatarMoeda(resultado)}</strong>
                 </div>
               </div>
             </div>
-          </article>
+          </Card>
         </section>
 
-        <section className="dashboard-painel dashboard-lancamentos">
-          <div className="dashboard-painel-cabecalho">
+        <Card className="painel lista-transacoes">
+          <div className="painel-topo">
             <div>
               <h2>Lançamentos recentes</h2>
-
-              <p>
-                Últimas movimentações registradas na sua conta.
-              </p>
+              <p>Últimas movimentações registradas na sua conta.</p>
             </div>
-
-            <NavLink to="/transacoes" className="dashboard-ver-todos">Ver todos</NavLink>
+          <Button label="Ver todos" icon="pi pi-arrow-right" iconPos="right" text className="ver-todos" onClick={() => navigate('/transacoes')}/>
           </div>
-
-          <div className="dashboard-tabela-container">
-            <table className="dashboard-tabela">
-              <thead>
-                <tr>
-                  <th>Descrição</th>
-                  <th>Categoria</th>
-                  <th>Data</th>
-                  <th>Valor</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td>
-                    <div className="dashboard-lancamento-descricao">
-                      <span className="dashboard-tipo-icone dashboard-tipo-receita">
-                        ↑
-                      </span>
-
-                      <strong>
-                        Pagamento do escritório
-                      </strong>
-                    </div>
-                  </td>
-
-                  <td>Trabalho</td>
-                  <td>04/08/2026</td>
-
-                  <td className="dashboard-valor-receita">
-                    + R$ 3.200,00
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div className="dashboard-lancamento-descricao">
-                      <span className="dashboard-tipo-icone dashboard-tipo-despesa">
-                        ↓
-                      </span>
-
-                      <strong>
-                        Mensalidade da faculdade
-                      </strong>
-                    </div>
-                  </td>
-
-                  <td>Educação</td>
-                  <td>03/08/2026</td>
-
-                  <td className="dashboard-valor-despesa">
-                    - R$ 690,00
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div className="dashboard-lancamento-descricao">
-                      <span className="dashboard-tipo-icone dashboard-tipo-receita">
-                        ↑
-                      </span>
-
-                      <strong>
-                        Projeto freelancer
-                      </strong>
-                    </div>
-                  </td>
-
-                  <td>Trabalho</td>
-                  <td>02/08/2026</td>
-
-                  <td className="dashboard-valor-receita">
-                    + R$ 1.450,00
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div className="dashboard-lancamento-descricao">
-                      <span className="dashboard-tipo-icone dashboard-tipo-despesa">
-                        ↓
-                      </span>
-
-                      <strong>Supermercado</strong>
-                    </div>
-                  </td>
-
-                  <td>Alimentação</td>
-                  <td>01/08/2026</td>
-
-                  <td className="dashboard-valor-despesa">
-                    - R$ 328,70
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>
-                    <div className="dashboard-lancamento-descricao">
-                      <span className="dashboard-tipo-icone dashboard-tipo-despesa">
-                        ↓
-                      </span>
-
-                      <strong>Conta de internet</strong>
-                    </div>
-                  </td>
-
-                  <td>Moradia</td>
-                  <td>30/07/2026</td>
-
-                  <td className="dashboard-valor-despesa">
-                    - R$ 119,90
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="tabela-container">
+            <DataTable value={ultimasTransacoes} dataKey="id" loading={carregando} stripedRows responsiveLayout="scroll"
+              emptyMessage="Nenhum lançamento encontrado." className="tabela" >
+              <Column field="descricao" header="Descrição" body={descricaoTabela}/>
+              <Column field="categoria" header="Categoria" body={categoriaTabela}/>
+              <Column field="data" header="Data" body={dataTabela}/>
+              <Column field="valor" header="Valor" body={valorTabela}/>
+            </DataTable>
           </div>
-        </section>
+        </Card>
       </main>
     </div>
   );

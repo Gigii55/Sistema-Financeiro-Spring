@@ -1,4 +1,4 @@
-package com.ifpr.backend.model;
+package com.ifpr.backend.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

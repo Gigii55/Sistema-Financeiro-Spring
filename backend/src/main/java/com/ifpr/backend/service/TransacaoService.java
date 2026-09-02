@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ifpr.backend.model.Transacao;
+import com.ifpr.backend.entity.Transacao;
 import com.ifpr.backend.repository.TransacaoRepository;
 
 @Service

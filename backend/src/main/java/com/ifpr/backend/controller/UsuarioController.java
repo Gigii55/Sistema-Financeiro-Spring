@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.ifpr.backend.model.Usuario;
+import com.ifpr.backend.dto.AlterarSenhaDTO;
+import com.ifpr.backend.entity.Usuario;
 import com.ifpr.backend.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -67,5 +68,21 @@ public class UsuarioController {
         }
 
     return ResponseEntity.ok(usuario);
+}
+
+@PutMapping("/senha")
+public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaDTO dados) {
+
+    boolean alterou = service.alterarSenha(
+        dados.getEmail(),
+        dados.getSenhaAtual(),
+        dados.getNovaSenha()
+    );
+
+    if (!alterou) {
+        return ResponseEntity.badRequest().body("E-mail ou senha atual incorretos.");
+    }
+
+    return ResponseEntity.ok("Senha alterada com sucesso.");
 }
 }

@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ifpr.backend.model.Carteira;
+import com.ifpr.backend.entity.Carteira;
 import com.ifpr.backend.repository.CarteiraRepository;
 
 @Service

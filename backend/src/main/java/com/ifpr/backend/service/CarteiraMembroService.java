@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ifpr.backend.model.CarteiraMembro;
+import com.ifpr.backend.entity.CarteiraMembro;
 import com.ifpr.backend.repository.CarteiraMembroRepository;
 
 @Service
