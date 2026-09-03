@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { formatarData, formatarMoeda, converterData } from '../pages/js/formatadores';
 
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
@@ -49,18 +50,6 @@ function Dashboard() {
   function sair() {
     localStorage.removeItem('usuario');
     navigate('/');
-  }
-
-  function converterData(data) {
-    return new Date(`${data}T00:00:00`);
-  }
-
-  function formatarData(data) {
-    return converterData(data).toLocaleDateString('pt-BR');
-  }
-
-  function formatarMoeda(valor) {
-    return Number(valor).toLocaleString('pt-BR', {style: 'currency',currency: 'BRL'});
   }
 
   async function limparFiltros() {

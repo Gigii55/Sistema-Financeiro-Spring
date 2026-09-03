@@ -8,7 +8,7 @@ import AlterarSenha from './pages/AlterarSenha';
 import Transacoes from './pages/Transacoes.jsx';
 import RotaProtegida from './components/RotaProtegida';
 import Categorias from './pages/Categorias.jsx';
-
+import Carteiras from './pages/Carteiras.jsx';
 
 
 function App() {
@@ -23,6 +23,7 @@ function App() {
      <Route path="/app/perfil/senha" element={<RotaProtegida><AlterarSenha /></RotaProtegida>} />
      <Route path="transacoes" element={<RotaProtegida><Transacoes /></RotaProtegida>} />
      <Route path="/categorias" element={<RotaProtegida><Categorias /></RotaProtegida>} />
+     <Route path="/carteiras" element={<RotaProtegida><Carteiras /></RotaProtegida>} />
     </Routes>
     </BrowserRouter>
   )

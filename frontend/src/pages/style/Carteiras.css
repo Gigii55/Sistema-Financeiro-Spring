@@ -1,0 +1,60 @@
+.pagina-carteiras {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.cabecalho-carteiras {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cabecalho-carteiras h2 {
+  font-family: "Playfair Display", serif;
+  margin: 0;
+  color: #ffffff; /* Agora sim, branco! */
+  font-size: 2rem;
+}
+
+.cabecalho-carteiras p {
+  color: rgba(255, 255, 255, 0.8); /* Um branco um pouco transparente para dar contraste */
+  margin-top: 0.3rem;
+}
+.botao-adicionar-carteira {
+  background-color: rgb(15, 82, 62) !important;
+  border: none !important;
+}
+
+.botao-adicionar-carteira:hover {
+  background-color: rgb(10, 60, 45) !important;
+}
+
+.grade-carteiras {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.cartao-carteira {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(16, 48, 39, 0.08);
+  border-top: 5px solid rgb(68, 170, 139);
+}
+
+.carteira-input-modal {
+  height: 48px;
+  padding: 0 1rem;
+  border: 1px solid #c6ced1;
+  border-radius: 6px;
+  background-color: #f8fafc;
+  outline: none;
+  font-size: 1rem;
+}
+
+.carteira-input-modal:focus {
+  border-color: rgb(68, 170, 139);
+}
