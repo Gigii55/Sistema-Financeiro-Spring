@@ -74,4 +74,8 @@ public ResponseEntity<Void> removerMembro(@PathVariable UUID carteiraId,@PathVar
     service.removerMembro(carteiraId, usuarioId);
     return ResponseEntity.noContent().build();
 }
+@GetMapping("/carteira/{carteiraId}")
+public ResponseEntity<List<CarteiraMembro>> buscarMembrosDaCarteira(@PathVariable UUID carteiraId) {
+    return ResponseEntity.ok(service.buscarMembrosDaCarteira(carteiraId));
+}
 }

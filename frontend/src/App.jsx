@@ -7,6 +7,9 @@ import Dashboard from './pages/Dashboard.jsx';
 import AlterarSenha from './pages/AlterarSenha';
 import Transacoes from './pages/Transacoes.jsx';
 import RotaProtegida from './components/RotaProtegida';
+import Categorias from './pages/Categorias.jsx';
+
+
 
 function App() {
   return (
@@ -19,6 +22,7 @@ function App() {
     <Route path="/dashboard" element={<RotaProtegida><Dashboard /></RotaProtegida>} />
      <Route path="/app/perfil/senha" element={<RotaProtegida><AlterarSenha /></RotaProtegida>} />
      <Route path="transacoes" element={<RotaProtegida><Transacoes /></RotaProtegida>} />
+     <Route path="/categorias" element={<RotaProtegida><Categorias /></RotaProtegida>} />
     </Routes>
     </BrowserRouter>
   )

@@ -494,6 +494,67 @@
   font-size: 0.85rem;
 }
 
+.barra-filtros {
+  display: flex;
+  gap: 1rem;
+  margin: 0 0 1.5rem 0;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  background-color: #fff;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 150px;
+}
+
+.filtro-label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #595a61;
+  margin-bottom: 0.5rem;
+}
+
+.filtro-input {
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid #c6ced1;
+  padding: 0 0.5rem;
+  outline: none;
+  background-color: #f8fafc;
+  color: #292b2f;
+  font-family: inherit;
+}
+
+.filtro-input:focus {
+  border-color: rgb(68, 170, 139);
+}
+
+.filtro-botoes {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.filtro-botao.p-button {
+  height: 40px;
+}
+
+.filtro-botao.p-button-outlined {
+  color: rgb(35, 127, 99);
+  border-color: rgb(35, 127, 99);
+}
+
+.filtro-botao.p-button-outlined:enabled:hover {
+  background-color: rgba(68, 170, 139, 0.1);
+  color: rgb(26, 107, 82);
+  border-color: rgb(26, 107, 82);
+}
+
 @media (max-width: 1050px) {
   .paineis {
     grid-template-columns: 1fr;

@@ -78,4 +78,8 @@ public void removerMembro(UUID carteiraId, Long usuarioId) {
     CarteiraMembro membro = repository.findByCarteiraIdAndUsuarioId(carteiraId, usuarioId).orElseThrow(() -> new RuntimeException("Membro não encontrado"));
     repository.delete(membro);
 }
+
+public List<CarteiraMembro> buscarMembrosDaCarteira(UUID carteiraId) {
+    return repository.findByCarteiraId(carteiraId);
+}
 }
