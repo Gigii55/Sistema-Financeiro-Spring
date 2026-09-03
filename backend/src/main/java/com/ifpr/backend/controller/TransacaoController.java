@@ -1,8 +1,10 @@
 package com.ifpr.backend.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifpr.backend.entity.Transacao;
+import com.ifpr.backend.entity.enums.TipoTransacao;
 import com.ifpr.backend.service.TransacaoService;
 
 import jakarta.validation.Valid;
@@ -50,4 +54,28 @@ public class TransacaoController {
     public void remover(@PathVariable("id") Long id){
         service.remover(id);
     }
+
+    @GetMapping("/filtro")
+    public ResponseEntity<List<Transacao>> buscarPorTipo(
+        @RequestParam TipoTransacao tipo
+    ) {
+        return ResponseEntity.ok(service.buscarPorTipo(tipo));
+    }
+
+    @GetMapping("/filtro-categoria")
+    public ResponseEntity<List<Transacao>> buscarPorCategoria(
+        @RequestParam Long categoriaId
+    ) {
+        return ResponseEntity.ok(service.buscarPorCategoria(categoriaId));
+    }
+
+    @GetMapping("/filtro-periodo")
+public ResponseEntity<List<Transacao>> buscarPorPeriodo(
+    @RequestParam LocalDate dataInicio,
+    @RequestParam LocalDate dataFim
+) {
+    return ResponseEntity.ok(
+        service.buscarPorPeriodo(dataInicio, dataFim)
+    );
+}
 }

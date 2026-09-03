@@ -1,11 +1,13 @@
 package com.ifpr.backend.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ifpr.backend.entity.Transacao;
+import com.ifpr.backend.entity.enums.TipoTransacao;
 import com.ifpr.backend.repository.TransacaoRepository;
 
 @Service
@@ -51,4 +53,16 @@ public class TransacaoService {
 
         return repository.save(transacaoBD);
     }
+
+    public List<Transacao> buscarPorTipo(TipoTransacao tipo) {
+    return repository.findByTipo(tipo);
+}
+
+public List<Transacao> buscarPorCategoria(Long categoriaId) {
+    return repository.findByCategoriaId(categoriaId);
+}
+
+public List<Transacao> buscarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
+    return repository.findByDataBetween(dataInicio, dataFim);
+}
 }
