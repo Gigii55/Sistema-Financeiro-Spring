@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ifpr.backend.entity.Carteira;
+import com.ifpr.backend.entity.CarteiraMembro;
+import com.ifpr.backend.entity.enums.PapelCarteira;
+import com.ifpr.backend.repository.CarteiraMembroRepository;
 import com.ifpr.backend.repository.CarteiraRepository;
 
 @Service
@@ -15,10 +18,23 @@ public class CarteiraService {
     @Autowired
     private CarteiraRepository repository;
 
-    public Carteira inserir(Carteira carteira) {
-        return repository.save(carteira);
-    }
+    @Autowired
+    private CarteiraMembroRepository membroRepository;
 
+    public Carteira inserir(Carteira carteira) {
+
+    Carteira carteiraSalva = repository.save(carteira);
+
+    CarteiraMembro membro = new CarteiraMembro();
+
+    membro.setCarteira(carteiraSalva);
+    membro.setUsuario(carteiraSalva.getDono());
+    membro.setPapel(PapelCarteira.DONO);
+
+    membroRepository.save(membro);
+
+    return carteiraSalva;
+}
     public List<Carteira> listarTodos() {
         return repository.findAll();
     }
