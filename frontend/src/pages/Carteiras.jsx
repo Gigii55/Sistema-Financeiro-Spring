@@ -7,9 +7,10 @@ import { Dialog } from 'primereact/dialog';
 import CarteiraServices from '../services/CarteiraServices';
 import './style/Carteiras.css';
 
-export default function Carteiras() {
+const carteiraService = new CarteiraServices();
+
+function Carteiras() {
   const navigate = useNavigate();
-  const carteiraService = new CarteiraServices();
 
   const usuarioSalvo = localStorage.getItem('usuario');
   const usuario = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
@@ -17,34 +18,10 @@ export default function Carteiras() {
   const [carteiras, setCarteiras] = useState([]);
   const [carregando, setCarregando] = useState(true);
   
-  // Estados para o Modal de Criação
   const [exibirModal, setExibirModal] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [formData, setFormData] = useState({ nome: '', descricao: '' });
   const [mensagemErro, setMensagemErro] = useState('');
-
- useEffect(() => {
-    const usuarioSalvo = localStorage.getItem('usuario');
-    if (!usuarioSalvo) {
-      navigate('/');
-      return;
-    }
-
-    async function fetchCarteiras() {
-      setCarregando(true);
-      try {
-        const servico = new CarteiraServices();
-        const resposta = await servico.buscarTodos();
-        setCarteiras(resposta.data || resposta);
-      } catch (error) {
-        console.error('Erro ao buscar carteiras:', error);
-      } finally {
-        setCarregando(false);
-      }
-    }
-
-    fetchCarteiras();
-  }, [navigate]);
 
   async function carregarCarteiras() {
     setCarregando(true);
@@ -55,6 +32,33 @@ export default function Carteiras() {
       console.error('Erro ao buscar carteiras:', error);
     } finally {
       setCarregando(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!usuario) {
+      navigate('/');
+      return;
+    }
+
+    carregarCarteiras();
+
+  }, [navigate]);
+
+  async function excluirCarteira(id) {
+    const confirmar = window.confirm('Tem certeza que deseja excluir esta carteira? Todas as transações ligadas a ela poderão ser afetadas.');
+    
+    if (confirmar) {
+      try {
+        setCarregando(true);
+        await carteiraService.remover(id);
+        carregarCarteiras(); 
+      } catch (error) {
+        console.error('Erro ao excluir carteira:', error);
+        alert('Não foi possível excluir a carteira.');
+      } finally {
+        setCarregando(false);
+      }
     }
   }
 
@@ -76,9 +80,13 @@ export default function Carteiras() {
 
     try {
       await carteiraService.inserir(payload);
+
       setExibirModal(false);
+
       setFormData({ nome: '', descricao: '' });
+
       carregarCarteiras();
+
     } catch (error) {
       const msg = error.response?.data?.message || 'Erro ao criar carteira.';
       setMensagemErro(msg);
@@ -88,14 +96,16 @@ export default function Carteiras() {
   }
 
   const footerCartao = (carteira) => (
-    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-      <Button label="Membros" icon="pi pi-users" className="p-button-outlined p-button-sm" 
-        onClick={() => navigate(`/carteiras/${carteira.id}/membros`)}/>
+    <div className="cartao-footer">
+      <Button label="Membros"  icon="pi pi-users"  className="p-button-outlined p-button-sm" onClick={() => navigate(`/carteiras/${carteira.id}/membros`)}/>
+      <Button icon="pi pi-trash" className="p-button-outlined p-button-danger p-button-sm" aria-label="Excluir" 
+        onClick={() => excluirCarteira(carteira.id)} title="Excluir Carteira"/>
     </div>
   );
 
   return (
     <div className="pagina-carteiras">
+      
       <div className="cabecalho-carteiras">
         <div>
           <h2>Minhas Carteiras</h2>
@@ -105,18 +115,18 @@ export default function Carteiras() {
       </div>
 
       {carregando ? (
-        <p>Carregando carteiras...</p>
+        <p className="texto-informativo">Carregando carteiras...</p>
       ) : (
         <div className="grade-carteiras">
           {carteiras.length === 0 ? (
-            <p>Você ainda não possui nenhuma carteira.</p>
+            <p className="texto-informativo">Você ainda não possui nenhuma carteira.</p>
           ) : (
             carteiras.map((carteira) => (
               <Card key={carteira.id} title={carteira.nome} footer={footerCartao(carteira)} className="cartao-carteira">
-                <p className="m-0" style={{ color: '#666' }}>
+                <p className="cartao-descricao">
                   {carteira.descricao || 'Sem descrição.'}
                 </p>
-                <small style={{ display: 'block', marginTop: '1rem', color: '#999' }}>
+                <small className="cartao-data">
                   Criada em: {new Date(carteira.criadoEm).toLocaleDateString('pt-BR')}
                 </small>
               </Card>
@@ -124,28 +134,25 @@ export default function Carteiras() {
           )}
         </div>
       )}
-
       <Dialog visible={exibirModal} style={{ width: '450px' }} header="Criar Nova Carteira" modal onHide={() => setExibirModal(false)}>
-        <form onSubmit={criarCarteira} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontWeight: 'bold', color: '#595a61' }}>Nome da Carteira</label>
-            <input type="text" name="nome" value={formData.nome} onChange={handleChange} required className="carteira-input-modal" maxLength="100" placeholder="Ex: Viagem 2027" />
+        <form onSubmit={criarCarteira} className="formulario-modal">
+          <div className="grupo-input">
+            <label className="modal-label">Nome da Carteira</label>
+            <input type="text" name="nome" value={formData.nome} onChange={handleChange} required className="carteira-input-modal" maxLength="100" placeholder="Ex: Viagem de Formatura" />
           </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label style={{ fontWeight: 'bold', color: '#595a61' }}>Descrição (Opcional)</label>
-            <input type="text" name="descricao" value={formData.descricao} onChange={handleChange} className="carteira-input-modal" maxLength="250" placeholder="Ex: Fundo para a viagem de formatura" />
+          <div className="grupo-input">
+            <label className="modal-label">Descrição (Opcional)</label>
+            <input type="text" name="descricao" value={formData.descricao} onChange={handleChange} className="carteira-input-modal" maxLength="250" placeholder="Ex: Fundo para a viagem" />
           </div>
-
-          {mensagemErro && <span style={{ color: '#b91c1c', fontWeight: 'bold' }}>{mensagemErro}</span>}
-
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
+          {mensagemErro && <span className="mensagem-erro">{mensagemErro}</span>}
+          <div className="botoes-modal">
             <Button type="button" label="Cancelar" className="p-button-text" onClick={() => setExibirModal(false)} disabled={salvando} />
-            <Button type="submit" label={salvando ? 'Salvando...' : 'Criar Carteira'} autoFocus disabled={salvando} />
+                        <Button type="submit" label={salvando ? 'Salvando...' : 'Criar Carteira'} autoFocus disabled={salvando} className="botao-adicionar-carteira" />
           </div>
         </form>
       </Dialog>
     </div>
   );
 }
+
+export default Carteiras;

@@ -47,11 +47,11 @@ public class Carteira {
     @Column(updatable = false)
     private LocalDateTime criadoEm;
 
-    @OneToMany(mappedBy = "carteira")
+     @OneToMany(mappedBy = "carteira", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<CarteiraMembro> membros = new ArrayList<>();
 
-    @OneToMany(mappedBy = "carteira")
+    @OneToMany(mappedBy = "carteira", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Transacao> transacoes = new ArrayList<>();
 }

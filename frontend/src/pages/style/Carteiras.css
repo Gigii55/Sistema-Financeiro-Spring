@@ -16,21 +16,22 @@
 .cabecalho-carteiras h2 {
   font-family: "Playfair Display", serif;
   margin: 0;
-  color: #ffffff;
+  color: var(--cor-texto-claro);
   font-size: 2rem;
 }
 
 .cabecalho-carteiras p {
-  color: rgba(255, 255, 255, 0.8); 
+  color: var(--cor-texto-claro-opaco); 
   margin-top: 0.3rem;
 }
+
 .botao-adicionar-carteira {
-  background-color: rgb(15, 82, 62) !important;
+  background-color: var(--cor-primaria) !important;
   border: none !important;
 }
 
 .botao-adicionar-carteira:hover {
-  background-color: rgb(10, 60, 45) !important;
+  background-color: var(--cor-primaria-hover) !important;
 }
 
 .grade-carteiras {
@@ -42,19 +43,73 @@
 .cartao-carteira {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(16, 48, 39, 0.08);
-  border-top: 5px solid rgb(68, 170, 139);
+  border-top: 5px solid var(--cor-secundaria);
 }
 
 .carteira-input-modal {
   height: 48px;
   padding: 0 1rem;
-  border: 1px solid #c6ced1;
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
-  background-color: #f8fafc;
+  background-color: var(--cor-fundo-input);
   outline: none;
   font-size: 1rem;
 }
 
 .carteira-input-modal:focus {
-  border-color: rgb(68, 170, 139);
+  border-color: var(--cor-secundaria);
+}
+
+.texto-informativo {
+  color: var(--cor-texto-claro);
+  font-size: 1.1rem;
+}
+
+.cartao-descricao {
+  color: var(--cor-texto-escuro);
+  margin: 0;
+}
+
+.cartao-data {
+  display: block;
+  margin-top: 1rem;
+  color: var(--cor-texto-mutado);
+  font-size: 0.85rem;
+}
+
+.cartao-footer {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.formulario-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.grupo-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.modal-label {
+  font-weight: bold;
+  color: var(--cor-texto-escuro);
+}
+
+.mensagem-erro {
+  color: var(--cor-erro);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.botoes-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }

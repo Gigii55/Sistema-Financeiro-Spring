@@ -13,6 +13,10 @@ class CarteiraServices extends BaseService {
             params: { usuarioId: usuario?.id }
         });
     }
+
+    async remover(id) {
+    return axios.delete(`http://localhost:8080/carteiras/${id}`);
+  }
 }
 
 export default CarteiraServices;
