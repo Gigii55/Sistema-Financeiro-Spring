@@ -8,15 +8,14 @@ export default function Categorias() {
   const navigate = useNavigate();
   const categoriaService = new CategoriaServices();
 
-  // Puxa o usuário logado para vincular à categoria
   const usuarioSalvo = localStorage.getItem('usuario');
   const usuario = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
 
   const [formData, setFormData] = useState({
     nome: '',
     tipo: 'DESPESA',
-    icone: 'pi pi-shopping-cart', // Ícone padrão
-    cor: '#44aa8b' // Cor padrão
+    icone: 'pi pi-shopping-cart',
+    cor: '#44aa8b'
   });
 
   const [carregando, setCarregando] = useState(false);
@@ -43,7 +42,6 @@ export default function Categorias() {
       return;
     }
 
-    // Montando o payload EXATAMENTE como a Categoria.java exige
     const payload = {
       nome: formData.nome,
       tipo: formData.tipo,
@@ -78,38 +76,18 @@ export default function Categorias() {
         <form className="categoria-formulario" onSubmit={handleSubmit}>
           
           <label className="categoria-label">Nome da Categoria</label>
-          <input 
-            className="categoria-input" 
-            type="text" 
-            name="nome" 
-            value={formData.nome} 
-            onChange={handleChange} 
-            maxLength="100" 
-            placeholder="Ex: Alimentação, Lazer..." 
-            required 
-            disabled={carregando} 
-          />
+          <input className="categoria-input" type="text" name="nome" value={formData.nome} 
+            onChange={handleChange} maxLength="100" placeholder="Ex: Alimentação, Lazer..." 
+            required disabled={carregando} />
 
           <label className="categoria-label">Tipo</label>
-          <select 
-            className="categoria-input" 
-            name="tipo" 
-            value={formData.tipo} 
-            onChange={handleChange} 
-            disabled={carregando}
-          >
+          <select className="categoria-input" name="tipo" value={formData.tipo} onChange={handleChange} disabled={carregando}>
             <option value="RECEITA">Receita</option>
             <option value="DESPESA">Despesa</option>
           </select>
 
           <label className="categoria-label">Ícone</label>
-          <select 
-            className="categoria-input" 
-            name="icone" 
-            value={formData.icone} 
-            onChange={handleChange} 
-            disabled={carregando}
-          >
+          <select className="categoria-input" name="icone" value={formData.icone} onChange={handleChange} disabled={carregando}>
             <option value="pi pi-shopping-cart">🛒 Carrinho (Compras)</option>
             <option value="pi pi-car">🚗 Carro (Transporte)</option>
             <option value="pi pi-home">🏠 Casa (Moradia)</option>
@@ -122,14 +100,8 @@ export default function Categorias() {
 
           <label className="categoria-label">Cor de Destaque</label>
           <div style={{ width: '84%', maxWidth: '390px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <input 
-              type="color" 
-              name="cor" 
-              value={formData.cor} 
-              onChange={handleChange} 
-              disabled={carregando} 
-              style={{ width: '50px', height: '48px', padding: '0', border: 'none', cursor: 'pointer', borderRadius: '9px', backgroundColor: 'transparent' }}
-            />
+            <input type="color" name="cor" value={formData.cor} onChange={handleChange} 
+              disabled={carregando} style={{ width: '50px', height: '48px', padding: '0', border: 'none', cursor: 'pointer', borderRadius: '9px', backgroundColor: 'transparent' }}/>
             <span style={{ color: '#595a61', fontWeight: 'bold' }}>{formData.cor.toUpperCase()}</span>
           </div>
 

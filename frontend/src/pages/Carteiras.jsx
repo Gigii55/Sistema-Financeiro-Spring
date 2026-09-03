@@ -30,8 +30,6 @@ export default function Carteiras() {
       return;
     }
 
-    // Colocamos a função de buscar DENTRO do useEffect. 
-    // Assim o React não se perde e roda apenas 1 vez.
     async function fetchCarteiras() {
       setCarregando(true);
       try {
@@ -60,7 +58,6 @@ export default function Carteiras() {
     }
   }
 
-  // --- Funções do Modal de Nova Carteira ---
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -81,7 +78,7 @@ export default function Carteiras() {
       await carteiraService.inserir(payload);
       setExibirModal(false);
       setFormData({ nome: '', descricao: '' });
-      carregarCarteiras(); // Atualiza a lista
+      carregarCarteiras();
     } catch (error) {
       const msg = error.response?.data?.message || 'Erro ao criar carteira.';
       setMensagemErro(msg);
@@ -90,16 +87,10 @@ export default function Carteiras() {
     }
   }
 
-  // --- Renderização dos Cartões ---
   const footerCartao = (carteira) => (
     <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
-      <Button 
-        label="Membros" 
-        icon="pi pi-users" 
-        className="p-button-outlined p-button-sm" 
-        onClick={() => navigate(`/carteiras/${carteira.id}/membros`)} 
-      />
-      {/* Você pode adicionar um botão de Editar/Excluir aqui depois, se quiser */}
+      <Button label="Membros" icon="pi pi-users" className="p-button-outlined p-button-sm" 
+        onClick={() => navigate(`/carteiras/${carteira.id}/membros`)}/>
     </div>
   );
 
@@ -110,12 +101,7 @@ export default function Carteiras() {
           <h2>Minhas Carteiras</h2>
           <p>Gerencie seus espaços financeiros e compartilhamentos.</p>
         </div>
-        <Button 
-          label="Nova Carteira" 
-          icon="pi pi-plus" 
-          className="botao-adicionar-carteira" 
-          onClick={() => setExibirModal(true)} 
-        />
+        <Button label="Nova Carteira" icon="pi pi-plus" className="botao-adicionar-carteira" onClick={() => setExibirModal(true)}/>
       </div>
 
       {carregando ? (
@@ -139,7 +125,6 @@ export default function Carteiras() {
         </div>
       )}
 
-      {/* MODAL DE CRIAÇÃO */}
       <Dialog visible={exibirModal} style={{ width: '450px' }} header="Criar Nova Carteira" modal onHide={() => setExibirModal(false)}>
         <form onSubmit={criarCarteira} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
           

@@ -16,12 +16,12 @@
 .cabecalho-carteiras h2 {
   font-family: "Playfair Display", serif;
   margin: 0;
-  color: #ffffff; /* Agora sim, branco! */
+  color: #ffffff;
   font-size: 2rem;
 }
 
 .cabecalho-carteiras p {
-  color: rgba(255, 255, 255, 0.8); /* Um branco um pouco transparente para dar contraste */
+  color: rgba(255, 255, 255, 0.8); 
   margin-top: 0.3rem;
 }
 .botao-adicionar-carteira {

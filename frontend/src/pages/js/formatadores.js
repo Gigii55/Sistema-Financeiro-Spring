@@ -1,4 +1,3 @@
-
 export function converterData(data) {
   return new Date(`${data}T00:00:00`);
 }

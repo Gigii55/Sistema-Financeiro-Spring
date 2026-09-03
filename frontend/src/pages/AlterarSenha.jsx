@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
-
+import './style/AlterarSenha.css';
 import UsuarioService from '../services/UsuarioService';
 
 function AlterarSenha() {
@@ -47,7 +47,7 @@ function AlterarSenha() {
       setSenhaAtual('');
       setNovaSenha('');
       setConfirmarSenha('');
-      
+
     } catch (erro) {
       setErro('Senha atual incorreta.');
     } finally {
@@ -56,30 +56,125 @@ function AlterarSenha() {
   }
 
   return (
-    <div>
-      <h1>Alterar senha</h1>
+    <main className="alterar-senha-pagina">
 
-      <form onSubmit={alterarSenha}>
-        <div>
-          <label>Senha atual</label>
-          <input type="password" value={senhaAtual} onChange={(e) => setSenhaAtual(e.target.value)} required/>
-        </div>
+      <header className="alterar-senha-cabecalho">
+        <h1 className="alterar-senha-boas-vindas">
+          Segurança da conta
+        </h1>
 
-        <div>
-          <label>Nova senha</label>
-          <input type="password" value={novaSenha} onChange={(e) => setNovaSenha(e.target.value)} required/>
-        </div>
+        <p className="alterar-senha-identificacao">
+          ALTERE SUA SENHA
+        </p>
+      </header>
 
-        <div>
-          <label>Confirmar nova senha</label>
-          <input type="password" value={confirmarSenha} onChange={(e) => setConfirmarSenha(e.target.value)} required/>
-        </div>
-        {erro && <p>{erro}</p>}
-        {mensagem && <p>{mensagem}</p>}
-        <Button type="submit" label={carregando ? 'Alterando...' : 'Alterar senha'} disabled={carregando}/>
-        <Button type="button" label="Voltar" text onClick={() => navigate('/dashboard')}/>
-      </form>
-    </div>
+      <section className="alterar-senha-card">
+
+        <h2 className="alterar-senha-titulo">
+          Alterar senha
+        </h2>
+
+        <form
+          className="alterar-senha-formulario"
+          onSubmit={alterarSenha}
+        >
+
+          <div className="alterar-senha-campo">
+            <label
+              htmlFor="senhaAtual"
+              className="alterar-senha-label"
+            >
+              Senha atual
+            </label>
+
+            <input
+              id="senhaAtual"
+              type="password"
+              className="alterar-senha-input"
+              value={senhaAtual}
+              onChange={(e) => setSenhaAtual(e.target.value)}
+              placeholder="Digite sua senha atual"
+              required
+            />
+          </div>
+
+          <div className="alterar-senha-campo">
+            <label
+              htmlFor="novaSenha"
+              className="alterar-senha-label"
+            >
+              Nova senha
+            </label>
+
+            <input
+              id="novaSenha"
+              type="password"
+              className="alterar-senha-input"
+              value={novaSenha}
+              onChange={(e) => setNovaSenha(e.target.value)}
+              placeholder="Digite sua nova senha"
+              required
+            />
+
+            <small className="alterar-senha-ajuda">
+              A senha deve possuir pelo menos 6 caracteres.
+            </small>
+          </div>
+
+          <div className="alterar-senha-campo">
+            <label
+              htmlFor="confirmarSenha"
+              className="alterar-senha-label"
+            >
+              Confirmar nova senha
+            </label>
+
+            <input
+              id="confirmarSenha"
+              type="password"
+              className="alterar-senha-input"
+              value={confirmarSenha}
+              onChange={(e) => setConfirmarSenha(e.target.value)}
+              placeholder="Digite novamente sua nova senha"
+              required
+            />
+          </div>
+
+          {erro && (
+            <p className="alterar-senha-feedback alterar-senha-feedback-erro">
+              {erro}
+            </p>
+          )}
+
+          {mensagem && (
+            <p className="alterar-senha-feedback alterar-senha-feedback-sucesso">
+              {mensagem}
+            </p>
+          )}
+
+          <div className="alterar-senha-acoes">
+
+            <Button
+              type="submit"
+              label={carregando ? 'Alterando...' : 'Alterar senha'}
+              disabled={carregando}
+              className="alterar-senha-botao"
+            />
+
+            <Button
+              type="button"
+              label="Voltar"
+              text
+              onClick={() => navigate('/dashboard')}
+              className="alterar-senha-voltar"
+            />
+
+          </div>
+
+        </form>
+      </section>
+
+    </main>
   );
 }
 

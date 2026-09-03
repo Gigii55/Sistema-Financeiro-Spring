@@ -7,12 +7,9 @@ import { realizarLogin } from './js/RealizarLogin';
 
 import './style/Login.css';
 
-
 function Login() {
-  
-  const navigate = useNavigate();
 
-  
+  const navigate = useNavigate();
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false);
   const [mensagemErro, setMensagemErro] = useState('');
@@ -58,7 +55,6 @@ function Login() {
       setCarregando(false);
     }
   };
-
 
   return (
     <>
