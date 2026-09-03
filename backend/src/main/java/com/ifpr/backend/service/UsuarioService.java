@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ifpr.backend.entity.Carteira;
 import com.ifpr.backend.entity.Usuario;
+import com.ifpr.backend.repository.CarteiraRepository;
 import com.ifpr.backend.repository.UsuarioRepository;
 
 @Service
@@ -18,6 +19,9 @@ public class UsuarioService {
     @Autowired
     private CarteiraService carteiraService;
 
+    @Autowired
+    private CarteiraRepository carteiraRepository;
+
     public Usuario inserir(Usuario usuario) {
 
         Usuario usuarioSalvo = repository.save(usuario);
@@ -26,9 +30,9 @@ public class UsuarioService {
         carteira.setDono(usuarioSalvo);
         carteira.setNome("Minha Carteira");
         carteira.setDescricao("Carteira padrão criada automaticamente no cadastro");
-
+        carteira.setDono(usuarioSalvo);
         carteiraService.inserir(carteira);
-
+        carteiraRepository.save(carteira);
         return usuarioSalvo;
     }
 

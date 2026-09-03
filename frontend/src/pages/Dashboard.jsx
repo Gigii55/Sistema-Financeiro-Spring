@@ -147,6 +147,41 @@ function Dashboard() {
     </div>
   );
 
+  async function excluirTransacao(id) {
+    const confirmar = window.confirm('Tem certeza que deseja excluir esta transação?');
+    if (confirmar) {
+      try {
+        setCarregandoTabela(true);
+        setCarregando(true);
+        
+        await transacaoService.remover(id);
+        
+        const resDados = await transacaoService.buscarTodos();
+        setTransacoes(resDados.data);
+
+        const resTabela = await transacaoService.buscarPaginado(lazyState.page, lazyState.rows);
+        setTransacoesPagina(resTabela.data.content);
+        setTotalRegistros(resTabela.data.totalElements);
+
+      } catch (erro) {
+        console.error('Erro ao excluir:', erro);
+        alert('Não foi possível excluir a transação.');
+      } finally {
+        setCarregandoTabela(false);
+        setCarregando(false);
+      }
+    }
+  }
+
+  const acoesTabela = (transacao) => (
+    <Button 
+      icon="pi pi-trash" 
+      className="p-button-rounded p-button-danger p-button-text" 
+      aria-label="Excluir" 
+      onClick={() => excluirTransacao(transacao.id)} 
+    />
+  );
+
   const categoriaTabela = (transacao) => {
     return transacao.categoria?.nome || 'Sem categoria';
   };
@@ -318,6 +353,7 @@ function Dashboard() {
               <Column field="categoria" header="Categoria" body={categoriaTabela} />
               <Column field="data" header="Data" body={dataTabela} />
               <Column field="valor" header="Valor" body={valorTabela} />
+              <Column body={acoesTabela} style={{ width: '5rem', textAlign: 'center' }} />
             </DataTable>
           </div>
         </Card>

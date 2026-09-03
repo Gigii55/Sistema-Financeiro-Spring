@@ -48,6 +48,9 @@ class TransacaoService {
             params: { usuarioId: obterUsuarioId() } 
         });
     }
+    async remover(id) {
+        return axios.delete(`http://localhost:8080/transacoes/${id}`);
+    }
 }
 
 export default TransacaoService;

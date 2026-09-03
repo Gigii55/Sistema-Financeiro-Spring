@@ -35,8 +35,8 @@ public class CarteiraService {
 
     return carteiraSalva;
 }
-    public List<Carteira> listarTodos() {
-        return repository.findAll();
+  public List<Carteira> listarTodos(Long usuarioId) {
+        return repository.findByDonoId(usuarioId);
     }
 
     public Carteira buscarPorId(UUID id) {

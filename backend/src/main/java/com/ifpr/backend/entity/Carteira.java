@@ -40,7 +40,6 @@ public class Carteira {
     @Size(max = 100)
     private String nome;
 
-    @NotBlank
     @Size(max = 250)
     private String descricao;
 
