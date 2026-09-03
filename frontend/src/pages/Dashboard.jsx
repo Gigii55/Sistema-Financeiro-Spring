@@ -18,27 +18,19 @@ import './style/Dashboard.css';
 const transacaoService = new TransacaoService();
 
 function Dashboard() {
+
   const navigate = useNavigate();
 
-  // Dados completos, usados só para os cards de resumo e o gráfico
   const [transacoes, setTransacoes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
-
-  // Dados da TABELA (paginados no back)
   const [transacoesPagina, setTransacoesPagina] = useState([]);
   const [carregandoTabela, setCarregandoTabela] = useState(true);
   const [totalRegistros, setTotalRegistros] = useState(0);
-  const [lazyState, setLazyState] = useState({
-    first: 0,
-    rows: 5,
-    page: 0
-  });
-
+  const [lazyState, setLazyState] = useState({first: 0,rows: 5,page: 0});
   const usuarioSalvo = localStorage.getItem('usuario');
   const usuario = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
   const [filtroTipo, setFiltroTipo] = useState('');
-  const [filtroCategoria, setFiltroCategoria] = useState('');
   const [dataInicio, setDataInicio] = useState('');
   const [dataFim, setDataFim] = useState('');
 
@@ -50,6 +42,7 @@ function Dashboard() {
 
         const resposta = await transacaoService.buscarTodos();
         setTransacoes(resposta.data);
+
       } catch (erro) {
         console.error(erro);
         setErro('Não foi possível carregar os dados da dashboard.');
@@ -62,21 +55,21 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
+
     async function carregarPagina() {
       try {
         setCarregandoTabela(true);
-        const resposta = await transacaoService.buscarPaginado(
-          lazyState.page,
-          lazyState.rows
-        );
+        const resposta = await transacaoService.buscarPaginado(lazyState.page, lazyState.rows);
         const pageData = resposta.data;
 
         setTransacoesPagina(pageData.content);
         setTotalRegistros(pageData.totalElements);
+
       } catch (erro) {
         console.error(erro);
         setErro('Não foi possível carregar os lançamentos.');
-      } finally {
+      } 
+      finally {
         setCarregandoTabela(false);
       }
     }
@@ -100,43 +93,53 @@ function Dashboard() {
 
     try {
       setCarregando(true);
+
       const resposta = await transacaoService.buscarTodos();
+
       setTransacoes(resposta.data || resposta);
+
     } catch (erro) {
       console.error(erro);
-    } finally {
+    } 
+    finally {
       setCarregando(false);
     }
   }
 
   async function buscarPorTipo(tipo) {
     setFiltroTipo(tipo);
+    
     if (!tipo) return limparFiltros();
+
     try {
       setCarregando(true);
+
       const resposta = await transacaoService.buscarPorTipo(tipo);
+
       setTransacoes(resposta.data || resposta);
-    } catch (e) { console.error(e); } finally { setCarregando(false); }
+
+    } catch (e) { console.error(e); }
+    
+    finally { setCarregando(false); }
   }
 
   async function buscarPorPeriodo() {
+
     if (!dataInicio || !dataFim) return;
+
     try {
       setCarregando(true);
+
       const resposta = await transacaoService.buscarPorPeriodo(dataInicio, dataFim);
+
       setTransacoes(resposta.data || resposta);
-    } catch (e) { console.error(e); } finally { setCarregando(false); }
+
+    } catch (e) { console.error(e); }
+
+     finally { setCarregando(false); }
   }
 
-  const {
-    totalReceitas,
-    totalDespesas,
-    saldo,
-    resultado,
-    percentual,
-    percentualGrafico,
-    dadosGrafico
-  } = calcularResumo(transacoes);
+  const {totalReceitas,totalDespesas,saldo,resultado,percentual,percentualGrafico,dadosGrafico} = calcularResumo(transacoes);
 
   const descricaoTabela = (transacao) => (
     <div className="lancamento">
@@ -174,12 +177,7 @@ function Dashboard() {
   }
 
   const acoesTabela = (transacao) => (
-    <Button 
-      icon="pi pi-trash" 
-      className="p-button-rounded p-button-danger p-button-text" 
-      aria-label="Excluir" 
-      onClick={() => excluirTransacao(transacao.id)} 
-    />
+    <Button icon="pi pi-trash"  className="p-button-rounded p-button-danger p-button-text"  aria-label="Excluir"  onClick={() => excluirTransacao(transacao.id)}/>
   );
 
   const categoriaTabela = (transacao) => {

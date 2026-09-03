@@ -1,7 +1,7 @@
 * {
   box-sizing: border-box;
- 
 }
+
 .codigo-campo {
   width: 88%;
   max-width: 380px;
@@ -10,166 +10,155 @@
 
 .codigo-cabecalho {
   text-align: center;
-   margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .codigo-boas-vindas {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold',
-    sans-serif;
-
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: 1.8rem;
   word-spacing: 0.4rem;
   letter-spacing: 0.1rem;
-
   margin: 3vh 0 0;
   text-align: center;
+  color: var(--cor-texto-claro);
 }
 
 .codigo-identificacao {
   font-family: "Playfair Display", serif;
-
   font-size: 1.5rem;
   font-weight: normal;
-
   word-spacing: 0.4rem;
   letter-spacing: 3px;
-
   margin: 1vh 0 2rem;
   text-align: center;
+  color: var(--cor-texto-claro-opaco);
 }
 
 .codigo-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 90%;
   max-width: 470px;
-
   margin: 0 auto 3vh;
   padding: 1rem;
-
   background-color: rgba(240, 248, 255, 0.452);
   border-radius: 18px;
 }
 
-
 .codigo-titulo {
   font-family: "Playfair Display", serif;
   font-size: 1.4rem;
-  color: #333;
-
   margin: 0 0 0.7rem;
   text-align: center;
+  color: black;
 }
 
 .codigo-formulario {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 100%;
   padding: 1.4rem 1rem;
-
-  background-color: white;
+  background-color: var(--cor-texto-claro);
   border-radius: 16px;
 }
 
 .codigo-descricao {
   width: 88%;
   margin: 0 0 1rem;
-
-  color: #595a61;
   font-size: 0.85rem;
   line-height: 1.4;
   text-align: center;
+  color: var(--cor-texto-escuro);
 }
 
 .codigo-label {
   display: block;
   width: 100%;
-
-
   padding: 0;
-
-  color: #595a61;
   font-size: 0.9rem;
   font-weight: bold;
-
   text-align: left;
   align-self: flex-start;
+  color: var(--cor-texto-escuro);
 }
+
 .codigo-input {
   width: 100%;
   height: 45px;
-
   padding: 0 1rem;
-
   border: none;
   border-radius: 9px;
   outline: none;
-
-  background-color: #c6ced1;
-  color: #1a1a1a;
-
+  background-color: var(--cor-borda);
   font-size: 0.9rem;
+  color: rgb(46, 52, 45);
+  transition: background-color 0.2s, outline 0.2s;
 }
 
+.codigo-input::placeholder {
+  color: rgb(46, 52, 45);
+}
 
 .codigo-input:focus {
-  outline: 2px solid rgb(68, 170, 139);
-  background-color: #d4dadd;
+  outline: 2px solid var(--cor-secundaria);
+  background-color: var(--cor-fundo-input);
+  color: rgb(46, 52, 45);
 }
 
 .codigo-botao {
   width: 88%;
   max-width: 380px;
-
   padding: 0.8rem;
   margin-top: 0.3rem;
-
-  background-color: var(--background-page-darker);
-  color: white;
-
   font-size: 0.95rem;
   font-weight: bold;
-
   border: none;
   border-radius: 9px;
   cursor: pointer;
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-claro);
+  transition: background-color 0.3s, opacity 0.3s;
 }
 
-.codigo-botao:hover {
-  background-color: rgb(15, 82, 62);
+.codigo-botao:hover:not(:disabled) {
+  background-color: var(--cor-primaria-hover);
+}
+
+.codigo-botao:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .codigo-voltar-container {
   margin: 1rem 0 0;
-
-  color: #333;
   font-size: 0.85rem;
   text-align: center;
+  color: var(--cor-texto-escuro);
 }
 
 .codigo-voltar-link {
-  color: rgb(68, 170, 139);
-  text-decoration: none;
   font-weight: bold;
+  text-decoration: none;
+  color: var(--cor-secundaria);
+}
+
+.codigo-voltar-link:hover {
+  text-decoration: underline;
 }
 
 .codigo-feedback {
   display: block;
   width: 100%;
-
   min-height: 15px;
   margin-top: 0.35rem;
-
   font-size: 0.75rem;
   text-align: left;
 }
 
 .codigo-feedback-sucesso {
-  color: green;
+  color: #15803d;
 }
 
 .codigo-feedback-medio {
@@ -177,10 +166,22 @@
 }
 
 .codigo-feedback-erro {
-  color: red;
+  color: var(--cor-erro);
 }
 
-.codigo-botao:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+@media (max-width: 550px) {
+  .codigo-boas-vindas {
+    font-size: 1.5rem;
+  }
+  .codigo-identificacao {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+  }
+  .codigo-card {
+    width: 94%;
+    padding: 1rem;
+  }
+  .codigo-formulario {
+    padding: 1.4rem 0.8rem;
+  }
 }

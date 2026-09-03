@@ -9,6 +9,7 @@
   --cor-fundo-input: #f8fafc;
   --cor-borda: #c6ced1;
   --cor-erro: #b91c1c;
+  --fundo-degrade: linear-gradient(135deg, var(--cor-primaria-hover) 0%, var(--cor-primaria) 100%);
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -60,7 +61,7 @@ body {
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
-
+  background: var(--fundo-degrade);
   min-height: 100svh;
   display: flex;
   flex-direction: column;

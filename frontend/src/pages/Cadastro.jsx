@@ -116,78 +116,45 @@ function Cadastro() {
   return (
     <>
       <div className="cadastro-cabecalho">
-        <h1 className="cadastro-boas-vindas">
-          CADASTRE-SE!
-        </h1>
-
-        <h2 className="cadastro-identificacao">
-          Sistemas de Finanças Astrotech
-        </h2>
+        <h1 className="cadastro-boas-vindas"> CADASTRE-SE! </h1>
+        <h2 className="cadastro-identificacao">Sistemas de Finanças Astrotech </h2>
       </div>
 
       <div className="cadastro-card">
-        <p className="cadastro-titulo">
-          CADASTRO
-        </p>
-
-        <form
-          className="cadastro-formulario"
-          onSubmit={cadastrarUsuario}
-        >
+        <p className="cadastro-titulo"> CADASTRO</p>
+        <form className="cadastro-formulario" onSubmit={cadastrarUsuario}>
           <div className="cadastro-coluna">
             <div className="cadastro-campo">
               <label className="cadastro-label" htmlFor="cadastro-nome">Nome</label>
-
               <input id="cadastro-nome" className="cadastro-input" type="text" placeholder="Digite seu nome completo..."
                 value={nome} onChange={(e) => setNome(e.target.value)} required/>
             </div>
-
             <div className="cadastro-campo">
-
               <label className="cadastro-label" htmlFor="cadastro-email">E-mail</label>
-
               <input id="cadastro-email" className="cadastro-input" type="email" placeholder="Digite seu e-mail..."
                 value={email} onChange={(e) =>setEmail(e.target.value)} required/>
             </div>
           </div>
-
           <div className="cadastro-coluna">
             <div className="cadastro-campo">
               <label className="cadastro-label" htmlFor="cadastro-senha">Senha</label>
-
               <input id="cadastro-senha" className="cadastro-input" type="password" placeholder="Crie uma senha..."
                minLength={6} value={senha} onChange={handleSenhaChange} required/>
-
-              {forcaSenha && ( 
-                <span className={classeForcaSenha()}>
-                  Força da senha: {forcaSenha}
-                </span>
-              )}
+              {forcaSenha && (<span className={classeForcaSenha()}> Força da senha: {forcaSenha}</span>)}
             </div>
-
             <div className="cadastro-campo">
-              <label className="cadastro-label" htmlFor="cadastro-confirmar-senha">
-                Confirmar senha
-              </label>
-
+              <label className="cadastro-label" htmlFor="cadastro-confirmar-senha"> Confirmar senha</label>
               <input id="cadastro-confirmar-senha" className="cadastro-input" type="password"
                 placeholder="Confirme sua senha..." value={confirmarSenha} onChange={handleConfirmacaoChange} 
-                required/>
-
-              {senhasIguais !== null && (
-                <span className={senhasIguais?'cadastro-feedback cadastro-feedback-sucesso':
-                'cadastro-feedback cadastro-feedback-erro'}>
-                  
-                  {senhasIguais?'As senhas coincidem':'As senhas não coincidem'}
+                required/> {senhasIguais !== null && (<span className={senhasIguais?'cadastro-feedback cadastro-feedback-sucesso':
+                'cadastro-feedback cadastro-feedback-erro'}> {senhasIguais?'As senhas coincidem':'As senhas não coincidem'}
                 </span>
               )}
             </div>
           </div>
 
-          <button type="submit" className="cadastro-botao" 
-          disabled={!senhasIguais || nome.trim() === '' || email.trim() === '' || carregando}>
-            {carregando? 'CADASTRANDO...': 'CADASTRAR'}
-          </button>
+          <button type="submit" className="cadastro-botao"  disabled={!senhasIguais || nome.trim() === '' || email.trim() === '' || carregando}>
+            {carregando? 'CADASTRANDO...': 'CADASTRAR'}</button>
 
           {mensagem && (
             <span className={cadastroRealizado? 'cadastro-feedback cadastro-feedback-sucesso':
@@ -195,13 +162,8 @@ function Cadastro() {
               {mensagem}
             </span>
           )}
-
-          <p className="cadastro-login-container">
-            Já tem uma conta?{' '}
-
-            <Link to="/" className="cadastro-login-link">
-              ENTRAR
-            </Link>
+          <p className="cadastro-login-container"> Já tem uma conta?{' '}
+            <Link to="/" className="cadastro-login-link"> ENTRAR </Link>
           </p>
         </form>
       </div>

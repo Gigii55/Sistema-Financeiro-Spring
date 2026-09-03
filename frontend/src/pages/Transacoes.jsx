@@ -132,11 +132,7 @@ export default function Transacoes() {
 
           {mensagemErro && <span className="transacao-erro">{mensagemErro}</span>}
 
-          <button type="submit" className="transacao-botao" disabled={carregando}>
-            {carregando ? 'SALVANDO...' : 'SALVAR TRANSAÇÃO'}
-          </button>
-          
-    
+          <button type="submit" className="transacao-botao" disabled={carregando}>{carregando ? 'SALVANDO...' : 'SALVAR TRANSAÇÃO'}</button>
           <button type="button" className="transacao-botao-secundario" onClick={() => navigate('/dashboard')} disabled={carregando}>
             CANCELAR
           </button>

@@ -60,22 +60,22 @@ public class CarteiraMembroController {
     public ResponseEntity<CarteiraMembro> adicionarMembro(@PathVariable UUID carteiraId, @RequestBody AdicionarMembroDTO dados) {
     CarteiraMembro membro = service.adicionarMembro(carteiraId, dados);
     return ResponseEntity.ok(membro);
-}
+    }
 
-@PatchMapping("/carteira/{carteiraId}/usuario/{usuarioId}")
-public ResponseEntity<CarteiraMembro> alterarPapel(@PathVariable UUID carteiraId,@PathVariable Long usuarioId,
-    @RequestBody AlterarPapelMembroDTO dados) {
-    CarteiraMembro membro = service.alterarPapel(carteiraId, usuarioId, dados.getPapel());
-    return ResponseEntity.ok(membro);
-}
+    @PatchMapping("/carteira/{carteiraId}/usuario/{usuarioId}")
+    public ResponseEntity<CarteiraMembro> alterarPapel(@PathVariable UUID carteiraId,@PathVariable Long usuarioId,
+        @RequestBody AlterarPapelMembroDTO dados) {
+        CarteiraMembro membro = service.alterarPapel(carteiraId, usuarioId, dados.getPapel());
+        return ResponseEntity.ok(membro);
+    }
 
-@DeleteMapping("/carteira/{carteiraId}/usuario/{usuarioId}")
-public ResponseEntity<Void> removerMembro(@PathVariable UUID carteiraId,@PathVariable Long usuarioId) {
-    service.removerMembro(carteiraId, usuarioId);
-    return ResponseEntity.noContent().build();
-}
-@GetMapping("/carteira/{carteiraId}")
-public ResponseEntity<List<CarteiraMembro>> buscarMembrosDaCarteira(@PathVariable UUID carteiraId) {
-    return ResponseEntity.ok(service.buscarMembrosDaCarteira(carteiraId));
-}
-}
+    @DeleteMapping("/carteira/{carteiraId}/usuario/{usuarioId}")
+    public ResponseEntity<Void> removerMembro(@PathVariable UUID carteiraId,@PathVariable Long usuarioId) {
+        service.removerMembro(carteiraId, usuarioId);
+        return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/carteira/{carteiraId}")
+    public ResponseEntity<List<CarteiraMembro>> buscarMembrosDaCarteira(@PathVariable UUID carteiraId) {
+        return ResponseEntity.ok(service.buscarMembrosDaCarteira(carteiraId));
+    }
+}   

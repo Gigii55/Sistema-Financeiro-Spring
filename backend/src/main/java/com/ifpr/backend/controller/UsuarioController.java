@@ -58,7 +58,8 @@ public class UsuarioController {
     public void remover(@PathVariable("id") Long id) {
         service.remover(id);
     }
-       @PostMapping("/login")
+    
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Usuario dados) {
 
     Usuario usuario = service.login(dados.getEmail(),dados.getSenha());
@@ -73,11 +74,7 @@ public class UsuarioController {
 @PutMapping("/senha")
 public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaDTO dados) {
 
-    boolean alterou = service.alterarSenha(
-        dados.getEmail(),
-        dados.getSenhaAtual(),
-        dados.getNovaSenha()
-    );
+    boolean alterou = service.alterarSenha( dados.getEmail(),dados.getSenhaAtual(),dados.getNovaSenha());
 
     if (!alterou) {
         return ResponseEntity.badRequest().body("E-mail ou senha atual incorretos.");

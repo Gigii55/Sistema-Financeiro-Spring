@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import UsuarioService from '../services/UsuarioService';
 import {alternarVisibilidadeSenha, definirTextoBotao,definirTipoSenha} from './js/MostrarSenha';
 
 import { realizarLogin } from './js/RealizarLogin';
@@ -59,28 +58,16 @@ function Login() {
   return (
     <>
       <div className="login-cabecalho">
-        <h1 className="login-boas-vindas">
-          SEJA BEM-VINDO!
-        </h1>
-
-        <h2 className="login-identificacao">
-          Sistemas de Finanças Astrotech
-        </h2>
+        <h1 className="login-boas-vindas"> SEJA BEM-VINDO! </h1>
+        <h2 className="login-identificacao">Sistemas de Finanças Astrotech</h2>
       </div>
-
       <div className="login-card">
-        <p className="login-titulo">
-          LOGIN
-        </p>
-
+        <p className="login-titulo">LOGIN</p>
         <form className="login-formulario" onSubmit={handleSubmit}>
           <label className="login-label" htmlFor="login-email">Email</label>
-
           <input id="login-email" name="email" className="login-input" type="email"
             placeholder="Digite seu email..." required disabled={carregando}/>
-
           <label className="login-label" htmlFor="login-senha">Senha</label>
-
           <div className="login-senha-container">
             <input id="login-senha" name="senha" className="login-input" type={definirTipoSenha(mostrarSenha)}
               placeholder="Digite sua senha..." required minLength={6} disabled={carregando}/>
@@ -88,13 +75,9 @@ function Login() {
               {definirTextoBotao(mostrarSenha)}
             </button>
           </div>
-
           {mensagemErro && (<span className="login-erro"> {mensagemErro}</span>)}
-
           <Link to="/esqueceuSenha" className="login-esqueceu-senha">Esqueceu a senha</Link>
-
           <button type="submit" className="login-botao" disabled={carregando}>{carregando ? 'ENTRANDO...' : 'ENTRAR'}</button>
-
           <p className="login-cadastro"> Não tem uma conta?{' '}<Link to="/cadastro" className="login-cadastro-link"> CADASTRE-SE</Link></p>
         </form>
       </div>

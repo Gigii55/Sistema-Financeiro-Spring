@@ -99,10 +99,10 @@ export default function Categorias() {
           </select>
 
           <label className="categoria-label">Cor de Destaque</label>
-          <div style={{ width: '84%', maxWidth: '390px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div className="categoria-cor-container">
             <input type="color" name="cor" value={formData.cor} onChange={handleChange} 
-              disabled={carregando} style={{ width: '50px', height: '48px', padding: '0', border: 'none', cursor: 'pointer', borderRadius: '9px', backgroundColor: 'transparent' }}/>
-            <span style={{ color: '#595a61', fontWeight: 'bold' }}>{formData.cor.toUpperCase()}</span>
+              disabled={carregando} className="categoria-input-cor"/>
+            <span className="categoria-cor-hex">{formData.cor.toUpperCase()}</span>
           </div>
 
           {mensagemErro && <span className="categoria-erro">{mensagemErro}</span>}

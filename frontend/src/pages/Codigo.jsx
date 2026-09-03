@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {Link,useNavigate,useSearchParams} from 'react-router-dom';
 import { validarSenhasIguais } from './js/ValidarSenhasIguais';
 import { verificarForcaDaSenha } from './js/VerificarForcaDaSenha';
-import { redefinirSenha } from '../configs/RecuperacaoSenhaService';
+import { redefinirSenha } from '../services/RecuperacaoSenhaService';
 
 import './style/Codigo.css';
 

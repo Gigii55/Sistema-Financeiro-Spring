@@ -58,35 +58,22 @@ public class TransacaoController {
     }
 
     @GetMapping("/filtro")
-    public ResponseEntity<List<Transacao>> buscarPorTipo(
-        @RequestParam Long usuarioId,
-        @RequestParam TipoTransacao tipo
-    ) {
+    public ResponseEntity<List<Transacao>> buscarPorTipo(@RequestParam Long usuarioId, @RequestParam TipoTransacao tipo) {
         return ResponseEntity.ok(service.buscarPorTipo(usuarioId, tipo));
     }
 
     @GetMapping("/filtro-categoria")
-    public ResponseEntity<List<Transacao>> buscarPorCategoria(
-        @RequestParam Long usuarioId,
-        @RequestParam Long categoriaId
-    ) {
+    public ResponseEntity<List<Transacao>> buscarPorCategoria(@RequestParam Long usuarioId, @RequestParam Long categoriaId ) {
         return ResponseEntity.ok(service.buscarPorCategoria(usuarioId, categoriaId));
     }
 
     @GetMapping("/filtro-periodo")
-    public ResponseEntity<List<Transacao>> buscarPorPeriodo(
-        @RequestParam Long usuarioId,
-        @RequestParam LocalDate dataInicio,
-        @RequestParam LocalDate dataFim
-    ) {
+    public ResponseEntity<List<Transacao>> buscarPorPeriodo(@RequestParam Long usuarioId, @RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
         return ResponseEntity.ok(service.buscarPorPeriodo(usuarioId, dataInicio, dataFim));
     }
 
     @GetMapping("/paginado")
-    public ResponseEntity<Page<Transacao>> buscarPaginado(
-        @RequestParam Long usuarioId,
-        Pageable pageable
-    ) {
+    public ResponseEntity<Page<Transacao>> buscarPaginado( @RequestParam Long usuarioId,Pageable pageable) {
         return ResponseEntity.ok(service.buscarPaginado(usuarioId, pageable));
     }
 }

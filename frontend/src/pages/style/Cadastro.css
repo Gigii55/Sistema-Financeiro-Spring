@@ -8,26 +8,22 @@
 }
 
 .cadastro-boas-vindas {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold',
-    sans-serif;
-
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: 1.8rem;
   word-spacing: 0.4rem;
   letter-spacing: 0.1rem;
-
+  color: var(--cor-texto-claro);
   margin: 2.5vh 0 0;
   text-align: center;
 }
 
 .cadastro-identificacao {
   font-family: "Playfair Display", serif;
-
   font-size: 1.5rem;
   font-weight: normal;
-
   word-spacing: 0.4rem;
   letter-spacing: 3px;
-
+  color: var(--cor-texto-claro-opaco);
   margin: 1vh 0 2.5rem;
   text-align: center;
 }
@@ -36,23 +32,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 92%;
   max-width: 900px;
-
   margin: 0 auto 3vh;
   padding: 1.5rem;
-
   background-color: rgba(240, 248, 255, 0.452);
   border-radius: 18px;
 }
 
 .cadastro-titulo {
   font-family: "Playfair Display", serif;
-
   font-size: 1.8rem;
-  color: #333;
-
+  color: black;
   margin: 0 0 1rem;
   text-align: center;
 }
@@ -60,14 +51,11 @@
 .cadastro-formulario {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-
   column-gap: 2rem;
   row-gap: 1.4rem;
-
   width: 100%;
   padding: 2rem;
-
-  background-color: white;
+  background-color: var(--cor-texto-claro);
   border-radius: 16px;
 }
 
@@ -75,7 +63,6 @@
   display: flex;
   flex-direction: column;
   gap: 1.3rem;
-
   width: 100%;
   min-width: 0;
 }
@@ -83,60 +70,49 @@
 .cadastro-campo {
   display: flex;
   flex-direction: column;
-
   width: 100%;
   min-width: 0;
 }
 
 .cadastro-label {
   width: 100%;
-
   margin: 0 0 0.4rem;
-
-  color: #595a61;
+  color: var(--cor-texto-escuro);
   font-size: 0.95rem;
   font-weight: bold;
-
   text-align: left;
 }
 
 .cadastro-input {
   display: block;
-
   width: 100%;
   min-width: 0;
   height: 52px;
-
   margin: 0;
   padding: 0 1rem;
-
   border: none;
   border-radius: 9px;
   outline: none;
-
-  background-color: #c6ced1;
-  color: #1a1a1a;
-
+  background-color: var(--cor-borda);
+  color: var(--cor-texto-escuro);
   font-family: inherit;
   font-size: 1rem;
   font-weight: 500;
 }
 
 .cadastro-input::placeholder {
-  color: #666;
+  color: rgb(46, 53, 50);
 }
 
 .cadastro-input:focus {
-  outline: 2px solid rgb(68, 170, 139);
+  outline: 2px solid var(--cor-secundaria);
   background-color: #d4dadd;
 }
 
 .cadastro-feedback {
   display: block;
-
   min-height: 16px;
   margin-top: 0.35rem;
-
   font-size: 0.75rem;
   text-align: left;
 }
@@ -150,36 +126,27 @@
 }
 
 .cadastro-feedback-erro {
-  color: red;
+  color: var(--cor-erro);
 }
 
 .cadastro-botao {
   grid-column: 1 / -1;
-
   width: 48%;
   min-width: 250px;
-
   padding: 0.9rem;
   margin: 0 auto;
-
-  background-color: var(--background-page-darker);
-  color: white;
-
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-claro);
   font-size: 0.95rem;
   font-weight: bold;
-
   border: none;
   border-radius: 9px;
-
   cursor: pointer;
-
-  transition:
-    background-color 0.3s,
-    opacity 0.3s;
+  transition: background-color 0.3s, opacity 0.3s;
 }
 
 .cadastro-botao:hover:not(:disabled) {
-  background-color: rgb(15, 82, 62);
+  background-color: var(--cor-primaria-hover);
 }
 
 .cadastro-botao:disabled {
@@ -189,18 +156,15 @@
 
 .cadastro-login-container {
   grid-column: 1 / -1;
-
   margin: -0.5rem 0 0;
-
-  color: #333;
+  color: var(--cor-texto-escuro);
   font-size: 0.85rem;
   text-align: center;
 }
 
 .cadastro-login-link {
   margin-left: 0.2rem;
-
-  color: rgb(68, 170, 139);
+  color: var(--cor-secundaria);
   text-decoration: none;
   font-weight: bold;
 }
@@ -214,22 +178,18 @@
     font-size: 1.15rem;
     letter-spacing: 2px;
   }
-
   .cadastro-card {
     width: 94%;
     padding: 1rem;
   }
-
   .cadastro-formulario {
     grid-template-columns: 1fr;
     padding: 1.4rem;
   }
-
   .cadastro-botao,
   .cadastro-login-container {
     grid-column: 1;
   }
-
   .cadastro-botao {
     width: 100%;
     min-width: 0;

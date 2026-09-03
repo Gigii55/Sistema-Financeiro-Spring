@@ -12,6 +12,7 @@
   font-size: 1.8rem;
   word-spacing: 0.4rem;
   letter-spacing: 0.1rem;
+  color: var(--cor-texto-claro);
   margin: 3vh 0 0;
   text-align: center;
 }
@@ -22,6 +23,7 @@
   font-weight: normal;
   word-spacing: 0.4rem;
   letter-spacing: 3px;
+  color: var(--cor-texto-claro-opaco);
   margin: 1vh 0 2rem;
   text-align: center;
 }
@@ -31,7 +33,7 @@
   flex-direction: column;
   align-items: center;
   width: 90%;
-  max-width: 500px;
+  max-width: 650px;
   margin: 0 auto 3vh;
   padding: 1.25rem;
   background-color: rgba(240, 248, 255, 0.452);
@@ -41,7 +43,7 @@
 .transacao-titulo {
   font-family: "Playfair Display", serif;
   font-size: 1.7rem;
-  color: #333;
+  color: var(--cor-texto-escuro);
   margin: 0 0 0.9rem;
   text-align: center;
 }
@@ -51,48 +53,46 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 1.5rem 1rem;
+  padding: 1.2rem 2rem;
   background-color: white;
   border-radius: 16px;
 }
 
 .transacao-label {
-  width: 84%;
-  max-width: 390px;
-  margin: 0 0 0.35rem;
-  color: #595a61;
+  width: 100%;
+  margin: 0 0 0.25rem;
+  color: var(--cor-texto-escuro);
   font-size: 0.9rem;
   font-weight: bold;
   text-align: left;
 }
 
 .transacao-label:not(:first-of-type) {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .transacao-input {
   display: block;
-  width: 84%;
-  max-width: 390px;
-  height: 48px;
+  width: 100%;
+  height: 40px;
   margin: 0;
   padding: 0 1rem;
   border: none;
   border-radius: 9px;
   outline: none;
-  background-color: #c6ced1;
-  color: #1a1a1a;
+  background-color: var(--cor-borda);
+  color: var(--cor-texto-escuro);
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 500;
 }
 
 .transacao-input::placeholder {
-  color: #666;
+  color: var(--cor-texto-mutado);
 }
 
 .transacao-input:focus {
-  outline: 2px solid rgb(68, 170, 139);
+  outline: 2px solid var(--cor-secundaria);
   background-color: #d4dadd;
 }
 
@@ -101,12 +101,11 @@ select.transacao-input {
 }
 
 .transacao-botao {
-  width: 84%;
-  max-width: 390px;
-  padding: 0.85rem;
-  margin-top: 1.5rem;
-  background-color: rgb(15, 82, 62); 
-  color: white;
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 1.2rem;
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-claro);
   font-size: 1rem;
   font-weight: bold;
   border: none;
@@ -116,19 +115,18 @@ select.transacao-input {
 }
 
 .transacao-botao:hover {
-  background-color: rgb(10, 60, 45);
+  background-color: var(--cor-primaria-hover);
 }
 
 .transacao-botao-secundario {
-  width: 84%;
-  max-width: 390px;
-  padding: 0.85rem;
-  margin-top: 0.8rem;
+  width: 100%; 
+  padding: 0.7rem; 
+  margin-top: 0.6rem; 
   background-color: transparent;
-  color: #595a61;
+  color: var(--cor-texto-escuro);
   font-size: 0.9rem;
   font-weight: bold;
-  border: 2px solid #c6ced1;
+  border: 2px solid var(--cor-borda);
   border-radius: 9px;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -140,17 +138,16 @@ select.transacao-input {
 }
 
 .transacao-erro {
-  color: #b91c1c;
+  color: var(--cor-erro);
   font-size: 0.9rem;
   font-weight: bold;
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 0.8rem;
 }
 
 @media (max-width: 550px) {
   .transacao-boas-vindas { font-size: 1.5rem; }
   .transacao-identificacao { font-size: 1.1rem; letter-spacing: 2px; }
   .transacao-card { width: 94%; padding: 1rem; }
-  .transacao-formulario { padding: 1.3rem 0.8rem; }
-  .transacao-label, .transacao-input, .transacao-botao, .transacao-botao-secundario { width: 90%; }
+  .transacao-formulario { padding: 1rem; }
 }

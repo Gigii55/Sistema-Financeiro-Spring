@@ -5,183 +5,119 @@
 .alterar-senha-pagina {
   width: 100%;
   min-height: 100vh;
-
   padding: 2rem 0 3rem;
-
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* CABEÇALHO */
-
 .alterar-senha-cabecalho {
   width: 92%;
   max-width: 900px;
-
   margin-bottom: 2rem;
-
   text-align: center;
 }
 
 .alterar-senha-boas-vindas {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold',
-    sans-serif;
-
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: 1.8rem;
   word-spacing: 0.4rem;
   letter-spacing: 0.1rem;
-
   margin: 1rem 0 0.7rem;
+  color: var(--cor-texto-claro);
 }
 
 .alterar-senha-identificacao {
   font-family: "Playfair Display", serif;
-
   font-size: 1.5rem;
   font-weight: normal;
-
   word-spacing: 0.4rem;
   letter-spacing: 3px;
-
   margin: 0;
-
-  color: #333;
+  color: var(--cor-texto-claro-opaco);
 }
-
-
-/* CARD EXTERNO */
 
 .alterar-senha-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 92%;
   max-width: 650px;
-
   padding: 1.5rem;
-
   background-color: rgba(240, 248, 255, 0.452);
-
   border-radius: 18px;
 }
 
-
-/* TÍTULO */
-
 .alterar-senha-titulo {
   font-family: "Playfair Display", serif;
-
   font-size: 1.8rem;
-  color: #333;
-
+  color: var(--cor-texto-escuro);
   margin: 0 0 1.2rem;
-
   text-align: center;
 }
-
-
-/* FORMULÁRIO */
 
 .alterar-senha-formulario {
   display: flex;
   flex-direction: column;
   gap: 1.3rem;
-
   width: 100%;
-
   padding: 2rem;
-
-  background-color: white;
-
+  background-color: var(--cor-texto-claro);
   border-radius: 16px;
 }
-
-
-/* CAMPOS */
 
 .alterar-senha-campo {
   display: flex;
   flex-direction: column;
-
   width: 100%;
 }
 
 .alterar-senha-label {
   width: 100%;
-
   margin: 0 0 0.4rem;
-
-  color: #595a61;
-
+  color: var(--cor-texto-escuro);
   font-size: 0.95rem;
   font-weight: bold;
-
   text-align: left;
 }
-
-
-/* INPUT */
 
 .alterar-senha-input {
   display: block;
-
   width: 100%;
   height: 52px;
-
   margin: 0;
   padding: 0 1rem;
-
   border: none;
   border-radius: 9px;
   outline: none;
-
-  background-color: #c6ced1;
-  color: #1a1a1a;
-
+  background-color: var(--cor-borda);
+  color: var(--cor-texto-escuro);
   font-family: inherit;
   font-size: 1rem;
   font-weight: 500;
-
-  transition:
-    background-color 0.2s,
-    outline 0.2s;
+  transition: background-color 0.2s, outline 0.2s;
 }
 
 .alterar-senha-input::placeholder {
-  color: #666;
+  color: var(--cor-texto-mutado);
 }
 
 .alterar-senha-input:focus {
-  outline: 2px solid rgb(68, 170, 139);
-
+  outline: 2px solid var(--cor-secundaria);
   background-color: #d4dadd;
 }
 
-
-/* TEXTO DE AJUDA */
-
 .alterar-senha-ajuda {
   margin-top: 0.4rem;
-
-  color: #777;
-
+  color: var(--cor-texto-mutado);
   font-size: 0.75rem;
-
   text-align: left;
 }
 
-
-/* FEEDBACK */
-
 .alterar-senha-feedback {
   width: 100%;
-
   margin: -0.3rem 0 0;
-
   font-size: 0.85rem;
-
   text-align: center;
 }
 
@@ -190,65 +126,43 @@
 }
 
 .alterar-senha-feedback-erro {
-  color: red;
+  color: var(--cor-erro);
 }
-
-
-/* BOTÕES */
 
 .alterar-senha-acoes {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   gap: 0.5rem;
-
   width: 100%;
-
   margin-top: 0.3rem;
 }
-
-
-/* BOTÃO PRINCIPAL */
 
 .alterar-senha-botao {
   width: 70%;
   min-width: 250px;
-
   padding: 0.9rem !important;
-
-  background-color: var(--background-page-darker) !important;
-  color: white !important;
-
+  background-color: var(--cor-primaria) !important;
+  color: var(--cor-texto-claro) !important;
   font-size: 0.95rem !important;
   font-weight: bold !important;
-
   border: none !important;
   border-radius: 9px !important;
-
   cursor: pointer;
-
-  transition:
-    background-color 0.3s,
-    opacity 0.3s;
+  transition: background-color 0.3s, opacity 0.3s;
 }
 
 .alterar-senha-botao:hover:not(:disabled) {
-  background-color: rgb(15, 82, 62) !important;
+  background-color: var(--cor-primaria-hover) !important;
 }
 
 .alterar-senha-botao:disabled {
   cursor: not-allowed;
-
   opacity: 0.6;
 }
 
-
-/* BOTÃO VOLTAR */
-
 .alterar-senha-voltar {
-  color: rgb(68, 170, 139) !important;
-
+  color: var(--cor-secundaria) !important;
   font-size: 0.9rem !important;
   font-weight: bold !important;
 }
@@ -257,34 +171,24 @@
   text-decoration: underline !important;
 }
 
-
-/* RESPONSIVIDADE */
-
 @media (max-width: 650px) {
-
   .alterar-senha-pagina {
     padding-top: 1rem;
   }
-
   .alterar-senha-boas-vindas {
     font-size: 1.5rem;
   }
-
   .alterar-senha-identificacao {
     font-size: 1.15rem;
     letter-spacing: 2px;
   }
-
   .alterar-senha-card {
     width: 94%;
-
     padding: 1rem;
   }
-
   .alterar-senha-formulario {
     padding: 1.4rem;
   }
-
   .alterar-senha-botao {
     width: 100%;
     min-width: 0;

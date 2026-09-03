@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .categoria-cabecalho {
   margin-top: 2rem;
   text-align: center;
@@ -8,6 +12,7 @@
   font-size: 1.8rem;
   word-spacing: 0.4rem;
   letter-spacing: 0.1rem;
+  color: var(--cor-texto-claro);
   margin: 3vh 0 0;
   text-align: center;
 }
@@ -18,6 +23,7 @@
   font-weight: normal;
   word-spacing: 0.4rem;
   letter-spacing: 3px;
+  color: var(--cor-texto-claro-opaco);
   margin: 1vh 0 2rem;
   text-align: center;
 }
@@ -37,7 +43,7 @@
 .categoria-titulo {
   font-family: "Playfair Display", serif;
   font-size: 1.7rem;
-  color: #333;
+  color: black;
   margin: 0 0 0.9rem;
   text-align: center;
 }
@@ -48,7 +54,7 @@
   align-items: center;
   width: 100%;
   padding: 1.5rem 1rem;
-  background-color: white;
+  background-color: var(--cor-texto-claro);
   border-radius: 16px;
 }
 
@@ -56,7 +62,7 @@
   width: 84%;
   max-width: 390px;
   margin: 0 0 0.35rem;
-  color: #595a61;
+  color: var(--cor-texto-escuro);
   font-size: 0.9rem;
   font-weight: bold;
   text-align: left;
@@ -76,20 +82,45 @@
   border: none;
   border-radius: 9px;
   outline: none;
-  background-color: #c6ced1;
-  color: #1a1a1a;
+  background-color: var(--cor-borda);
+  color: rgb(46, 52, 45);
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 500;
+  transition: background-color 0.2s, outline 0.2s;
 }
 
 .categoria-input::placeholder {
-  color: #666;
+  color: rgb(46, 52, 45);
 }
 
 .categoria-input:focus {
-  outline: 2px solid rgb(68, 170, 139);
-  background-color: #d4dadd;
+  outline: 2px solid var(--cor-secundaria);
+  background-color: var(--cor-fundo-input);
+  color: rgb(46, 52, 45);
+}
+
+.categoria-cor-container {
+  width: 84%;
+  max-width: 390px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.categoria-input-cor {
+  width: 50px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 9px;
+  background-color: transparent;
+}
+
+.categoria-cor-hex {
+  color: rgb(46, 52, 45);
+  font-weight: bold;
 }
 
 .categoria-botao {
@@ -97,8 +128,8 @@
   max-width: 390px;
   padding: 0.85rem;
   margin-top: 1.5rem;
-  background-color: rgb(15, 82, 62);
-  color: white;
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-claro);
   font-size: 1rem;
   font-weight: bold;
   border: none;
@@ -108,7 +139,7 @@
 }
 
 .categoria-botao:hover {
-  background-color: rgb(10, 60, 45);
+  background-color: var(--cor-primaria-hover);
 }
 
 .categoria-botao-secundario {
@@ -117,13 +148,13 @@
   padding: 0.85rem;
   margin-top: 0.8rem;
   background-color: transparent;
-  color: #595a61;
+  color: var(--cor-texto-escuro);
   font-size: 0.9rem;
   font-weight: bold;
-  border: 2px solid #c6ced1;
+  border: 2px solid var(--cor-borda);
   border-radius: 9px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .categoria-botao-secundario:hover {
@@ -132,7 +163,7 @@
 }
 
 .categoria-erro {
-  color: #b91c1c;
+  color: var(--cor-erro);
   font-size: 0.9rem;
   font-weight: bold;
   text-align: center;
@@ -144,5 +175,5 @@
   .categoria-identificacao { font-size: 1.1rem; letter-spacing: 2px; }
   .categoria-card { width: 94%; padding: 1rem; }
   .categoria-formulario { padding: 1.3rem 0.8rem; }
-  .categoria-label, .categoria-input, .categoria-botao, .categoria-botao-secundario { width: 90%; }
+  .categoria-label, .categoria-input, .categoria-botao, .categoria-botao-secundario, .categoria-cor-container { width: 90%; }
 }
