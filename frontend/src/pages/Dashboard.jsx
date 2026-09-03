@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { formatarData, formatarMoeda } from './js/formatadores';
-import { calcularResumo } from './js/dashBoardCalculos';
-import { opcoesGrafico } from './js/configuracaoGraficos';
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Chart } from 'primereact/chart';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { opcoesGrafico } from './js/configuracaoGraficos';
+import { calcularResumo } from './js/dashBoardCalculos';
+import { formatarData, formatarMoeda } from './js/formatadores';
 
-import TransacaoService from '../services/TransacaoService';
 import Sidebar from '../components/Sidebar';
+import TransacaoService from '../services/TransacaoService';
 
 import './style/Dashboard.css';
 
@@ -20,9 +20,21 @@ const transacaoService = new TransacaoService();
 function Dashboard() {
   const navigate = useNavigate();
 
+  // Dados completos, usados só para os cards de resumo e o gráfico
   const [transacoes, setTransacoes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
+
+  // Dados da TABELA (paginados no back)
+  const [transacoesPagina, setTransacoesPagina] = useState([]);
+  const [carregandoTabela, setCarregandoTabela] = useState(true);
+  const [totalRegistros, setTotalRegistros] = useState(0);
+  const [lazyState, setLazyState] = useState({
+    first: 0,
+    rows: 5,
+    page: 0
+  });
+
   const usuarioSalvo = localStorage.getItem('usuario');
   const usuario = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
   const [filtroTipo, setFiltroTipo] = useState('');
@@ -48,6 +60,37 @@ function Dashboard() {
 
     carregarDados();
   }, []);
+
+  useEffect(() => {
+    async function carregarPagina() {
+      try {
+        setCarregandoTabela(true);
+        const resposta = await transacaoService.buscarPaginado(
+          lazyState.page,
+          lazyState.rows
+        );
+        const pageData = resposta.data;
+
+        setTransacoesPagina(pageData.content);
+        setTotalRegistros(pageData.totalElements);
+      } catch (erro) {
+        console.error(erro);
+        setErro('Não foi possível carregar os lançamentos.');
+      } finally {
+        setCarregandoTabela(false);
+      }
+    }
+
+    carregarPagina();
+  }, [lazyState]);
+
+  function onPageChange(event) {
+    setLazyState({
+      first: event.first,
+      rows: event.rows,
+      page: event.page
+    });
+  }
 
   async function limparFiltros() {
     setFiltroTipo('');
@@ -84,7 +127,7 @@ function Dashboard() {
       setTransacoes(resposta.data || resposta);
     } catch (e) { console.error(e); } finally { setCarregando(false); }
   }
-  
+
   const {
     totalReceitas,
     totalDespesas,
@@ -92,8 +135,7 @@ function Dashboard() {
     resultado,
     percentual,
     percentualGrafico,
-    dadosGrafico,
-    ultimasTransacoes
+    dadosGrafico
   } = calcularResumo(transacoes);
 
   const descricaoTabela = (transacao) => (
@@ -265,11 +307,13 @@ function Dashboard() {
               <h2>Lançamentos recentes</h2>
               <p>Últimas movimentações registradas na sua conta.</p>
             </div>
-            <Button label="Ver todos" icon="pi pi-arrow-right" iconPos="right" text className="ver-todos" onClick={() => navigate('/transacoes')} />
+            <Button label="Nova Transação" icon="pi pi-arrow-right" iconPos="right" text className="ver-todos" onClick={() => navigate('/transacoes')} />
           </div>
           <div className="tabela-container">
-            <DataTable value={ultimasTransacoes} dataKey="id" loading={carregando} stripedRows responsiveLayout="scroll"
-              emptyMessage="Nenhum lançamento encontrado." className="tabela" >
+            <DataTable value={transacoesPagina} dataKey="id" loading={carregandoTabela} stripedRows
+              emptyMessage="Nenhum lançamento encontrado." className="tabela" lazy
+              paginator first={lazyState.first} rows={lazyState.rows} totalRecords={totalRegistros}
+              onPage={onPageChange} rowsPerPageOptions={[5, 10, 20]}>
               <Column field="descricao" header="Descrição" body={descricaoTabela} />
               <Column field="categoria" header="Categoria" body={categoriaTabela} />
               <Column field="data" header="Data" body={dataTabela} />

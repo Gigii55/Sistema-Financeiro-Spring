@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.ifpr.backend.entity.Carteira;
 import com.ifpr.backend.entity.Usuario;
 import com.ifpr.backend.repository.UsuarioRepository;
 
@@ -13,8 +15,21 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
+    @Autowired
+    private CarteiraService carteiraService;
+
     public Usuario inserir(Usuario usuario) {
-        return repository.save(usuario);
+
+        Usuario usuarioSalvo = repository.save(usuario);
+
+        Carteira carteira = new Carteira();
+        carteira.setDono(usuarioSalvo);
+        carteira.setNome("Minha Carteira");
+        carteira.setDescricao("Carteira padrão criada automaticamente no cadastro");
+
+        carteiraService.inserir(carteira);
+
+        return usuarioSalvo;
     }
 
     public List<Usuario> listarTodos() {
@@ -42,38 +57,39 @@ public class UsuarioService {
     }
 
     public boolean emailJaCadastrado(String email) {
-    return repository.existsByEmail(email);
+        return repository.existsByEmail(email);
     }
 
     public Usuario login(String email, String senha) {
 
-    Usuario usuario = repository.findByEmail(email).orElse(null);
+        Usuario usuario = repository.findByEmail(email).orElse(null);
 
-    if (usuario == null) {
-        return null;
+        if (usuario == null) {
+            return null;
+        }
+
+        if (!usuario.getSenha().equals(senha)) {
+            return null;
+        }
+
+        return usuario;
     }
 
-    if (!usuario.getSenha().equals(senha)) {
-        return null;
+    public boolean alterarSenha(String email, String senhaAtual, String novaSenha) {
+
+        Usuario usuario = repository.findByEmail(email).orElse(null);
+
+        if (usuario == null) {
+            return false;
+        }
+
+        if (!usuario.getSenha().equals(senhaAtual)) {
+            return false;
+        }
+
+        usuario.setSenha(novaSenha);
+        repository.save(usuario);
+
+        return true;
     }
-
-    return usuario;
-}
-public boolean alterarSenha(String email, String senhaAtual, String novaSenha) {
-
-    Usuario usuario = repository.findByEmail(email).orElse(null);
-
-    if (usuario == null) {
-        return false;
-    }
-
-    if (!usuario.getSenha().equals(senhaAtual)) {
-        return false;
-    }
-
-    usuario.setSenha(novaSenha);
-    repository.save(usuario);
-
-    return true;
-}
 }

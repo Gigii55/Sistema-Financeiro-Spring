@@ -3,9 +3,9 @@ package com.ifpr.backend.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,8 +43,8 @@ public class TransacaoController {
     }
 
     @GetMapping
-    public List<Transacao> listarTodos(){
-        return service.listarTodos();
+    public List<Transacao> listarTodos(@RequestParam Long usuarioId){
+        return service.listarTodos(usuarioId);
     }
 
     @GetMapping("/{id}")
@@ -59,30 +59,34 @@ public class TransacaoController {
 
     @GetMapping("/filtro")
     public ResponseEntity<List<Transacao>> buscarPorTipo(
+        @RequestParam Long usuarioId,
         @RequestParam TipoTransacao tipo
     ) {
-        return ResponseEntity.ok(service.buscarPorTipo(tipo));
+        return ResponseEntity.ok(service.buscarPorTipo(usuarioId, tipo));
     }
 
     @GetMapping("/filtro-categoria")
     public ResponseEntity<List<Transacao>> buscarPorCategoria(
+        @RequestParam Long usuarioId,
         @RequestParam Long categoriaId
     ) {
-        return ResponseEntity.ok(service.buscarPorCategoria(categoriaId));
+        return ResponseEntity.ok(service.buscarPorCategoria(usuarioId, categoriaId));
     }
 
     @GetMapping("/filtro-periodo")
-public ResponseEntity<List<Transacao>> buscarPorPeriodo(
-    @RequestParam LocalDate dataInicio,
-    @RequestParam LocalDate dataFim
-) {
-    return ResponseEntity.ok(
-        service.buscarPorPeriodo(dataInicio, dataFim)
-    );
-}
+    public ResponseEntity<List<Transacao>> buscarPorPeriodo(
+        @RequestParam Long usuarioId,
+        @RequestParam LocalDate dataInicio,
+        @RequestParam LocalDate dataFim
+    ) {
+        return ResponseEntity.ok(service.buscarPorPeriodo(usuarioId, dataInicio, dataFim));
+    }
 
-@GetMapping("/paginado")
-public ResponseEntity<Page<Transacao>> buscarPaginado(Pageable pageable) {
-    return ResponseEntity.ok(service.buscarPaginado(pageable));
-}
+    @GetMapping("/paginado")
+    public ResponseEntity<Page<Transacao>> buscarPaginado(
+        @RequestParam Long usuarioId,
+        Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.buscarPaginado(usuarioId, pageable));
+    }
 }

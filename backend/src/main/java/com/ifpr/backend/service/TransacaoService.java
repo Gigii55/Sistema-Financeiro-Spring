@@ -3,17 +3,14 @@ package com.ifpr.backend.service;
 import java.time.LocalDate;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ifpr.backend.entity.Transacao;
 import com.ifpr.backend.entity.enums.TipoTransacao;
 import com.ifpr.backend.repository.TransacaoRepository;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @Service
 public class TransacaoService {
@@ -25,8 +22,8 @@ public class TransacaoService {
         return repository.save(transacao);
     }
 
-    public List<Transacao> listarTodos() {
-        return repository.findAll();
+    public List<Transacao> listarTodos(Long usuarioId) {
+        return repository.findByCriadoPorId(usuarioId);
     }
 
     public Transacao buscarPorId(Long id) {
@@ -39,39 +36,30 @@ public class TransacaoService {
     }
 
     public Transacao alterar(Transacao transacao) {
-
         Transacao transacaoBD = buscarPorId(transacao.getId());
-
         transacaoBD.setCarteira(transacao.getCarteira());
-
         transacaoBD.setCategoria(transacao.getCategoria());
-
         transacaoBD.setCriadoPor(transacao.getCriadoPor());
-
         transacaoBD.setTipo(transacao.getTipo());
-
         transacaoBD.setValor(transacao.getValor());
-
         transacaoBD.setDescricao(transacao.getDescricao());
-
         transacaoBD.setData(transacao.getData());
-
         return repository.save(transacaoBD);
     }
 
-    public List<Transacao> buscarPorTipo(TipoTransacao tipo) {
-    return repository.findByTipo(tipo);
-}
+    public List<Transacao> buscarPorTipo(Long usuarioId, TipoTransacao tipo) {
+        return repository.findByCriadoPorIdAndTipo(usuarioId, tipo);
+    }
 
-public List<Transacao> buscarPorCategoria(Long categoriaId) {
-    return repository.findByCategoriaId(categoriaId);
-}
+    public List<Transacao> buscarPorCategoria(Long usuarioId, Long categoriaId) {
+        return repository.findByCriadoPorIdAndCategoriaId(usuarioId, categoriaId);
+    }
 
-public List<Transacao> buscarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
-    return repository.findByDataBetween(dataInicio, dataFim);
-}
+    public List<Transacao> buscarPorPeriodo(Long usuarioId, LocalDate dataInicio, LocalDate dataFim) {
+        return repository.findByCriadoPorIdAndDataBetween(usuarioId, dataInicio, dataFim);
+    }
 
-public Page<Transacao> buscarPaginado(Pageable pageable) {
-    return repository.findAll(pageable);
-}
+    public Page<Transacao> buscarPaginado(Long usuarioId, Pageable pageable) {
+        return repository.findByCriadoPorId(usuarioId, pageable);
+    }
 }

@@ -11,4 +11,5 @@ import com.ifpr.backend.entity.CarteiraMembro;
 public interface CarteiraMembroRepository extends JpaRepository<CarteiraMembro, Long> {
     Optional<CarteiraMembro> findByCarteiraIdAndUsuarioId(UUID carteiraId, Long usuarioId);
     List<CarteiraMembro> findByCarteiraId(UUID carteiraId);
+    List<CarteiraMembro> findByUsuarioId(Long usuarioId);
 }
