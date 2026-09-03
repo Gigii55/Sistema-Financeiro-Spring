@@ -3,12 +3,17 @@ package com.ifpr.backend.service;
 import java.time.LocalDate;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import com.ifpr.backend.entity.Transacao;
 import com.ifpr.backend.entity.enums.TipoTransacao;
 import com.ifpr.backend.repository.TransacaoRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class TransacaoService {
@@ -64,5 +69,9 @@ public List<Transacao> buscarPorCategoria(Long categoriaId) {
 
 public List<Transacao> buscarPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
     return repository.findByDataBetween(dataInicio, dataFim);
+}
+
+public Page<Transacao> buscarPaginado(Pageable pageable) {
+    return repository.findAll(pageable);
 }
 }

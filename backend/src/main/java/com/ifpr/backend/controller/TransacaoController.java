@@ -3,6 +3,8 @@ package com.ifpr.backend.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -77,5 +79,10 @@ public ResponseEntity<List<Transacao>> buscarPorPeriodo(
     return ResponseEntity.ok(
         service.buscarPorPeriodo(dataInicio, dataFim)
     );
+}
+
+@GetMapping("/paginado")
+public ResponseEntity<Page<Transacao>> buscarPaginado(Pageable pageable) {
+    return ResponseEntity.ok(service.buscarPaginado(pageable));
 }
 }

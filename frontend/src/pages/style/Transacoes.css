@@ -1,0 +1,156 @@
+* {
+  box-sizing: border-box;
+}
+
+.transacao-cabecalho {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.transacao-boas-vindas {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 1.8rem;
+  word-spacing: 0.4rem;
+  letter-spacing: 0.1rem;
+  margin: 3vh 0 0;
+  text-align: center;
+}
+
+.transacao-identificacao {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: normal;
+  word-spacing: 0.4rem;
+  letter-spacing: 3px;
+  margin: 1vh 0 2rem;
+  text-align: center;
+}
+
+.transacao-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto 3vh;
+  padding: 1.25rem;
+  background-color: rgba(240, 248, 255, 0.452);
+  border-radius: 18px;
+}
+
+.transacao-titulo {
+  font-family: "Playfair Display", serif;
+  font-size: 1.7rem;
+  color: #333;
+  margin: 0 0 0.9rem;
+  text-align: center;
+}
+
+.transacao-formulario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1.5rem 1rem;
+  background-color: white;
+  border-radius: 16px;
+}
+
+.transacao-label {
+  width: 84%;
+  max-width: 390px;
+  margin: 0 0 0.35rem;
+  color: #595a61;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.transacao-label:not(:first-of-type) {
+  margin-top: 1rem;
+}
+
+.transacao-input {
+  display: block;
+  width: 84%;
+  max-width: 390px;
+  height: 48px;
+  margin: 0;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 9px;
+  outline: none;
+  background-color: #c6ced1;
+  color: #1a1a1a;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.transacao-input::placeholder {
+  color: #666;
+}
+
+.transacao-input:focus {
+  outline: 2px solid rgb(68, 170, 139);
+  background-color: #d4dadd;
+}
+
+select.transacao-input {
+  cursor: pointer;
+}
+
+.transacao-botao {
+  width: 84%;
+  max-width: 390px;
+  padding: 0.85rem;
+  margin-top: 1.5rem;
+  background-color: rgb(15, 82, 62); 
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.transacao-botao:hover {
+  background-color: rgb(10, 60, 45);
+}
+
+.transacao-botao-secundario {
+  width: 84%;
+  max-width: 390px;
+  padding: 0.85rem;
+  margin-top: 0.8rem;
+  background-color: transparent;
+  color: #595a61;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border: 2px solid #c6ced1;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.transacao-botao-secundario:hover {
+  background-color: #f1f5f9;
+  color: #333;
+}
+
+.transacao-erro {
+  color: #b91c1c;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 550px) {
+  .transacao-boas-vindas { font-size: 1.5rem; }
+  .transacao-identificacao { font-size: 1.1rem; letter-spacing: 2px; }
+  .transacao-card { width: 94%; padding: 1rem; }
+  .transacao-formulario { padding: 1.3rem 0.8rem; }
+  .transacao-label, .transacao-input, .transacao-botao, .transacao-botao-secundario { width: 90%; }
+}

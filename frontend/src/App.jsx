@@ -5,6 +5,7 @@ import EsqueceuSenha from './pages/EsqueceuSenha.jsx';
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import AlterarSenha from './pages/AlterarSenha';
+import Transacoes from './pages/Transacoes.jsx';
 import RotaProtegida from './components/RotaProtegida';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
     <Route path="/codigo" element={<Codigo />} />
     <Route path="/dashboard" element={<RotaProtegida><Dashboard /></RotaProtegida>} />
      <Route path="/app/perfil/senha" element={<RotaProtegida><AlterarSenha /></RotaProtegida>} />
+     <Route path="transacoes" element={<RotaProtegida><Transacoes /></RotaProtegida>} />
     </Routes>
     </BrowserRouter>
   )
