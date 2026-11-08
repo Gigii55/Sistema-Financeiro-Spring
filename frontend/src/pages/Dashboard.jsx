@@ -12,10 +12,11 @@ import { formatarData, formatarMoeda } from './js/formatadores';
 
 import Sidebar from '../components/Sidebar';
 import TransacaoService from '../services/TransacaoService';
-
+import CarteiraServices from '../services/CarteiraServices';
 import './style/Dashboard.css';
 
 const transacaoService = new TransacaoService();
+const carteiraService = new CarteiraServices();
 
 function Dashboard() {
 
@@ -33,6 +34,27 @@ function Dashboard() {
   const [filtroTipo, setFiltroTipo] = useState('');
   const [dataInicio, setDataInicio] = useState('');
   const [dataFim, setDataFim] = useState('');
+  const [carteiras, setCarteiras] = useState([]);
+  const [carteiraSelecionada, setCarteiraSelecionada] = useState('');
+
+useEffect(() => {
+  async function carregarCarteiras() {
+    try {
+      const resposta = await carteiraService.buscarTodos();
+      const lista = resposta.data;
+
+      setCarteiras(lista);
+
+      if (lista.length > 0) {
+        setCarteiraSelecionada(lista[0].id);
+      }
+    } catch (erro) {
+      console.error('Erro ao carregar carteiras:', erro);
+    }
+  }
+
+  carregarCarteiras();
+}, []);
 
   useEffect(() => {
     async function carregarDados() {
@@ -139,8 +161,10 @@ function Dashboard() {
      finally { setCarregando(false); }
   }
 
-  const {totalReceitas,totalDespesas,saldo,resultado,percentual,percentualGrafico,dadosGrafico} = calcularResumo(transacoes);
+const {totalReceitas, totalDespesas,saldo,resultado,percentual,percentualGrafico} = calcularResumo(transacoes);
+const transacoesGrafico = carteiraSelecionada? transacoes.filter((transacao) => transacao.carteira?.id === carteiraSelecionada): transacoes;
 
+const { dadosGrafico } = calcularResumo(transacoesGrafico);
   const descricaoTabela = (transacao) => (
     <div className="lancamento">
       <span className={transacao.tipo === 'RECEITA' ? 'tipo entrada' : 'tipo saida'}>
@@ -269,8 +293,14 @@ function Dashboard() {
                 <h2>Receitas e despesas</h2>
                 <p>Comparação financeira dos últimos seis meses.</p>
               </div>
+              <select className="filtro-input" value={carteiraSelecionada}onChange={(e) => setCarteiraSelecionada(e.target.value)}aria-label="Selecionar carteira do gráfico">
+                <option value="">Todas as carteiras</option>
+                {carteiras.map((carteira) => (
+                  <option key={carteira.id} value={carteira.id}>{carteira.nome}</option>
+                ))}
+              </select>
             </div>
-            <div className="grafico">
+                        <div className="grafico">
               {!carregando && (
                 <Chart type="bar" data={dadosGrafico} options={opcoesGrafico} style={{ width: '100%', height: '100%' }} />
               )}
