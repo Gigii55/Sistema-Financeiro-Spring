@@ -2,152 +2,359 @@
   box-sizing: border-box;
 }
 
-.transacao-cabecalho {
-  margin-top: 2rem;
-  text-align: center;
+.transacao-pagina {
+  min-height: 100vh;
+  background: linear-gradient(190deg, #0b4332 0%, #0a7052 100%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 80px 20px;
 }
 
-.transacao-boas-vindas {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: 1.8rem;
-  word-spacing: 0.4rem;
-  letter-spacing: 0.1rem;
-  color: var(--cor-texto-claro);
-  margin: 3vh 0 0;
-  text-align: center;
+.transacao-container {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
 }
 
-.transacao-identificacao {
+.transacao-topo {
+  margin-bottom: 24px;
+}
+
+.transacao-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: transparent;
+  color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: 0.2s ease;
+   position: absolute;
+  top: 28px;
+  left: 30px;
+  margin-bottom: 0;
+  
+}
+
+.transacao-voltar:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.transacao-hero {
+  color: #ffffff;
+}
+
+.transacao-kicker {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #66d6b4;
+  margin-bottom: 10px;
+}
+
+.transacao-hero h1 {
+  margin: 0 0 8px;
+  font-size: 2.5rem;
   font-family: "Playfair Display", serif;
-  font-size: 1.5rem;
-  font-weight: normal;
-  word-spacing: 0.4rem;
-  letter-spacing: 3px;
-  color: var(--cor-texto-claro-opaco);
-  margin: 1vh 0 2rem;
-  text-align: center;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.transacao-hero p {
+  margin: 0;
+  color: #d6efe7;
+  font-size: 1rem;
 }
 
 .transacao-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-  max-width: 650px;
-  margin: 0 auto 3vh;
-  padding: 1.25rem;
-  background-color: rgba(240, 248, 255, 0.452);
-  border-radius: 18px;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
 }
 
-.transacao-titulo {
+.transacao-card-header {
+  margin-bottom: 24px;
+}
+
+.transacao-card-header h2 {
+  margin: 0 0 6px;
+  font-size: 1.9rem;
   font-family: "Playfair Display", serif;
-  font-size: 1.7rem;
-  color: var(--cor-texto-escuro);
-  margin: 0 0 0.9rem;
-  text-align: center;
+  color: #1d3b32;
+}
+
+.transacao-card-header p {
+  margin: 0;
+  color: #71817b;
+  font-size: 0.95rem;
 }
 
 .transacao-formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 20px;
+}
+
+.transacao-campo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 1.2rem 2rem;
-  background-color: white;
-  border-radius: 16px;
+}
+
+.transacao-campo-full {
+  grid-column: 1 / -1;
 }
 
 .transacao-label {
-  width: 100%;
-  margin: 0 0 0.25rem;
-  color: var(--cor-texto-escuro);
-  font-size: 0.9rem;
-  font-weight: bold;
-  text-align: left;
-}
-
-.transacao-label:not(:first-of-type) {
-  margin-top: 0.75rem;
+  margin-bottom: 8px;
+  color: #334640;
+  font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .transacao-input {
-  display: block;
   width: 100%;
-  height: 40px;
-  margin: 0;
-  padding: 0 1rem;
-  border: none;
-  border-radius: 9px;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d9e5df;
+  border-radius: 12px;
+  background: #f7fbf9;
+  color: #29453c;
+  font-size: 0.98rem;
   outline: none;
-  background-color: var(--cor-borda);
-  color: var(--cor-texto-escuro);
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
+  transition: 0.2s ease;
 }
 
 .transacao-input::placeholder {
-  color: var(--cor-texto-mutado);
+  color: #94a39d;
 }
 
 .transacao-input:focus {
-  outline: 2px solid var(--cor-secundaria);
-  background-color: #d4dadd;
+  border-color: #46b08f;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(70, 176, 143, 0.12);
 }
 
 select.transacao-input {
   cursor: pointer;
 }
 
-.transacao-botao {
-  width: 100%;
-  padding: 0.7rem;
-  margin-top: 1.2rem;
-  background-color: var(--cor-primaria);
-  color: var(--cor-texto-claro);
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 9px;
+.transacao-tipo-toggle {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tipo-botao {
+  flex: 1;
+  min-width: 160px;
+  height: 48px;
+  border: 1px solid #d9e5df;
+  border-radius: 12px;
+  background: #f7fbf9;
+  color: #456158;
+  font-size: 0.95rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: 0.2s ease;
 }
 
-.transacao-botao:hover {
-  background-color: var(--cor-primaria-hover);
+.tipo-botao:hover {
+  background: #eef8f4;
 }
 
-.transacao-botao-secundario {
-  width: 100%; 
-  padding: 0.7rem; 
-  margin-top: 0.6rem; 
-  background-color: transparent;
-  color: var(--cor-texto-escuro);
-  font-size: 0.9rem;
-  font-weight: bold;
-  border: 2px solid var(--cor-borda);
-  border-radius: 9px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.tipo-botao.ativo.receita {
+  background: #e8f8f1;
+  border-color: #42aa8d;
+  color: #237f63;
+  box-shadow: 0 0 0 3px rgba(66, 170, 141, 0.12);
 }
 
-.transacao-botao-secundario:hover {
-  background-color: #f1f5f9;
-  color: #333;
+.tipo-botao.ativo.despesa {
+  background: #fdeeee;
+  border-color: #d65c5c;
+  color: #b63f3f;
+  box-shadow: 0 0 0 3px rgba(214, 92, 92, 0.12);
 }
 
 .transacao-erro {
-  color: var(--cor-erro);
-  font-size: 0.9rem;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 0.8rem;
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff3f3;
+  color: #c0392b;
+  font-size: 0.92rem;
+  font-weight: 600;
 }
 
-@media (max-width: 550px) {
-  .transacao-boas-vindas { font-size: 1.5rem; }
-  .transacao-identificacao { font-size: 1.1rem; letter-spacing: 2px; }
-  .transacao-card { width: 94%; padding: 1rem; }
-  .transacao-formulario { padding: 1rem; }
+.transacao-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.transacao-botao,
+.transacao-botao-secundario {
+  min-width: 180px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 0.96rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.transacao-botao {
+  border: none;
+  background: #42aa8d;
+  color: #ffffff;
+}
+
+.transacao-botao:hover {
+  background: #318b72;
+}
+
+.transacao-botao-secundario {
+  border: 1px solid #d3ddd8;
+  background: #ffffff;
+  color: #3b4f48;
+}
+
+.transacao-botao-secundario:hover {
+  background: #f5f8f7;
+}
+
+.transacao-botao:disabled,
+.transacao-botao-secundario:disabled,
+.tipo-botao:disabled,
+.transacao-voltar:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.transacao-campo-adicionar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.transacao-campo-adicionar .transacao-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.transacao-botao-adicionar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #42aa8d;
+  border-radius: 12px;
+
+  background: #e8f8f1;
+  color: #237f63;
+
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.transacao-botao-adicionar:hover {
+  background: #42aa8d;
+  color: white;
+}
+
+.transacao-botao-adicionar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.transacao-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 10px;
+}
+
+.transacao-modal-form label {
+  font-weight: 600;
+  color: #334640;
+  font-size: 0.9rem;
+}
+
+.transacao-modal-form .transacao-botao {
+  width: 100%;
+  margin-top: 15px;
+}
+
+.transacao-modal-form input[type="color"] {
+  width: 65px;
+  height: 40px;
+  cursor: pointer;
+  border: 1px solid #d9e5df;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .transacao-hero h1 {
+    font-size: 2rem;
+  }
+
+  .transacao-card {
+    padding: 24px;
+  }
+
+  .transacao-formulario {
+    grid-template-columns: 1fr;
+  }
+
+  .transacao-acoes {
+    flex-direction: column;
+  }
+
+  .transacao-botao,
+  .transacao-botao-secundario {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .transacao-pagina {
+    padding: 20px 14px 36px;
+  }
+
+  .transacao-hero h1 {
+    font-size: 1.7rem;
+  }
+
+  .transacao-card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .tipo-botao {
+    width: 100%;
+  }
 }

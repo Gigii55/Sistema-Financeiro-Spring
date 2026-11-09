@@ -45,18 +45,32 @@ useEffect(() => {
 
       setCarteiras(lista);
 
-      if (lista.length > 0) {
+      const chave = `carteiraSelecionada_${usuario.id}`;
+      const carteiraSalva = localStorage.getItem(chave);
+
+      const carteiraExiste = lista.some(
+        (carteira) => carteira.id === carteiraSalva
+      );
+
+      if (carteiraSalva === 'todas') {
+        setCarteiraSelecionada('');
+      } else if (carteiraExiste) {
+        setCarteiraSelecionada(carteiraSalva);
+      } else if (lista.length > 0) {
         setCarteiraSelecionada(lista[0].id);
       }
+
     } catch (erro) {
       console.error('Erro ao carregar carteiras:', erro);
     }
   }
 
-  carregarCarteiras();
-}, []);
+  if (usuario?.id) {
+    carregarCarteiras();
+  }
+}, [usuario?.id]);
 
-  useEffect(() => {
+useEffect(() => {
     async function carregarDados() {
       try {
         setCarregando(true);
@@ -252,11 +266,16 @@ const {totalReceitas,totalDespesas,saldo,resultado,percentual,percentualGrafico,
                 Visualizar carteira:
             </label>
 
-              <select className="filtro-input" value={carteiraSelecionada}onChange={(e) => {setCarteiraSelecionada(e.target.value);
-              setLazyState((anterior) => ({...anterior,first: 0,page: 0}))}}aria-label="Selecionar carteira do gráfico">
+              <select className="filtro-input" value={carteiraSelecionada}onChange={(e) => {
 
-                <option value="">Todas as carteiras</option>
-                {carteiras.map((carteira) => (
+                const carteiraId = e.target.value;
+                setCarteiraSelecionada(carteiraId);
+
+                localStorage.setItem( `carteiraSelecionada_${usuario.id}`, carteiraId || 'todas');
+                
+                setLazyState((anterior) => ({...anterior,first: 0,page: 0}));}}aria-label="Selecionar carteira do gráfico">
+
+                <option value="">Todas as carteiras</option>{carteiras.map((carteira) => (
                   <option key={carteira.id} value={carteira.id}>{carteira.nome}</option>))}
               </select>
         </div>
