@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card } from 'primereact/card';
-import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 
 import CarteiraServices from '../services/CarteiraServices';
@@ -9,150 +8,232 @@ import './style/Carteiras.css';
 
 const carteiraService = new CarteiraServices();
 
-function Carteiras() {
+export default function Carteiras() {
   const navigate = useNavigate();
 
   const usuarioSalvo = localStorage.getItem('usuario');
   const usuario = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+  const usuarioId = usuario?.id;
 
   const [carteiras, setCarteiras] = useState([]);
   const [carregando, setCarregando] = useState(true);
-  
+  const [erro, setErro] = useState('');
+
   const [exibirModal, setExibirModal] = useState(false);
   const [salvando, setSalvando] = useState(false);
-  const [formData, setFormData] = useState({ nome: '', descricao: '' });
   const [mensagemErro, setMensagemErro] = useState('');
+  const [formData, setFormData] = useState({nome: '',descricao: ''});
 
   async function carregarCarteiras() {
-    setCarregando(true);
     try {
+      setCarregando(true);
+      setErro('');
+
       const resposta = await carteiraService.buscarTodos();
-      setCarteiras(resposta.data || resposta);
+      setCarteiras(resposta.data);
+
     } catch (error) {
       console.error('Erro ao buscar carteiras:', error);
+      setErro('Não foi possível carregar suas carteiras.');
     } finally {
       setCarregando(false);
     }
   }
 
   useEffect(() => {
-    if (!usuario) {
+    if (!usuarioId) {
       navigate('/');
       return;
     }
 
     carregarCarteiras();
+  }, [navigate, usuarioId]);
 
-  }, [navigate]);
-
-  async function excluirCarteira(id) {
-    const confirmar = window.confirm('Tem certeza que deseja excluir esta carteira? Todas as transações ligadas a ela poderão ser afetadas.');
-    
-    if (confirmar) {
-      try {
-        setCarregando(true);
-        await carteiraService.remover(id);
-        carregarCarteiras(); 
-      } catch (error) {
-        console.error('Erro ao excluir carteira:', error);
-        alert('Não foi possível excluir a carteira.');
-      } finally {
-        setCarregando(false);
-      }
+  function voltarPagina() {
+    if (window.history.state?.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/dashboard');
     }
   }
 
-  const handleChange = (e) => {
+  function abrirModal() {
+    setMensagemErro('');
+    setFormData({ nome: '', descricao: '' });
+    setExibirModal(true);
+  }
+
+  function fecharModal() {
+    if (salvando) return;
+    setExibirModal(false);
+    setMensagemErro('');
+  }
+
+  function handleChange(e) {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    setFormData((anterior) => ({...anterior,[name]: value}));
+  }
 
   async function criarCarteira(e) {
     e.preventDefault();
+
     setMensagemErro('');
     setSalvando(true);
 
     const payload = {
-      nome: formData.nome,
-      descricao: formData.descricao,
-      dono: { id: usuario.id }
+      nome: formData.nome.trim(),
+      descricao: formData.descricao.trim(),
+      dono: { id: usuarioId }
     };
 
     try {
       await carteiraService.inserir(payload);
 
       setExibirModal(false);
-
       setFormData({ nome: '', descricao: '' });
 
-      carregarCarteiras();
+      await carregarCarteiras();
 
     } catch (error) {
-      const msg = error.response?.data?.message || 'Erro ao criar carteira.';
-      setMensagemErro(msg);
+      console.error('Erro ao criar carteira:', error);
+
+      const mensagem = error.response?.data?.message || 'Não foi possível criar a carteira.';
+
+      setMensagemErro(mensagem);
     } finally {
       setSalvando(false);
     }
   }
 
-  const footerCartao = (carteira) => (
-    <div className="cartao-footer">
-      <Button label="Membros"  icon="pi pi-users"  className="p-button-outlined p-button-sm" onClick={() => navigate(`/carteiras/${carteira.id}/membros`)}/>
-      <Button icon="pi pi-trash" className="p-button-outlined p-button-danger p-button-sm" aria-label="Excluir" 
-        onClick={() => excluirCarteira(carteira.id)} title="Excluir Carteira"/>
-    </div>
-  );
+  async function excluirCarteira(id) {
+    const confirmar = window.confirm('Tem certeza que deseja excluir esta carteira? ' +'As transações vinculadas a ela poderão ser afetadas.');
+
+    if (!confirmar) return;
+
+    try {
+      setCarregando(true);
+      setErro('');
+
+      await carteiraService.remover(id);
+      await carregarCarteiras();
+
+    } catch (error) {
+      console.error('Erro ao excluir carteira:', error);
+      setErro('Não foi possível excluir a carteira.');
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  function formatarData(data) {
+    if (!data) return 'Data não informada';
+    return new Date(data).toLocaleDateString('pt-BR', {timeZone: 'UTC'});
+  }
 
   return (
-    <div className="pagina-carteiras">
-      
-      <div className="cabecalho-carteiras">
-        <div>
-          <h2>Minhas Carteiras</h2>
-          <p>Gerencie seus espaços financeiros e compartilhamentos.</p>
+    <div className="carteiras-pagina">
+      <button type="button" className="carteiras-voltar"onClick={voltarPagina}>
+        <i className="pi pi-arrow-left"/> Voltar
+      </button>
+      <div className="carteiras-container">
+        <header className="carteiras-topo">
+          <span className="carteiras-kicker">CONTROLE FINANCEIRO</span>
+          <h1>Minhas carteiras</h1>
+          <p>Organize e gerencie seus espaços financeiros.</p>
+        </header>
+        <div className="carteiras-barra">
+          <div className="carteiras-contador">
+            <i className="pi pi-wallet" />
+            <span>{carregando ? 'Carregando...' : `${carteiras.length} ${carteiras.length === 1 ? 'carteira cadastrada': 'carteiras cadastradas'}`}
+            </span>
+          </div>
         </div>
-        <Button label="Nova Carteira" icon="pi pi-plus" className="botao-adicionar-carteira" onClick={() => setExibirModal(true)}/>
+
+        {erro && (<div className="carteiras-erro">{erro}</div>)}
+
+
+        {carregando ? (
+          <div className="carteiras-vazio">
+            <i className="pi pi-spin pi-spinner"/>
+            <p>Carregando suas carteiras...</p>
+            </div>) : carteiras.length === 0 && !erro ? (
+          <div className="carteiras-vazio">
+            <div className="carteiras-vazio-icone">
+              <i className="pi pi-wallet" />
+            </div>
+            <h2>Nenhuma carteira cadastrada</h2>
+            <p>Crie sua primeira carteira para começar aorganizar suas finanças.</p>
+            <button type="button" className="carteiras-botao-novo"onClick={abrirModal}>
+              <i className="pi pi-plus" />Criar primeira carteira
+            </button>
+          </div>) : (
+          <div className="carteiras-grade">
+            {carteiras.map((carteira) => (
+              <article key={carteira.id}className="carteiras-cartao">
+                <div className="carteiras-cartao-icone">
+                  <i className="pi pi-wallet" />
+                </div>
+
+                <div className="carteiras-cartao-conteudo">
+                  <h2>{carteira.nome}</h2>
+                  <p>{carteira.descricao ||'Sem descrição cadastrada.'}</p>
+                </div>
+
+                <div className="carteiras-cartao-data">
+                  <i className="pi pi-calendar" />
+                  <span> Criada em {formatarData(carteira.criadoEm)}</span>
+                </div>
+
+                <div className="carteiras-cartao-footer">
+                  <button type="button" className="carteiras-botao-membros" onClick={() =>navigate(`/carteiras/${carteira.id}/membros`)}>
+                    <i className="pi pi-users" /> Membros
+                  </button>
+                  <button type="button" className="carteiras-botao-excluir" onClick={() => excluirCarteira(carteira.id)}
+                    aria-label={`Excluir ${carteira.nome}`}title="Excluir carteira">
+                    <i className="pi pi-trash" />
+                  </button>
+                </div>
+              </article>))}
+
+            <button type="button" className="carteiras-cartao-adicionar" onClick={abrirModal}>
+              <span className="carteiras-adicionar-icone">
+                <i className="pi pi-plus" />
+              </span>
+              <strong>Nova carteira</strong>
+              <span>Clique para criar um novo espaço financeiro.</span>
+            </button>
+          </div>)}
       </div>
 
-      {carregando ? (
-        <p className="texto-informativo">Carregando carteiras...</p>
-      ) : (
-        <div className="grade-carteiras">
-          {carteiras.length === 0 ? (
-            <p className="texto-informativo">Você ainda não possui nenhuma carteira.</p>
-          ) : (
-            carteiras.map((carteira) => (
-              <Card key={carteira.id} title={carteira.nome} footer={footerCartao(carteira)} className="cartao-carteira">
-                <p className="cartao-descricao">
-                  {carteira.descricao || 'Sem descrição.'}
-                </p>
-                <small className="cartao-data">
-                  Criada em: {new Date(carteira.criadoEm).toLocaleDateString('pt-BR')}
-                </small>
-              </Card>
-            ))
-          )}
-        </div>
-      )}
-      <Dialog visible={exibirModal} style={{ width: '450px' }} header="Criar Nova Carteira" modal onHide={() => setExibirModal(false)}>
-        <form onSubmit={criarCarteira} className="formulario-modal">
-          <div className="grupo-input">
-            <label className="modal-label">Nome da Carteira</label>
-            <input type="text" name="nome" value={formData.nome} onChange={handleChange} required className="carteira-input-modal" maxLength="100" placeholder="Ex: Viagem de Formatura" />
+      <Dialog header="Nova carteira" visible={exibirModal} onHide={fecharModal} closable={!salvando} modal style={{ width: 'min(450px, 95vw)' }}>
+        <form className="carteiras-modal-form" onSubmit={criarCarteira} >
+          <p className="carteiras-modal-descricao"> Dê um nome à sua carteira para organizar suas movimentações financeiras.</p>
+
+          <div className="carteiras-modal-campo">
+            <label htmlFor="nome-carteira"> Nome da carteira </label>
+            <input id="nome-carteira" type="text" name="nome" value={formData.nome} onChange={handleChange} placeholder="Ex.: Viagem de formatura"
+              maxLength={100} required disabled={salvando}/>
           </div>
-          <div className="grupo-input">
-            <label className="modal-label">Descrição (Opcional)</label>
-            <input type="text" name="descricao" value={formData.descricao} onChange={handleChange} className="carteira-input-modal" maxLength="250" placeholder="Ex: Fundo para a viagem" />
+
+          <div className="carteiras-modal-campo">
+            <label htmlFor="descricao-carteira"> Descrição (opcional)</label>
+            <textarea id="descricao-carteira" name="descricao" value={formData.descricao} onChange={handleChange} placeholder="Ex.: Economias para a viagem"
+              maxLength={250} rows={3} disabled={salvando}/>
           </div>
-          {mensagemErro && <span className="mensagem-erro">{mensagemErro}</span>}
-          <div className="botoes-modal">
-            <Button type="button" label="Cancelar" className="p-button-text" onClick={() => setExibirModal(false)} disabled={salvando} />
-                        <Button type="submit" label={salvando ? 'Salvando...' : 'Criar Carteira'} autoFocus disabled={salvando} className="botao-adicionar-carteira" />
+
+          {mensagemErro && ( <div className="carteiras-modal-erro"> {mensagemErro} </div>)}
+
+          <div className="carteiras-modal-acoes">
+            <button type="button" className="carteiras-modal-cancelar" onClick={fecharModal} disabled={salvando}>
+              Cancelar
+            </button>
+
+            <button type="submit" className="carteiras-modal-salvar" disabled={salvando}>
+              {salvando ? ('Salvando...') : (<><i className="pi pi-check" />Criar carteira</>)}
+            </button>
           </div>
         </form>
       </Dialog>
     </div>
   );
 }
-
-export default Carteiras;
