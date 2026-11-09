@@ -22,6 +22,9 @@ import com.ifpr.backend.service.UsuarioService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -82,4 +85,11 @@ public ResponseEntity<?> alterarSenha(@RequestBody AlterarSenhaDTO dados) {
 
     return ResponseEntity.ok("Senha alterada com sucesso.");
 }
+
+@PutMapping("/{id}/nome")
+public Usuario alterarNome(@PathVariable Long id,@RequestBody @Valid AlterarNomeDTO dados) {
+    return service.alterarNome(id, dados.nome());
+}
+
+public record AlterarNomeDTO(@NotBlank@Size(max = 100)String nome) {}
 }

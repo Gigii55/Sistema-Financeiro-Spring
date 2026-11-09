@@ -255,11 +255,9 @@ const {totalReceitas,totalDespesas,saldo,resultado,percentual,percentualGrafico,
               <strong>{usuario?.nome || 'Usuário'}</strong>
               <span>{usuario?.email || ''}</span>
             </div>
-            <Button label="Alterar senha" icon="pi pi-key" text className="botao-alterar-senha"
-              onClick={() => navigate('/app/perfil/senha')} />
+           <Button label="Meu perfil" icon="pi pi-user" text className="botao-alterar-senha" onClick={() => navigate('/perfil')}/>
           </div>
         </header>
-
         {erro && <div className="mensagem-erro">{erro}</div>}
         <div className="seletor-dashboard">
             <label htmlFor="carteira-dashboard">

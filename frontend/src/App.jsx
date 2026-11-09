@@ -9,7 +9,7 @@ import Transacoes from './pages/Transacoes.jsx';
 import RotaProtegida from './components/RotaProtegida';
 import Categorias from './pages/Categorias.jsx';
 import Carteiras from './pages/Carteiras.jsx';
-
+import Perfil from './pages/Perfil.jsx';
 
 function App() {
   return (
@@ -24,6 +24,9 @@ function App() {
      <Route path="transacoes" element={<RotaProtegida><Transacoes /></RotaProtegida>} />
      <Route path="/categorias" element={<RotaProtegida><Categorias /></RotaProtegida>} />
      <Route path="/carteiras" element={<RotaProtegida><Carteiras /></RotaProtegida>} />
+     <Route path="/perfil"element={<RotaProtegida><Perfil /></RotaProtegida>
+  }
+/>
     </Routes>
     </BrowserRouter>
   )

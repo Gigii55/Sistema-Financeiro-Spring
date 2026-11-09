@@ -96,4 +96,15 @@ public class UsuarioService {
 
         return true;
     }
+
+    public Usuario alterarNome(Long id, String nome) {
+    if (nome == null || nome.isBlank() || nome.trim().length() > 100) {
+        throw new IllegalArgumentException("Nome inválido.");
+    }
+
+    Usuario usuario = buscarPorId(id);
+    usuario.setNome(nome.trim());
+
+    return repository.save(usuario);
+}
 }
