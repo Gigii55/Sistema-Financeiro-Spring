@@ -2,6 +2,7 @@ package com.ifpr.backend.repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,4 +21,5 @@ public interface TransacaoRepository extends JpaRepository<Transacao, Long> {
     List<Transacao> findByCriadoPorIdAndTipo(Long usuarioId, TipoTransacao tipo);
     List<Transacao> findByCriadoPorIdAndCategoriaId(Long usuarioId, Long categoriaId);
     List<Transacao> findByCriadoPorIdAndDataBetween(Long usuarioId, LocalDate dataInicio, LocalDate dataFim);
+    Page<Transacao> findByCriadoPorIdAndCarteiraId(Long usuarioId, UUID carteiraId,Pageable pageable);
 }

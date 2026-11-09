@@ -2,6 +2,7 @@ package com.ifpr.backend.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -73,7 +74,8 @@ public class TransacaoController {
     }
 
     @GetMapping("/paginado")
-    public ResponseEntity<Page<Transacao>> buscarPaginado( @RequestParam Long usuarioId,Pageable pageable) {
-        return ResponseEntity.ok(service.buscarPaginado(usuarioId, pageable));
+    public ResponseEntity<Page<Transacao>> buscarPaginado( @RequestParam Long usuarioId, @RequestParam(required = false)
+        UUID carteiraId, Pageable pageable) {
+        return ResponseEntity.ok(service.buscarPaginado(usuarioId, carteiraId, pageable));
     }
 }

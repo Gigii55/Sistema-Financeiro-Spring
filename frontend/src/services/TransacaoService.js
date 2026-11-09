@@ -14,15 +14,10 @@ class TransacaoService {
         });
     }
 
-    async buscarPaginado(pagina, tamanho = 4) {
+    async buscarPaginado(pagina, tamanho = 4, carteiraId = '') {
         return axios.get('http://localhost:8080/transacoes/paginado', {
-            params: {
-                usuarioId: obterUsuarioId(),
-                page: pagina,
-                size: tamanho,
-                sort: 'data,desc'
-            }
-        });
+        params: {usuarioId: obterUsuarioId(),carteiraId: carteiraId || undefined,
+        page: pagina,size: tamanho,sort: 'data,desc'}});
     }
 
     async buscarPorTipo(tipo) {

@@ -77,27 +77,31 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
+  async function carregarPagina() {
+    try {
+      setCarregandoTabela(true);
 
-    async function carregarPagina() {
-      try {
-        setCarregandoTabela(true);
-        const resposta = await transacaoService.buscarPaginado(lazyState.page, lazyState.rows);
-        const pageData = resposta.data;
+      const resposta = await transacaoService.buscarPaginado(
+        lazyState.page,
+        lazyState.rows,
+        carteiraSelecionada
+      );
 
-        setTransacoesPagina(pageData.content);
-        setTotalRegistros(pageData.totalElements);
+      const pageData = resposta.data;
 
-      } catch (erro) {
-        console.error(erro);
-        setErro('Não foi possível carregar os lançamentos.');
-      } 
-      finally {
-        setCarregandoTabela(false);
-      }
+      setTransacoesPagina(pageData.content);
+      setTotalRegistros(pageData.totalElements);
+
+    } catch (erro) {
+      console.error(erro);
+      setErro('Não foi possível carregar os lançamentos.');
+    } finally {
+      setCarregandoTabela(false);
     }
+  }
 
-    carregarPagina();
-  }, [lazyState]);
+  carregarPagina();
+}, [lazyState, carteiraSelecionada]);
 
   function onPageChange(event) {
     setLazyState({
@@ -161,10 +165,10 @@ useEffect(() => {
      finally { setCarregando(false); }
   }
 
-const {totalReceitas, totalDespesas,saldo,resultado,percentual,percentualGrafico} = calcularResumo(transacoes);
-const transacoesGrafico = carteiraSelecionada? transacoes.filter((transacao) => transacao.carteira?.id === carteiraSelecionada): transacoes;
+const transacoesFiltradas = carteiraSelecionada? transacoes.filter((transacao) =>
+   transacao.carteira?.id === carteiraSelecionada): transacoes;
 
-const { dadosGrafico } = calcularResumo(transacoesGrafico);
+const {totalReceitas,totalDespesas,saldo,resultado,percentual,percentualGrafico,dadosGrafico} = calcularResumo(transacoesFiltradas);
   const descricaoTabela = (transacao) => (
     <div className="lancamento">
       <span className={transacao.tipo === 'RECEITA' ? 'tipo entrada' : 'tipo saida'}>
@@ -186,11 +190,10 @@ const { dadosGrafico } = calcularResumo(transacoesGrafico);
         const resDados = await transacaoService.buscarTodos();
         setTransacoes(resDados.data);
 
-        const resTabela = await transacaoService.buscarPaginado(lazyState.page, lazyState.rows);
+        const resTabela = await transacaoService.buscarPaginado(lazyState.page,lazyState.rows,carteiraSelecionada);
         setTransacoesPagina(resTabela.data.content);
         setTotalRegistros(resTabela.data.totalElements);
 
-      } catch (erro) {
         console.error('Erro ao excluir:', erro);
         alert('Não foi possível excluir a transação.');
       } finally {
@@ -244,7 +247,19 @@ const { dadosGrafico } = calcularResumo(transacoesGrafico);
         </header>
 
         {erro && <div className="mensagem-erro">{erro}</div>}
+        <div className="seletor-dashboard">
+            <label htmlFor="carteira-dashboard">
+                Visualizar carteira:
+            </label>
 
+              <select className="filtro-input" value={carteiraSelecionada}onChange={(e) => {setCarteiraSelecionada(e.target.value);
+              setLazyState((anterior) => ({...anterior,first: 0,page: 0}))}}aria-label="Selecionar carteira do gráfico">
+
+                <option value="">Todas as carteiras</option>
+                {carteiras.map((carteira) => (
+                  <option key={carteira.id} value={carteira.id}>{carteira.nome}</option>))}
+              </select>
+        </div>
         <section className="resumo">
           <Card className="resumo-card saldo">
             <div className="card-topo">
@@ -293,12 +308,7 @@ const { dadosGrafico } = calcularResumo(transacoesGrafico);
                 <h2>Receitas e despesas</h2>
                 <p>Comparação financeira dos últimos seis meses.</p>
               </div>
-              <select className="filtro-input" value={carteiraSelecionada}onChange={(e) => setCarteiraSelecionada(e.target.value)}aria-label="Selecionar carteira do gráfico">
-                <option value="">Todas as carteiras</option>
-                {carteiras.map((carteira) => (
-                  <option key={carteira.id} value={carteira.id}>{carteira.nome}</option>
-                ))}
-              </select>
+             
             </div>
                         <div className="grafico">
               {!carregando && (

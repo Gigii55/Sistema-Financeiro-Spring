@@ -2,6 +2,7 @@ package com.ifpr.backend.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,7 +60,11 @@ public class TransacaoService {
         return repository.findByCriadoPorIdAndDataBetween(usuarioId, dataInicio, dataFim);
     }
 
-    public Page<Transacao> buscarPaginado(Long usuarioId, Pageable pageable) {
-        return repository.findByCriadoPorId(usuarioId, pageable);
+   public Page<Transacao> buscarPaginado(Long usuarioId, UUID carteiraId, Pageable pageable) {
+    if (carteiraId != null) {
+        return repository.findByCriadoPorIdAndCarteiraId(usuarioId, carteiraId, pageable);
     }
+
+    return repository.findByCriadoPorId(usuarioId, pageable);
+}
 }

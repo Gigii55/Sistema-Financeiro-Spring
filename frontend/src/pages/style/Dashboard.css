@@ -556,6 +556,26 @@
   border-color: var(--cor-primaria-hover);
 }
 
+.seletor-dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.seletor-dashboard label {
+  font-weight: 600;
+  color: #555;
+}
+
+@media (max-width: 600px) {
+  .seletor-dashboard {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
 @media (max-width: 1050px) {
   .paineis {
     grid-template-columns: 1fr;
