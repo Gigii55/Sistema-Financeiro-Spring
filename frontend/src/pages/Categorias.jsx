@@ -1,122 +1,292 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import CategoriaServices from '../services/CategoriaServices';
 
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Dialog } from 'primereact/dialog';
+
+import CategoriaServices from '../services/CategoriaServices';
 import './style/Categoria.css';
+
+const categoriaService = new CategoriaServices();
+
+const formularioInicial = {nome: '',tipo: 'DESPESA', icone: 'pi pi-tag', cor: '#44aa8b'};
 
 export default function Categorias() {
   const navigate = useNavigate();
-  const categoriaService = new CategoriaServices();
 
   const usuarioSalvo = localStorage.getItem('usuario');
   const usuario = usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+  const usuarioId = usuario?.id;
 
-  const [formData, setFormData] = useState({
-    nome: '',
-    tipo: 'DESPESA',
-    icone: 'pi pi-shopping-cart',
-    cor: '#44aa8b'
-  });
+  const [categorias, setCategorias] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [salvando, setSalvando] = useState(false);
 
-  const [carregando, setCarregando] = useState(false);
+  const [filtroTipo, setFiltroTipo] = useState('TODAS');
+  const [exibirModal, setExibirModal] = useState(false);
+  const [categoriaEditando, setCategoriaEditando] = useState(null);
+
+  const [formData, setFormData] = useState(formularioInicial);
   const [mensagemErro, setMensagemErro] = useState('');
+  const [erroPagina, setErroPagina] = useState('');
 
   useEffect(() => {
-    if (!usuario) {
+    if (!usuarioId) {
       navigate('/');
-    }
-  }, [navigate, usuario]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMensagemErro('');
-    setCarregando(true);
-
-    if (!usuario || !usuario.id) {
-      alert('Sessão expirada. Faça login novamente.');
       return;
     }
 
-    const payload = {
-      nome: formData.nome,
-      tipo: formData.tipo,
-      icone: formData.icone,
-      cor: formData.cor,
-      usuario: { id: usuario.id }
-    };
+    async function carregar() {
+      try {
+        setCarregando(true);
+
+        const resposta = await categoriaService.buscarTodos();
+        setCategorias(resposta.data);
+      } catch (erro) {
+        console.error(erro);
+        setErroPagina('Não foi possível carregar as categorias.');
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregar();
+  }, [navigate, usuarioId]);
+
+  async function carregarCategorias() {
+    try {
+      const resposta = await categoriaService.buscarTodos();
+      setCategorias(resposta.data);
+      setErroPagina('');
+    } catch (erro) {
+      console.error(erro);
+      setErroPagina('Não foi possível atualizar as categorias.');
+    }
+  }
+
+  function voltarPagina() {
+    if (window.history.state?.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/dashboard');
+    }
+  }
+
+  function abrirCadastro() {
+    setCategoriaEditando(null);
+    setFormData({ ...formularioInicial });
+    setMensagemErro('');
+    setExibirModal(true);
+  }
+
+  function abrirEdicao(categoria) {
+    setCategoriaEditando(categoria);
+    setMensagemErro('');
+
+    setFormData({
+      nome: categoria.nome,
+      tipo: categoria.tipo,
+      icone: categoria.icone,
+      cor: categoria.cor
+    });
+
+    setExibirModal(true);
+  }
+
+  function fecharModal() {
+    if (salvando) return;
+
+    setExibirModal(false);
+    setCategoriaEditando(null);
+    setMensagemErro('');
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setFormData((anterior) => ({...anterior,[name]: value}));
+  }
+
+  async function salvarCategoria(e) {
+    e.preventDefault();
+
+    setSalvando(true);
+    setMensagemErro('');
+
+    const payload = { nome: formData.nome.trim(),tipo: formData.tipo, icone: formData.icone,cor: formData.cor,usuario: { id: usuarioId }};
 
     try {
-      await categoriaService.inserir(payload);
-      alert('Categoria adicionada com sucesso!');
-      navigate('/dashboard'); 
-    } catch (error) {
-      console.error('Erro detalhado:', error);
-      const msg = error.response?.data?.message || 'Não foi possível cadastrar a categoria.';
-      setMensagemErro(msg);
+      if (categoriaEditando) {
+        await categoriaService.alterar({...payload,id: categoriaEditando.id});
+      } else {
+        await categoriaService.inserir(payload);
+      }
+
+      fecharModalAposSalvar();
+      await carregarCategorias();
+
+    } catch (erro) {
+      console.error(erro);
+      setMensagemErro( erro.response?.data?.message ||'Não foi possível salvar a categoria.');
     } finally {
-      setCarregando(false);
+      setSalvando(false);
     }
-  };
+  }
+
+  function fecharModalAposSalvar() {
+    setExibirModal(false);
+    setCategoriaEditando(null);
+    setFormData({ ...formularioInicial });
+  }
+
+  async function excluirCategoria(categoria) {
+    const confirmar = window.confirm(`Deseja realmente excluir a categoria "${categoria.nome}"? ` +'Essa ação não poderá ser desfeita.');
+
+    if (!confirmar) return;
+
+    try {
+      setErroPagina('');
+      await categoriaService.remover(categoria.id);
+      await carregarCategorias();
+
+    } catch (erro) {
+      console.error(erro);
+      setErroPagina(erro.response?.data?.message ||'Não foi possível excluir a categoria. ' +'Verifique se ela está vinculada a alguma transação.');
+    }
+  }
+
+  const categoriasFiltradas = categorias.filter((categoria) => {
+    return filtroTipo === 'TODAS' || categoria.tipo === filtroTipo;
+  });
 
   return (
-    <>
-      <div className="categoria-cabecalho">
-        <h1 className="categoria-boas-vindas">NOVA CATEGORIA</h1>
-        <h2 className="categoria-identificacao">Sistemas de Finanças Astrotech</h2>
+    <div className="categorias-pagina">
+      <button type="button" className="categorias-voltar" onClick={voltarPagina}>
+        <i className="pi pi-arrow-left" /> Voltar
+      </button>
+
+      <div className="categorias-container">
+        <header className="categorias-topo">
+          <span className="categorias-kicker"> CONTROLE FINANCEIRO</span>
+          <h1>Minhas categorias</h1>
+          <p> Organize e gerencie suas receitas e despesas. </p>
+        </header>
+
+        <div className="categorias-barra">
+          <div className="categorias-contador">
+            <i className="pi pi-tags" />
+
+            <span>{categorias.length} categorias cadastradas</span>
+          </div>
+        </div>
+
+        <div className="categorias-filtros">
+          <button type="button" className={filtroTipo === 'TODAS' ? 'ativo' : ''}onClick={() => setFiltroTipo('TODAS')}>
+            Todas
+          </button>
+
+          <button type="button" className={filtroTipo === 'RECEITA' ? 'ativo' : ''} onClick={() => setFiltroTipo('RECEITA')}>
+            Receitas
+          </button>
+
+          <button type="button" className={filtroTipo === 'DESPESA' ? 'ativo' : ''}onClick={() => setFiltroTipo('DESPESA')}>
+            Despesas
+          </button>
+        </div>
+
+        {erroPagina && (<div className="categorias-erro">{erroPagina} </div>)}
+
+        {carregando ? (
+          <div className="categorias-vazio"> Carregando categorias...</div>) : (
+          <div className="categorias-grade">
+
+            {categoriasFiltradas.map((categoria) => (
+              <article key={categoria.id} className="categorias-cartao">
+                <div className="categorias-cartao-topo">
+                  <div className="categorias-icone" style={{ backgroundColor: `${categoria.cor}20`, color: categoria.cor}}>
+                    <i className={categoria.icone} />
+                  </div>
+
+                  <div className="categorias-acoes">
+                    <button type="button" className="categorias-editar" title="Editar categoria" aria-label={`Editar 
+                    ${categoria.nome}`} onClick={() => abrirEdicao(categoria)}>
+                      <i className="pi pi-pencil" />
+                    </button>
+
+                    <button type="button" className="categorias-excluir" title="Excluir categoria"
+                      aria-label={`Excluir ${categoria.nome}`} onClick={() => excluirCategoria(categoria)}>
+                      <i className="pi pi-trash" />
+                    </button>
+                  </div>
+                </div>
+
+                <h2>{categoria.nome}</h2>
+
+                <span className={`categorias-tipo ${categoria.tipo === 'RECEITA'? 'receita': 'despesa'}`}>
+                  {categoria.tipo === 'RECEITA' ? 'Receita': 'Despesa'}
+                </span>
+              </article>
+            ))}
+
+            <button type="button" className="categorias-cartao-adicionar" onClick={abrirCadastro}>
+              <span className="categorias-adicionar-icone">
+                <i className="pi pi-plus" />
+              </span>
+              <strong>Nova categoria</strong>
+              <span> Criar uma nova categoria financeira. </span>
+            </button>
+          </div>
+        )}
       </div>
 
-      <div className="categoria-card">
-        <p className="categoria-titulo">CADASTRAR</p>
+      <Dialog header={categoriaEditando ? 'Editar categoria': 'Nova categoria'} visible={exibirModal}
+        onHide={fecharModal} closable={!salvando} modal style={{ width: 'min(480px, 95vw)' }}>
 
-        <form className="categoria-formulario" onSubmit={handleSubmit}>
-          
-          <label className="categoria-label">Nome da Categoria</label>
-          <input className="categoria-input" type="text" name="nome" value={formData.nome} 
-            onChange={handleChange} maxLength="100" placeholder="Ex: Alimentação, Lazer..." 
-            required disabled={carregando} />
+        <form className="categorias-modal-form" onSubmit={salvarCategoria}>
 
-          <label className="categoria-label">Tipo</label>
-          <select className="categoria-input" name="tipo" value={formData.tipo} onChange={handleChange} disabled={carregando}>
+          <label>Nome da categoria</label>
+          <input type="text" name="nome" className="categorias-input" value={formData.nome} onChange={handleChange} maxLength={100}
+            placeholder="Ex.: Alimentação" required disabled={salvando}/>
+
+          <label>Tipo</label>
+          <select name="tipo" className="categorias-input" value={formData.tipo} onChange={handleChange}disabled={salvando || !!categoriaEditando}>
             <option value="RECEITA">Receita</option>
             <option value="DESPESA">Despesa</option>
           </select>
 
-          <label className="categoria-label">Ícone</label>
-          <select className="categoria-input" name="icone" value={formData.icone} onChange={handleChange} disabled={carregando}>
-            <option value="pi pi-shopping-cart">🛒 Carrinho (Compras)</option>
-            <option value="pi pi-car">🚗 Carro (Transporte)</option>
-            <option value="pi pi-home">🏠 Casa (Moradia)</option>
-            <option value="pi pi-bolt">⚡ Energia (Contas)</option>
-            <option value="pi pi-heart">❤️ Coração (Saúde/Pet)</option>
-            <option value="pi pi-graduation-cap">🎓 Educação</option>
-            <option value="pi pi-money-bill">💵 Dinheiro (Salário/Renda)</option>
-            <option value="pi pi-tag">🏷️ Etiqueta (Outros)</option>
+          <label>Ícone</label>
+          <select name="icone" className="categorias-input" value={formData.icone} onChange={handleChange} disabled={salvando}>
+            <option value="pi pi-tag">Etiqueta</option>
+            <option value="pi pi-shopping-cart">Compras</option>
+            <option value="pi pi-car">Transporte</option>
+            <option value="pi pi-home">Moradia</option>
+            <option value="pi pi-bolt">Contas</option>
+            <option value="pi pi-heart">Saúde</option>
+            <option value="pi pi-graduation-cap">Educação</option>
+            <option value="pi pi-money-bill">Dinheiro</option>
           </select>
 
-          <label className="categoria-label">Cor de Destaque</label>
-          <div className="categoria-cor-container">
-            <input type="color" name="cor" value={formData.cor} onChange={handleChange} 
-              disabled={carregando} className="categoria-input-cor"/>
-            <span className="categoria-cor-hex">{formData.cor.toUpperCase()}</span>
+          <label>Cor de destaque</label>
+
+          <div className="categorias-cor">
+            <input type="color" name="cor" value={formData.cor} onChange={handleChange}disabled={salvando}/>
+
+            <span>{formData.cor.toUpperCase()}</span>
           </div>
 
-          {mensagemErro && <span className="categoria-erro">{mensagemErro}</span>}
+          {mensagemErro && (<div className="categorias-modal-erro">{mensagemErro}</div>)}
 
-          <button type="submit" className="categoria-botao" disabled={carregando}>
-            {carregando ? 'SALVANDO...' : 'SALVAR CATEGORIA'}
-          </button>
-          
-          <button type="button" className="categoria-botao-secundario" onClick={() => navigate('/dashboard')} disabled={carregando}>
-            CANCELAR
-          </button>
+          <div className="categorias-modal-acoes">
+            <button type="button" className="categorias-modal-cancelar" onClick={fecharModal} disabled={salvando}>
+              Cancelar
+            </button>
+
+            <button type="submit" className="categorias-modal-salvar" disabled={salvando}>
+              {salvando ? 'Salvando...' : categoriaEditando ? 'Salvar alterações' : 'Criar categoria'}
+            </button>
+          </div>
 
         </form>
-      </div>
-    </>
+      </Dialog>
+    </div>
   );
 }

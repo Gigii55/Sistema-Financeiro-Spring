@@ -7,6 +7,9 @@ import com.ifpr.backend.entity.Carteira;
 
 public interface CarteiraRepository extends JpaRepository<Carteira, UUID> {
     List<Carteira> findByDonoId(Long donoId);
+    
+    
+
 }
     
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifpr.backend.entity.Categoria;
@@ -36,9 +37,9 @@ public class CategoriaController {
         return service.alterar(categoria);
     }
 
-    @GetMapping
-    public List<Categoria> listarTodos() {
-        return service.listarTodos();
+   @GetMapping
+    public List<Categoria> listarTodos(@RequestParam Long usuarioId) {
+    return service.listarTodos(usuarioId);
     }
 
     @GetMapping("/{id}")

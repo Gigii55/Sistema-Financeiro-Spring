@@ -18,8 +18,8 @@ public class CategoriaService {
         return repository.save(categoria);
     }
 
-    public List<Categoria> listarTodos() {
-        return repository.findAll();
+    public List<Categoria> listarTodos(Long usuarioId) {
+    return repository.findByUsuarioId(usuarioId);
     }
 
     public Categoria buscarPorId(Long id) {
