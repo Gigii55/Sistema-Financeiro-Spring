@@ -36,8 +36,8 @@ public class CarteiraService {
     return carteiraSalva;
 }
   public List<Carteira> listarTodos(Long usuarioId) {
-        return repository.findByDonoId(usuarioId);
-    }
+    return repository.buscarCarteirasDoUsuario(usuarioId);
+}
 
     public Carteira buscarPorId(UUID id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Carteira não encontrada"));
