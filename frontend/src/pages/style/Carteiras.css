@@ -1,3 +1,4 @@
+
 .carteiras-pagina {
   min-height: 100vh;
   background: linear-gradient(190deg, #0b4332 0%, #0a7052 100%);
@@ -84,6 +85,44 @@
 .carteiras-contador i {
   color: #66d6b4;
   font-size: 1.2rem;
+}
+
+.carteiras-sininho {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 46px;
+  height: 46px;
+
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 13px;
+
+  color: #ffffff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.carteiras-sininho:hover {
+  background: rgba(255, 255, 255, 0.20);
+  transform: translateY(-2px);
+}
+
+.carteiras-notificacao-bolinha {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  width: 12px;
+  height: 12px;
+
+  background: #ef4444;
+  border: 2px solid #0b513d;
+  border-radius: 50%;
 }
 
 .carteiras-botao-novo {
@@ -448,6 +487,185 @@
   outline-offset: 4px;
 }
 
+.carteiras-notificacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding-top: 10px;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.carteiras-notificacoes-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+  padding: 35px 20px;
+  color: #71817b;
+  text-align: center;
+}
+
+.carteiras-notificacoes-vazio i {
+  font-size: 2rem;
+  color: #42aa8d;
+}
+
+.carteiras-notificacoes-vazio p {
+  margin: 0;
+}
+
+.carteiras-convite {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  padding: 18px;
+  background: #f7fbf9;
+  border: 1px solid #e0eee7;
+  border-radius: 14px;
+}
+
+.carteiras-convite-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 45px;
+  height: 45px;
+
+  background: #e8f8f1;
+  border-radius: 12px;
+  color: #237f63;
+  font-size: 1.3rem;
+}
+
+.carteiras-convite-conteudo {
+  flex: 1;
+  min-width: 0;
+}
+
+.carteiras-convite-conteudo strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #1d3b32;
+  overflow-wrap: anywhere;
+}
+
+.carteiras-convite-conteudo p {
+  margin: 0;
+  color: #71817b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.carteiras-convite-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.carteiras-convite-aceitar,
+.carteiras-convite-recusar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 40px;
+  padding: 10px 16px;
+
+  border-radius: 9px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.carteiras-convite-aceitar {
+  background: #42aa8d;
+  border: 1px solid #42aa8d;
+  color: #ffffff;
+}
+
+.carteiras-convite-aceitar:hover {
+  background: #318b72;
+}
+
+.carteiras-convite-recusar {
+  background: #ffffff;
+  border: 1px solid #e2dada;
+  color: #b63f3f;
+}
+
+.carteiras-convite-recusar:hover {
+  background: #fff2f2;
+}
+
+.carteiras-convite-aceitar:disabled,
+.carteiras-convite-recusar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.carteiras-membro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 14px;
+  background: #f7fbf9;
+  border: 1px solid #e0eee7;
+  border-radius: 12px;
+}
+
+.carteiras-membro div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.carteiras-membro strong {
+  color: #1d3b32;
+  overflow-wrap: anywhere;
+}
+
+.carteiras-membro small {
+  color: #71817b;
+  overflow-wrap: anywhere;
+}
+
+.carteiras-membro > span {
+  color: #237f63;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.carteiras-modal-titulo {
+  margin: 4px 0;
+  font-family: "Playfair Display", serif;
+  font-size: 1.3rem;
+  color: #1d3b32;
+}
+
+.carteiras-sem-membros {
+  color: #71817b;
+}
+
+.carteiras-mensagem-sucesso {
+  padding: 12px 15px;
+
+  background: #e8f8f1;
+  border-radius: 10px;
+  color: #237f63;
+  font-weight: 600;
+}
+
 @media (max-width: 768px) {
   .carteiras-pagina {
     padding: 90px 20px 40px;
@@ -477,8 +695,25 @@
   }
 
   .carteiras-barra {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .carteiras-contador {
+    font-size: 0.85rem;
+  }
+
+  .carteiras-convite {
+    padding: 14px;
+  }
+
+  .carteiras-convite-acoes {
     flex-direction: column;
-    align-items: stretch;
+  }
+
+  .carteiras-convite-aceitar,
+  .carteiras-convite-recusar {
+    width: 100%;
   }
 
   .carteiras-botao-novo {

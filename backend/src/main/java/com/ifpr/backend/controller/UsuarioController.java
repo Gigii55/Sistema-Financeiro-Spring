@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import jakarta.servlet.http.HttpServletRequest;
 import com.ifpr.backend.dto.AlterarSenhaDTO;
 import com.ifpr.backend.entity.Usuario;
 import com.ifpr.backend.service.UsuarioService;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class UsuarioController {
 
     @Autowired
@@ -62,16 +62,31 @@ public class UsuarioController {
         service.remover(id);
     }
     
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Usuario dados) {
+    
+@PostMapping("/login")
+public ResponseEntity<?> login(@RequestBody Usuario dados, HttpServletRequest request) {
 
-    Usuario usuario = service.login(dados.getEmail(),dados.getSenha());
+  Usuario usuario = service.login(dados.getEmail(), dados.getSenha());
 
-    if (usuario == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha inválidos.");
-        }
+  if (usuario == null) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha inválidos.");
+  }
 
-    return ResponseEntity.ok(usuario);
+  request.getSession(true).setAttribute("usuarioId", usuario.getId());
+
+  return ResponseEntity.ok(usuario);
+}
+
+@PostMapping("/logout")
+public ResponseEntity<Void> logout(HttpServletRequest request) {
+
+  var sessao = request.getSession(false);
+
+  if (sessao != null) {
+    sessao.invalidate();
+  }
+
+  return ResponseEntity.noContent().build();
 }
 
 @PutMapping("/senha")

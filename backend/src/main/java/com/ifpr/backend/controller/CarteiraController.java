@@ -1,3 +1,4 @@
+
 package com.ifpr.backend.controller;
 
 import java.util.List;
@@ -12,44 +13,48 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ifpr.backend.entity.Carteira;
+import com.ifpr.backend.service.AutenticacaoService;
 import com.ifpr.backend.service.CarteiraService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/carteiras")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class CarteiraController {
 
-    @Autowired
-    private CarteiraService service;
+  @Autowired
+  private CarteiraService service;
 
-    @PostMapping
-    public Carteira inserir(@Valid @RequestBody Carteira carteira) {
-        return service.inserir(carteira);
-    }
+  @Autowired
+  private AutenticacaoService autenticacaoService;
 
-    @PutMapping
-    public Carteira alterar(@Valid @RequestBody Carteira carteira) {
-        return service.alterar(carteira);
-    }
+  @PostMapping
+  public Carteira inserir(@Valid @RequestBody Carteira carteira, HttpServletRequest request) {
+    return service.inserir(carteira, autenticacaoService.usuarioId(request));
+  }
 
-    @GetMapping
-    public List<Carteira> listarTodos(@RequestParam Long usuarioId){
-        return service.listarTodos(usuarioId);
-    }
+  @PutMapping
+  public Carteira alterar(@Valid @RequestBody Carteira carteira, HttpServletRequest request) {
+    return service.alterar(carteira, autenticacaoService.usuarioId(request));
+  }
 
-    @GetMapping("/{id}")
-    public Carteira buscarPorId(@PathVariable("id") UUID id) {
-        return service.buscarPorId(id);
-    }
+  @GetMapping
+  public List<Carteira> listarTodos(HttpServletRequest request) {
+    return service.listarTodos(autenticacaoService.usuarioId(request));
+  }
 
-    @DeleteMapping("/{id}")
-    public void remover(@PathVariable("id") UUID id) {
-        service.remover(id);
-    }
+  @GetMapping("/{id}")
+  public Carteira buscarPorId(@PathVariable UUID id, HttpServletRequest request) {
+    return service.buscarPorId(id, autenticacaoService.usuarioId(request));
+  }
+
+  @DeleteMapping("/{id}")
+  public void remover(@PathVariable UUID id, HttpServletRequest request) {
+    service.remover(id, autenticacaoService.usuarioId(request));
+  }
 }

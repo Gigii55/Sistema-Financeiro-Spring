@@ -1,81 +1,51 @@
+
 package com.ifpr.backend.controller;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
-import com.ifpr.backend.dto.AdicionarMembroDTO;
-import com.ifpr.backend.dto.AlterarPapelMembroDTO;
 import com.ifpr.backend.entity.CarteiraMembro;
-import com.ifpr.backend.service.CarteiraMembroService;
+import com.ifpr.backend.repository.CarteiraMembroRepository;
+import com.ifpr.backend.service.AutenticacaoService;
 
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/carteira-membros")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class CarteiraMembroController {
 
-    @Autowired
-    private CarteiraMembroService service;
+  @Autowired
+  private CarteiraMembroRepository repository;
 
-    @PostMapping
-    public CarteiraMembro inserir(@Valid @RequestBody CarteiraMembro membro) {
-        return service.inserir(membro);
-    }
+  @Autowired
+  private AutenticacaoService autenticacaoService;
 
-    @PutMapping
-    public CarteiraMembro alterar(@Valid @RequestBody CarteiraMembro membro) {
-        return service.alterar(membro);
-    }
+  @GetMapping("/carteira/{carteiraId}")
+  public List<CarteiraMembro> buscarMembrosDaCarteira(
+      @PathVariable UUID carteiraId,
+      HttpServletRequest request) {
 
-    @GetMapping
-    public List<CarteiraMembro> listarTodos() {
-        return service.listarTodos();
-    }
+    Long usuarioId = autenticacaoService.usuarioId(request);
 
-    @GetMapping("/{id}")
-    public CarteiraMembro buscarPorId(@PathVariable("id") Long id) {
-        return service.buscarPorId(id);
-    }
+    boolean participa = repository.findByCarteiraIdAndUsuarioId(
+      carteiraId,
+      usuarioId
+    ).isPresent();
 
-    @DeleteMapping("/{id}")
-    public void remover(@PathVariable("id") Long id) {
-        service.remover(id);
+    if (!participa) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Acesso não permitido.");
     }
 
-    @PostMapping("/carteira/{carteiraId}")
-    public ResponseEntity<CarteiraMembro> adicionarMembro(@PathVariable UUID carteiraId, @RequestBody AdicionarMembroDTO dados) {
-    CarteiraMembro membro = service.adicionarMembro(carteiraId, dados);
-    return ResponseEntity.ok(membro);
-    }
-
-    @PatchMapping("/carteira/{carteiraId}/usuario/{usuarioId}")
-    public ResponseEntity<CarteiraMembro> alterarPapel(@PathVariable UUID carteiraId,@PathVariable Long usuarioId,
-        @RequestBody AlterarPapelMembroDTO dados) {
-        CarteiraMembro membro = service.alterarPapel(carteiraId, usuarioId, dados.getPapel());
-        return ResponseEntity.ok(membro);
-    }
-
-    @DeleteMapping("/carteira/{carteiraId}/usuario/{usuarioId}")
-    public ResponseEntity<Void> removerMembro(@PathVariable UUID carteiraId,@PathVariable Long usuarioId) {
-        service.removerMembro(carteiraId, usuarioId);
-        return ResponseEntity.noContent().build();
-    }
-    @GetMapping("/carteira/{carteiraId}")
-    public ResponseEntity<List<CarteiraMembro>> buscarMembrosDaCarteira(@PathVariable UUID carteiraId) {
-        return ResponseEntity.ok(service.buscarMembrosDaCarteira(carteiraId));
-    }
-}   
+    return repository.findByCarteiraId(carteiraId);
+  }
+}
