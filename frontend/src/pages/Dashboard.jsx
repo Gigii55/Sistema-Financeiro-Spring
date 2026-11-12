@@ -183,14 +183,23 @@ const transacoesFiltradas = carteiraSelecionada? transacoes.filter((transacao) =
    transacao.carteira?.id === carteiraSelecionada): transacoes;
 
 const {totalReceitas,totalDespesas,saldo,resultado,percentual,percentualGrafico,dadosGrafico} = calcularResumo(transacoesFiltradas);
-  const descricaoTabela = (transacao) => (
-    <div className="lancamento">
-      <span className={transacao.tipo === 'RECEITA' ? 'tipo entrada' : 'tipo saida'}>
-        <i className={transacao.tipo === 'RECEITA' ? 'pi pi-arrow-up' : 'pi pi-arrow-down'} />
-      </span>
+  
+const descricaoTabela = (transacao) => (
+  <div className="lancamento">
+    <span className={transacao.tipo === 'RECEITA' ? 'tipo entrada' : 'tipo saida'}>
+      <i className={transacao.tipo === 'RECEITA' ? 'pi pi-arrow-up' : 'pi pi-arrow-down'} />
+    </span>
+
+    <div className="lancamento-informacoes">
       <strong>{transacao.descricao || 'Sem descrição'}</strong>
+
+      <small className="lancamento-usuario">
+        <i className="pi pi-user"/> Registrado por {transacao.criadoPor?.nome || 'Usuário não identificado'}
+      </small>
     </div>
-  );
+  </div>
+);
+
 
   async function excluirTransacao(id) {
     const confirmar = window.confirm('Tem certeza que deseja excluir esta transação?');

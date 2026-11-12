@@ -569,6 +569,34 @@
   color: #555;
 }
 
+
+.lancamento-informacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.lancamento-informacoes strong {
+  overflow-wrap: anywhere;
+}
+
+.lancamento-usuario {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #83958c;
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.lancamento-usuario i {
+  color: #42aa8d;
+  font-size: 0.75rem;
+}
+
+
 @media (max-width: 600px) {
   .seletor-dashboard {
     justify-content: flex-start;

@@ -1,3 +1,4 @@
+
 package com.ifpr.backend.controller;
 
 import java.time.LocalDate;
@@ -21,62 +22,79 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ifpr.backend.entity.Transacao;
 import com.ifpr.backend.entity.enums.TipoTransacao;
+import com.ifpr.backend.service.AutenticacaoService;
 import com.ifpr.backend.service.TransacaoService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/transacoes")
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-
 public class TransacaoController {
 
-    @Autowired
-    private TransacaoService service;
+  @Autowired
+  private TransacaoService service;
 
-    @PostMapping
-    public Transacao inserir(@Valid @RequestBody Transacao transacao){
-        return service.inserir(transacao);
-    }
+  @Autowired
+  private AutenticacaoService autenticacaoService;
 
-    @PutMapping
-    public Transacao alterar(@Valid @RequestBody Transacao transacao){
-        return service.alterar(transacao);
-    }
+  @PostMapping
+  public Transacao inserir(@Valid @RequestBody Transacao transacao, HttpServletRequest request) {
+    return service.inserir(transacao, autenticacaoService.usuarioId(request));
+  }
 
-    @GetMapping
-    public List<Transacao> listarTodos(@RequestParam Long usuarioId){
-        return service.listarTodos(usuarioId);
-    }
+  @PutMapping
+  public Transacao alterar(@Valid @RequestBody Transacao transacao, HttpServletRequest request) {
+    return service.alterar(transacao, autenticacaoService.usuarioId(request));
+  }
 
-    @GetMapping("/{id}")
-    public Transacao buscarPorId(@PathVariable("id") Long id){
-        return service.buscarPorId(id);
-    }
+  @GetMapping
+  public List<Transacao> listarTodos(HttpServletRequest request) {
+    return service.listarTodos(autenticacaoService.usuarioId(request));
+  }
 
-    @DeleteMapping("/{id}")
-    public void remover(@PathVariable("id") Long id){
-        service.remover(id);
-    }
+  @GetMapping("/{id}")
+  public Transacao buscarPorId(@PathVariable Long id, HttpServletRequest request) {
+    return service.buscarPorId(id, autenticacaoService.usuarioId(request));
+  }
 
-    @GetMapping("/filtro")
-    public ResponseEntity<List<Transacao>> buscarPorTipo(@RequestParam Long usuarioId, @RequestParam TipoTransacao tipo) {
-        return ResponseEntity.ok(service.buscarPorTipo(usuarioId, tipo));
-    }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> remover(@PathVariable Long id, HttpServletRequest request) {
+    service.remover(id, autenticacaoService.usuarioId(request));
+    return ResponseEntity.noContent().build();
+  }
 
-    @GetMapping("/filtro-categoria")
-    public ResponseEntity<List<Transacao>> buscarPorCategoria(@RequestParam Long usuarioId, @RequestParam Long categoriaId ) {
-        return ResponseEntity.ok(service.buscarPorCategoria(usuarioId, categoriaId));
-    }
+  @GetMapping("/filtro")
+  public ResponseEntity<List<Transacao>> buscarPorTipo( @RequestParam TipoTransacao tipo, HttpServletRequest request) {
 
-    @GetMapping("/filtro-periodo")
-    public ResponseEntity<List<Transacao>> buscarPorPeriodo(@RequestParam Long usuarioId, @RequestParam LocalDate dataInicio, @RequestParam LocalDate dataFim) {
-        return ResponseEntity.ok(service.buscarPorPeriodo(usuarioId, dataInicio, dataFim));
-    }
+    Long usuarioId = autenticacaoService.usuarioId(request);
 
-    @GetMapping("/paginado")
-    public ResponseEntity<Page<Transacao>> buscarPaginado( @RequestParam Long usuarioId, @RequestParam(required = false)
-        UUID carteiraId, Pageable pageable) {
-        return ResponseEntity.ok(service.buscarPaginado(usuarioId, carteiraId, pageable));
-    }
+    return ResponseEntity.ok(service.buscarPorTipo(usuarioId, tipo));
+  }
+
+  @GetMapping("/filtro-categoria")
+  public ResponseEntity<List<Transacao>> buscarPorCategoria(@RequestParam Long categoriaId,HttpServletRequest request) {
+
+    Long usuarioId = autenticacaoService.usuarioId(request);
+
+    return ResponseEntity.ok(service.buscarPorCategoria(usuarioId, categoriaId));
+  }
+
+  @GetMapping("/filtro-periodo")
+  public ResponseEntity<List<Transacao>> buscarPorPeriodo(@RequestParam LocalDate dataInicio,@RequestParam LocalDate dataFim,
+    HttpServletRequest request) {
+
+    Long usuarioId = autenticacaoService.usuarioId(request);
+
+    return ResponseEntity.ok(service.buscarPorPeriodo(usuarioId, dataInicio, dataFim));
+  }
+
+  @GetMapping("/paginado")
+  public ResponseEntity<Page<Transacao>> buscarPaginado(@RequestParam(required = false) UUID carteiraId,Pageable pageable, HttpServletRequest request) {
+
+    Long usuarioId = autenticacaoService.usuarioId(request);
+
+    return ResponseEntity.ok(service.buscarPaginado(usuarioId, carteiraId, pageable));
+  }
 }
