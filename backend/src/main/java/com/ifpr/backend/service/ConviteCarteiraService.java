@@ -25,6 +25,9 @@ import com.ifpr.backend.repository.UsuarioRepository;
 public class ConviteCarteiraService {
 
   @Autowired
+  private EventoTempoRealService eventoTempoRealService;
+
+  @Autowired
   private ConviteCarteiraRepository repository;
 
   @Autowired
@@ -57,10 +60,9 @@ public class ConviteCarteiraService {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Você não pode convidar a si mesmo.");
     }
 
-    boolean jaParticipa = membroRepository.findByCarteiraIdAndUsuarioId(
-      carteiraId,
-      convidado.getId()
-    ).isPresent();
+    boolean jaParticipa = membroRepository
+      .findByCarteiraIdAndUsuarioId(carteiraId, convidado.getId())
+      .isPresent();
 
     if (jaParticipa) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "Este usuário já participa da carteira.");
@@ -86,7 +88,11 @@ public class ConviteCarteiraService {
     convite.setRemetente(remetente);
     convite.setStatus(StatusConvite.PENDENTE);
 
-    return repository.save(convite);
+    ConviteCarteira conviteSalvo = repository.save(convite);
+
+    eventoTempoRealService.notificarUsuario(convidado.getId(), "convite-atualizado");
+
+    return conviteSalvo;
   }
 
   public List<ConviteCarteira> listarPendentes(Long usuarioId) {
@@ -120,6 +126,9 @@ public class ConviteCarteiraService {
 
     convite.setStatus(StatusConvite.ACEITO);
     repository.save(convite);
+
+    eventoTempoRealService.notificarUsuario(usuarioId, "convite-atualizado");
+    eventoTempoRealService.notificarUsuario(usuarioId, "carteira-atualizada");
   }
 
   @Transactional
@@ -134,5 +143,7 @@ public class ConviteCarteiraService {
 
     convite.setStatus(StatusConvite.RECUSADO);
     repository.save(convite);
+
+    eventoTempoRealService.notificarUsuario(usuarioId, "convite-atualizado");
   }
 }

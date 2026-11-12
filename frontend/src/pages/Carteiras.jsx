@@ -43,21 +43,37 @@ export default function Carteiras() {
   const [erroMembros, setErroMembros] = useState('');
   const [mensagemConvite, setMensagemConvite] = useState('');
 
-  async function carregarCarteiras() {
-    try {
-      setCarregando(true);
-      setErro('');
-
-      const resposta = await carteiraService.buscarTodos();
-      setCarteiras(resposta.data);
-
-    } catch (error) {
-      console.error('Erro ao buscar carteiras:', error);
-      setErro('Não foi possível carregar suas carteiras.');
-    } finally {
-      setCarregando(false);
-    }
+  
+useEffect(() => {
+  if (!usuarioId) {
+    navigate('/');
+    return;
   }
+
+  carregarCarteiras();
+  carregarConvites();
+
+  const conexao = new EventSource('http://localhost:8080/eventos', {withCredentials: true});
+
+  const atualizarConvites = () => {
+    carregarConvites();
+  };
+
+  const atualizarCarteiras = () => {
+    carregarCarteiras();
+  };
+
+  conexao.addEventListener('convite-atualizado', atualizarConvites);
+  conexao.addEventListener('carteira-atualizada', atualizarCarteiras);
+
+  return () => {
+    conexao.removeEventListener('convite-atualizado', atualizarConvites);
+    conexao.removeEventListener('carteira-atualizada', atualizarCarteiras);
+    conexao.close();
+  };
+
+}, [navigate, usuarioId]);
+
 
   async function carregarConvites() {
     try {
@@ -112,6 +128,38 @@ export default function Carteiras() {
     const { name, value } = e.target;
     setFormData((anterior) => ({...anterior,[name]: value}));
   }
+
+
+async function carregarCarteiras() {
+  try {
+    setCarregando(true);
+    setErro('');
+
+    const resposta = await carteiraService.buscarTodos();
+    setCarteiras(resposta.data);
+
+  } catch (error) {
+    console.error('Erro ao buscar carteiras:', error);
+    setErro('Não foi possível carregar suas carteiras.');
+
+  } finally {
+    setCarregando(false);
+  }
+}
+
+async function carregarConvites() {
+  try {
+    const resposta = await conviteService.buscarPendentes();
+
+    setConvites(resposta.data);
+    setErroNotificacoes('');
+
+  } catch (error) {
+    console.error('Erro ao carregar convites:', error);
+    setErroNotificacoes('Não foi possível consultar os convites.');
+  }
+}
+
 
   async function criarCarteira(e) {
     e.preventDefault();
@@ -208,9 +256,7 @@ export default function Carteiras() {
     setCarregandoMembros(true);
 
     try {
-      const resposta = await api.get(
-        `/carteira-membros/carteira/${carteira.id}`
-      );
+      const resposta = await api.get(`/carteira-membros/carteira/${carteira.id}`);
 
       setMembros(resposta.data);
 

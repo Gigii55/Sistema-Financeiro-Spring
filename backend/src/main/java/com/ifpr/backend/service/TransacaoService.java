@@ -44,17 +44,20 @@ public class TransacaoService {
   @Autowired
   private CategoriaRepository categoriaRepository;
 
+  @Autowired
+  private EventoTempoRealService eventoTempoRealService;
+
   private void verificarPermissao(UUID carteiraId, Long usuarioId, boolean editar) {
 
-    Carteira carteira = carteiraRepository.findById(carteiraId).orElseThrow(() -> 
-    new ResponseStatusException(HttpStatus.NOT_FOUND, "Carteira não encontrada."));
+    Carteira carteira = carteiraRepository.findById(carteiraId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Carteira não encontrada."));
 
     if (carteira.getDono().getId() == usuarioId) {
       return;
     }
 
-    CarteiraMembro membro = membroRepository.findByCarteiraIdAndUsuarioId(carteiraId, usuarioId).orElseThrow(() ->
-     new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não participa desta carteira."));
+    CarteiraMembro membro = membroRepository.findByCarteiraIdAndUsuarioId(carteiraId, usuarioId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não participa desta carteira."));
 
     if (editar && membro.getPapel() != PapelCarteira.DONO && membro.getPapel() != PapelCarteira.EDITOR) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você não tem permissão para modificar esta carteira.");
@@ -67,8 +70,8 @@ public class TransacaoService {
       return null;
     }
 
-    Categoria categoriaBD = categoriaRepository.findById(categoria.getId()).orElseThrow(() -> 
-    new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada."));
+    Categoria categoriaBD = categoriaRepository.findById(categoria.getId())
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Categoria não encontrada."));
 
     if (categoriaBD.getUsuario().getId() != usuarioId) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Esta categoria não pertence ao usuário.");
@@ -88,18 +91,22 @@ public class TransacaoService {
 
     verificarPermissao(carteiraId, usuarioId, true);
 
-    Carteira carteira = carteiraRepository.findById(carteiraId).orElseThrow(() -> 
-    new ResponseStatusException(HttpStatus.NOT_FOUND, "Carteira não encontrada."));
+    Carteira carteira = carteiraRepository.findById(carteiraId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Carteira não encontrada."));
 
-    Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> 
-    new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
+    Usuario usuario = usuarioRepository.findById(usuarioId)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
 
     transacao.setId(null);
     transacao.setCarteira(carteira);
     transacao.setCriadoPor(usuario);
     transacao.setCategoria(verificarCategoria(transacao.getCategoria(), usuarioId));
 
-    return repository.save(transacao);
+    Transacao transacaoSalva = repository.save(transacao);
+
+    eventoTempoRealService.notificarCarteira(carteiraId);
+
+    return transacaoSalva;
   }
 
   public List<Transacao> listarTodos(Long usuarioId) {
@@ -108,7 +115,8 @@ public class TransacaoService {
 
   public Transacao buscarPorId(Long id, Long usuarioId) {
 
-    Transacao transacao = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada."));
+    Transacao transacao = repository.findById(id)
+      .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada."));
 
     verificarPermissao(transacao.getCarteira().getId(), usuarioId, false);
 
@@ -120,9 +128,13 @@ public class TransacaoService {
 
     Transacao transacao = buscarPorId(id, usuarioId);
 
-    verificarPermissao(transacao.getCarteira().getId(), usuarioId, true);
+    UUID carteiraId = transacao.getCarteira().getId();
+
+    verificarPermissao(carteiraId, usuarioId, true);
 
     repository.delete(transacao);
+
+    eventoTempoRealService.notificarCarteira(carteiraId);
   }
 
   @Transactional
@@ -134,7 +146,9 @@ public class TransacaoService {
 
     Transacao transacaoBD = buscarPorId(transacao.getId(), usuarioId);
 
-    verificarPermissao(transacaoBD.getCarteira().getId(), usuarioId, true);
+    UUID carteiraId = transacaoBD.getCarteira().getId();
+
+    verificarPermissao(carteiraId, usuarioId, true);
 
     transacaoBD.setCategoria(verificarCategoria(transacao.getCategoria(), usuarioId));
     transacaoBD.setTipo(transacao.getTipo());
@@ -142,7 +156,11 @@ public class TransacaoService {
     transacaoBD.setDescricao(transacao.getDescricao());
     transacaoBD.setData(transacao.getData());
 
-    return repository.save(transacaoBD);
+    Transacao transacaoSalva = repository.save(transacaoBD);
+
+    eventoTempoRealService.notificarCarteira(carteiraId);
+
+    return transacaoSalva;
   }
 
   public List<Transacao> buscarPorTipo(Long usuarioId, TipoTransacao tipo) {

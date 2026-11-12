@@ -117,6 +117,59 @@ useEffect(() => {
   carregarPagina();
 }, [lazyState, carteiraSelecionada]);
 
+
+useEffect(() => {
+  const conexao = new EventSource('http://localhost:8080/eventos', {
+    withCredentials: true
+  });
+
+  let ativo = true;
+
+  conexao.addEventListener('conectado', () => {
+    console.log('SSE conectado com sucesso!');
+  });
+
+  conexao.addEventListener('carteira-atualizada', async (evento) => {
+    console.log('EVENTO RECEBIDO:', evento.data);
+
+    try {
+      const [resDados, resPagina] = await Promise.all([
+        transacaoService.buscarTodos(),
+        transacaoService.buscarPaginado(
+          lazyState.page,
+          lazyState.rows,
+          carteiraSelecionada
+        )
+      ]);
+
+      if (!ativo) return;
+
+      setTransacoes(resDados.data);
+      setTransacoesPagina(resPagina.data.content);
+      setTotalRegistros(resPagina.data.totalElements);
+      setErro('');
+
+      console.log('Dashboard atualizada automaticamente!');
+
+    } catch (erro) {
+      if (ativo) {
+        console.error('Erro ao atualizar Dashboard:', erro);
+      }
+    }
+  });
+
+  conexao.onerror = (erro) => {
+    console.error('Erro na conexão SSE:', erro);
+  };
+
+  return () => {
+    ativo = false;
+    conexao.close();
+  };
+}, [lazyState.page, lazyState.rows, carteiraSelecionada]);
+
+
+
   function onPageChange(event) {
     setLazyState({
       first: event.first,
