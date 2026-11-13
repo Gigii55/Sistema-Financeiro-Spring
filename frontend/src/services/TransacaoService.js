@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../configs/axiosConfig';
 
 function obterUsuarioId() {
     const usuarioSalvo = localStorage.getItem('usuario');
@@ -9,42 +9,59 @@ function obterUsuarioId() {
 class TransacaoService {
 
     async buscarTodos() {
-        return axios.get('http://localhost:8080/transacoes', {
+        return api.get('/transacoes', {
             params: { usuarioId: obterUsuarioId() }
         });
     }
 
     async buscarPaginado(pagina, tamanho = 4, carteiraId = '') {
-        return axios.get('http://localhost:8080/transacoes/paginado', {
-        params: {usuarioId: obterUsuarioId(),carteiraId: carteiraId || undefined,
-        page: pagina,size: tamanho,sort: 'data,desc'}});
+        return api.get('/transacoes/paginado', {
+            params: {
+                usuarioId: obterUsuarioId(),
+                carteiraId: carteiraId || undefined,
+                page: pagina,
+                size: tamanho,
+                sort: 'data,desc'
+            }
+        });
     }
 
     async buscarPorTipo(tipo) {
-        return axios.get('http://localhost:8080/transacoes/filtro', {
-            params: { usuarioId: obterUsuarioId(), tipo }
+        return api.get('/transacoes/filtro', {
+            params: {
+                usuarioId: obterUsuarioId(),
+                tipo
+            }
         });
     }
 
     async buscarPorCategoria(categoriaId) {
-        return axios.get('http://localhost:8080/transacoes/filtro-categoria', {
-            params: { usuarioId: obterUsuarioId(), categoriaId }
+        return api.get('/transacoes/filtro-categoria', {
+            params: {
+                usuarioId: obterUsuarioId(),
+                categoriaId
+            }
         });
     }
 
     async buscarPorPeriodo(dataInicio, dataFim) {
-        return axios.get('http://localhost:8080/transacoes/filtro-periodo', {
-            params: { usuarioId: obterUsuarioId(), dataInicio, dataFim }
+        return api.get('/transacoes/filtro-periodo', {
+            params: {
+                usuarioId: obterUsuarioId(),
+                dataInicio,
+                dataFim
+            }
         });
     }
 
     async inserir(payload) {
-        return axios.post('http://localhost:8080/transacoes', payload, {
-            params: { usuarioId: obterUsuarioId() } 
+        return api.post('/transacoes', payload, {
+            params: { usuarioId: obterUsuarioId() }
         });
     }
+
     async remover(id) {
-        return axios.delete(`http://localhost:8080/transacoes/${id}`);
+        return api.delete(`/transacoes/${id}`);
     }
 }
 
