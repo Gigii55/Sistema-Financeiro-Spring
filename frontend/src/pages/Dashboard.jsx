@@ -119,10 +119,11 @@ useEffect(() => {
 
 
 useEffect(() => {
-  const conexao = new EventSource('http://localhost:8080/eventos', {
+  
+ const urlBackend = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+  const conexao = new EventSource(`${urlBackend}/eventos`, {
     withCredentials: true
   });
-
   let ativo = true;
 
   conexao.addEventListener('conectado', () => {

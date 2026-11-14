@@ -53,7 +53,11 @@ useEffect(() => {
   carregarCarteiras();
   carregarConvites();
 
-  const conexao = new EventSource('http://localhost:8080/eventos', {withCredentials: true});
+ const urlBackend = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
+const conexao = new EventSource(`${urlBackend}/eventos`, {
+  withCredentials: true
+});
 
   const atualizarConvites = () => {
     carregarConvites();
