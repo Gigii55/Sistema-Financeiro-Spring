@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/carteira-membros")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class CarteiraMembroController {
 
   @Autowired

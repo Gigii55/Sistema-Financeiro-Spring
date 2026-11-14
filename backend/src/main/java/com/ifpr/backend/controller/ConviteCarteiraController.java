@@ -23,7 +23,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/convites")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class ConviteCarteiraController {
 
   @Autowired

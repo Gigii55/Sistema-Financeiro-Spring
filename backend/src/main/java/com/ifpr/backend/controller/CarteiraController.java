@@ -24,7 +24,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/carteiras")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class CarteiraController {
 
   @Autowired

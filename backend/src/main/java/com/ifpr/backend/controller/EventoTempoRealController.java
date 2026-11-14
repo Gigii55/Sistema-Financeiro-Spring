@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/eventos")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class EventoTempoRealController {
 
   @Autowired

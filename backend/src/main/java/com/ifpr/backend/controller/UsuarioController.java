@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class UsuarioController {
 
     @Autowired

@@ -15,7 +15,6 @@ import com.ifpr.backend.service.RecuperacaoSenhaService;
 
 @RestController
 @RequestMapping("/recuperacao-senha")
-@CrossOrigin(origins = "http://localhost:5173")
 public class RecuperacaoSenhaController {
 
     @Autowired
